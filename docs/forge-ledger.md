@@ -9,9 +9,9 @@ Method: **study, re-implement, attribute.** No wholesale copying — every linea
 | Lineage | Status | Crown jewels mined |
 |---|---|---|
 | **OpenCode** | extracting | streaming step loop (tools fork while the model still generates), in-flight snapshots, overflow/retry taxonomy, max-steps guard, permission engine, event bus, skill discovery — see [docs/ingestor/opencode.md](ingestor/opencode.md) |
-| **Hermes** | studied | skill-sealing, learning loop, deep memory |
+| **Hermes** | extracting | marker-gated incremental FTS memory backfill, cache-boundary prompt registry, compaction summary preamble as contract, contextvar route pinning, fingerprinted memory ids, failure-shape classifiers, skill sealing + learning loop — see [docs/ingestor/hermes.md](ingestor/hermes.md) |
+| **Goose** | extracting | persisted-conversation state machine, pause-on-confirmation turn loop, first-answer-wins confirmations, layered deny-by-default permission inspectors, injection-safe LLM judge, retry classification as data, namespacing with mangle-recovery, interrupted-turn hygiene — see [docs/ingestor/goose.md](ingestor/goose.md) |
 | **Paperclip** | studied | orchestration, budgets, approvals |
-| **Goose** | studied | MCP tooling, extension model |
 | **Pi** | studied | minimal-core philosophy |
 | **Deerflow** | studied | deep research orchestration |
 | **Mercury** | studied | diffusion-style speed |
