@@ -8,7 +8,7 @@ Method: **study, re-implement, attribute.** No wholesale copying — every linea
 
 | Lineage | Status | Crown jewels mined |
 |---|---|---|
-| **OpenCode** | studied | coding loop, terminal-first UX |
+| **OpenCode** | extracting | streaming step loop (tools fork while the model still generates), in-flight snapshots, overflow/retry taxonomy, max-steps guard, permission engine, event bus, skill discovery — see [docs/ingestor/opencode.md](ingestor/opencode.md) |
 | **Hermes** | studied | skill-sealing, learning loop, deep memory |
 | **Paperclip** | studied | orchestration, budgets, approvals |
 | **Goose** | studied | MCP tooling, extension model |
