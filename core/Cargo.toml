@@ -1,0 +1,16 @@
+[package]
+name = "mcharness-core"
+version = "0.0.1"
+edition = "2021"
+description = "The father of harnesses — one whole, light-speed, featherweight multi-agent core"
+license = "MIT"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.31", features = ["bundled"] }
+reqwest = { version = "0.12", features = ["json", "stream"] }
+anyhow = "1"
+thiserror = "1"
+tracing = "0.1"
