@@ -11,9 +11,9 @@ Method: **study, re-implement, attribute.** No wholesale copying — every linea
 | **OpenCode** | extracting | streaming step loop (tools fork while the model still generates), in-flight snapshots, overflow/retry taxonomy, max-steps guard, permission engine, event bus, skill discovery — see [docs/ingestor/opencode.md](ingestor/opencode.md) |
 | **Hermes** | extracting | marker-gated incremental FTS memory backfill, cache-boundary prompt registry, compaction summary preamble as contract, contextvar route pinning, fingerprinted memory ids, failure-shape classifiers, skill sealing + learning loop — see [docs/ingestor/hermes.md](ingestor/hermes.md) |
 | **Goose** | extracting | persisted-conversation state machine, pause-on-confirmation turn loop, first-answer-wins confirmations, layered deny-by-default permission inspectors, injection-safe LLM judge, retry classification as data, namespacing with mangle-recovery, interrupted-turn hygiene — see [docs/ingestor/goose.md](ingestor/goose.md) |
-| **Paperclip** | studied | orchestration, budgets, approvals |
-| **Pi** | studied | minimal-core philosophy |
-| **Deerflow** | studied | deep research orchestration |
+| **Pi** | extracting | config-callback loop with two queue drain points, replayable transcript deltas, tree-structured JSONL sessions, truncation-safe tool batches, structuredContent/details tool split, unanimous-terminate, mode-uniform core — see [docs/ingestor/pi.md](ingestor/pi.md) |
+| **Paperclip** | extracting | DB-backed wakeup queue with coalescing + idempotency fences, atomic task checkout, typed waiting postures, "narration is not a wake path" disposition guard, bounded deterministic handoff, budget reservations + versioned delivery, run-scoped JWT attribution, skill-as-operating-manual — see [docs/ingestor/paperclip.md](ingestor/paperclip.md) |
+| **Deerflow** | extracting | middleware-as-architecture with anchored insertion, turn-budget translation (middleware-aware recursion limits), immutable parent snapshots for sub-agent isolation, first-writer-wins terminal state, fail-closed tri-state capability flags, pluggability-by-construction invariants, compaction-refuses-unsafe-states, receipts that survive compaction — see [docs/ingestor/deerflow.md](ingestor/deerflow.md) |
 | **Mercury** | studied | diffusion-style speed |
 | **OpenClaw** | studied | autonomy scaffolding |
 | **N8N** | studied | workflow graph model |
