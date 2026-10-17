@@ -50,7 +50,7 @@ See [docs/architecture.md](docs/architecture.md).
 
 ## Status
 
-`v0.0.1 — Skeleton. The bone is set. The blood is next.`
+`v0.0.1 — Skeleton. The organs are next.`
 
 ## License
 
