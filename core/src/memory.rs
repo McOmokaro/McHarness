@@ -53,7 +53,8 @@ impl Memory {
     }
 
     pub fn recall_persistent(&self, kind: &str) -> Result<Vec<String>> {
-        let conn = self.conn.lock().unwrap();n        let mut stmt = conn.prepare(
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare(
             "SELECT content FROM persistent_memory WHERE kind = ?1 ORDER BY id DESC LIMIT 50",
         )?;
         let rows = stmt.query_map([kind], |row| row.get::<_, String>(0))?;
