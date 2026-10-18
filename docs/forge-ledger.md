@@ -33,7 +33,7 @@ McHarness itself is the fusion of all bots — the master bot.
 
 | Lineage | Status | Notes |
 |---|---|---|
-| **Daniel Miessler / Fabric** | extracting | lifeos, personas, decision frameworks → Fusion core |
+| **Daniel Miessler / Fabric** | extracting | pattern directory model (one dir, one `system.md`), alias-override pattern resolution, single-pass template stack scanner with token-mode trust gate, argv[0]-as-pattern CLI, validated step chaining with stderr progress, prompt-assembly grammar (strategy ∥ context ∥ pattern), per-session mutexes, ANSI-chunk stream hygiene, pattern-quality rubric (exact quotas + anti-inflation aggregates) — see [docs/ingestor/fabric.md](ingestor/fabric.md) |
 | **Fusion corpus** | forging | all skills ever released, reverse-engineered into one core |
 | **Fission corpus** | forging | all plugins as one, same pattern as Fusion |
 
@@ -41,8 +41,8 @@ McHarness itself is the fusion of all bots — the master bot.
 
 | Lineage | Status | Notes |
 |---|---|---|
-| **Hexstrike** | studied | offensive orchestration — authorized targets only |
-| **Bug-bounty agents** | studied | target discovery, reporting — authorized targets only |
-| **OpenWorker** | studied | execution & delivery — authorized targets only |
+| **Hexstrike** | extracting | two-process Flask+MCP design with structured-JSON-always error contract, partial-results-on-timeout executor, terminate→kill ladder with PID registry, error→RecoveryAction taxonomy (incl. ESCALATE_TO_HUMAN), process pool with task-id polling — and the lesson that nothing there is enforceable scope-safety: McHarness must add per-job scope objects, argv-array execution, audit ledger, human-approval gates — see [docs/ingestor/hexstrike.md](ingestor/hexstrike.md) |
+| **Bug-bounty agents** | extracting | fail-closed placeholder-scope refusal (unknown scope = hard stop), PreToolUse scope hook with deny-wins three-state verdicts, machine-checkable pre-completion gates (artifact existence + forbidden-substitute detection), structured brain with 12-status exhaustion taxonomy, chain-pressure SubagentStop hook, three-tier search degradation (semantic → keyword → local), crash-safe persistence primitives (atomic write + flock + quarantine), evidence-score validation gate — see [docs/ingestor/pentest-agents.md](ingestor/pentest-agents.md) |
+| **OpenWorker** | extracting | turn engine with dangling-tool-call repair + risk-tiered parallelism, pre-spawn task claiming (guard before spawn, never await), model-scheduled self-wake store (sleep_for/wake_on + explicit yield token), task-scoped standing approvals as tool targets, reviewer streak breaker + shadow mode, provenance floor (downloads never executable without human), attendance model (auto-deny when unattended) — see [docs/ingestor/openworker.md](ingestor/openworker.md) |
 
 The security team acts **only on explicitly authorized targets**. Scope safety is enforced at the subsystem level, not by request.
