@@ -84,11 +84,28 @@ Mechanism as implemented in OpenWorker:
 - `MAX_DEPTH = 6`: structures deeper than the cap are replaced with a `[nested]` marker instead of recursed, so secrets cannot slip through by burying themselves.
 - Long strings are clipped to a 300-char preview. Distinct markers — `[redacted]` for a removed value, `[redacted body]` for a removed result body — keep the trail readable while proving redaction happened.
 
-## 10. FORGED IN MCHARNES
+## 10. CLOCK AS A TOOL (`coworker/clock.py`, OPE-192) — third mining pass
 
-Two OpenWorker jewels are now native Rust crates in the McHarness workspace. Method: study, re-implement, attribute — the MIT license terms (OpenWorker: github.com/andrewng-code/openworker, MIT, © 2024 Andrew Ng) are carried in each crate's manifest, and no source was copied.
+- The per-turn context block is appended to the latest user message — a message the provider has already cached. A value that moves on its own (the live clock carried it from 2026-08-20 to 2026-09-17) rewrites that message every turn and throws the whole cached conversation away: measured at up to 77% of a long session's cost.
+- Fix: time is a tool, `current_time`, registered for every session. Deadlines, "how long ago", and the absolute wake time for sleep_until justify a call; relative waits need none. The tool returns local ISO time with offset, the zone name, UTC with `Z`, and the weekday.
+- The generalized rule: the cached per-turn block may only carry values that change when the user (or harness) changes something — mode notices, folder lists, the live skill menu, disable countermands. Everything that ticks by itself rides a tool.
+- Same invariant appears independently in Mercury's cache-friendly prompt assembly — two sources agree.
+
+## 11. AGENT ASSEMBLY (`coworker/agent.py`, `agents/base.py`, `agents/registry.py`)
+
+- An agent is a persona record: name, title, system prompt, tool factory, plus capability traits — `requires_folder`, `subagents` (read-only explorer fan-out), `scheduling`, `connectors: bool | allowlist`, `team: lead | worker | none`, `approval_guidance`. Trait flags replace per-agent-name branching in the assembly code.
+- `build_engine` is pure wiring: register base tools, then conditionally add explorer subagents, scheduling tools, self-wake, connector tools (persona allowlist ∩ gateway-enabled ∩ session-effective set, OPE-93), the clock, memory tools, and the skill catalog — each gated on a trait.
+- The per-turn context is assembled from user-changeable state only: mode notices, roots, the live skill menu, and disable countermands (`_loaded_skill_names` re-checks per turn so a skill disabled mid-session gets an explicit stop note — history can't be un-read). Memories and user rules are knowledge, frozen at session start; the saving-switch notice is per-turn because it governs an action, not knowledge.
+- Memory-off honesty: when saving is disabled the model is TOLD so, after an observed incident of it narrating a fake save through its todo list. "Off" means stop learning, not forget what you know.
+- `session_facts.capture` freezes the known world (roots, allowed domains, workspace) before the agent acts, so an agent that adds a malicious remote cannot make its own destination look familiar.
+- For McHarness: this is the shape of Fusion (unified skill core) and Fission (plugin core) — trait-gated toolset assembly, stable-vs-volatile context discipline, and the honest-off notice all port directly.
+
+## 12. FORGED IN MCHARNES
+
+Three OpenWorker jewels are now native Rust crates in the McHarness workspace. Method: study, re-implement, attribute — the MIT license terms (OpenWorker: github.com/andrewyng/openworker, MIT, © 2024 Andrew Ng) are carried in each crate's manifest, and no source was copied.
 
 - **`mch-compaction`** (auto-compaction, OPE-27 / OPE-189): trigger = min(threshold_pct × context_window, cap_tokens) with defaults 0.8 / 250k / 128k (`should_compact`, `trigger_tokens`); boundary picking prefers the earliest user-turn start that still leaves a recent window, falls back to an assistant iteration boundary inside a giant turn, and rejects a boundary that would leave only user messages (nothing to summarize); mechanical no-LLM working-state extraction (files written via write/edit/append/save/create/patch hints, recent shell commands with exit status, artifacts, tools used) with recent-first dedup. The transcript is never modified — compaction changes only the outbound view. 7 tests.
 - **`mch-audit`** (audit redaction, OPE #397 / #525): `SECRET_KEYS` substring-matched at every depth with underscore-suffix matching; `RESULT_BODY_KEYS` for tool-result bodies; `MAX_DEPTH = 6` with a `[nested]` drop; 300-char previews; `[redacted]` / `[redacted body]` markers. 5 tests.
+- **`mch-clock`** (clock-as-tool, OPE-192): the invariant and the tool. `ContextCandidate::{Volatile, Stable}` with `context_is_cache_safe` (one volatile value poisons the whole per-turn block) and `volatile_to_tool` (names the values that must ride a tool instead). `TimeReport` with local ISO-with-offset, timezone name, UTC with `Z`, and weekday; `current_time()` plus the tool descriptor (`CURRENT_TIME_TOOL_NAME` / `CURRENT_TIME_TOOL_SCHEMA`) so the tool registers for every session and is called only when a deadline, elapsed time, or absolute wake time is needed — never by the clock itself. 5 tests.
 
-Both crates are green in the workspace suite (30/30) and pushed at commit 76ac860. Remaining OpenWorker surface: `agent.py`, `providers/matrix.py`, `scheduler.py` internals, `clock.py`, `agents/registry.py`.
+All three crates are green in the workspace suite (35/35). Remaining OpenWorker surface: `providers/matrix.py`, `scheduler.py` internals, `engine.py` remainder.

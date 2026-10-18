@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/mch-scope",
+    "crates/mch-gate",
+    "crates/mch-ledger",
+    "crates/mch-compaction",
+    "crates/mch-audit",
+    "crates/mch-clock",
+    "crates/mch-core",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tempfile = "3"
+thiserror = "2"
