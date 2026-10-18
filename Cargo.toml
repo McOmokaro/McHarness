@@ -5,12 +5,16 @@ members = [
     "crates/mch-scope",
     "crates/mch-gate",
     "crates/mch-ledger",
+    "crates/mch-compaction",
+    "crates/mch-audit",
     "crates/mch-core",
 ]
 default-members = [
     "crates/mch-scope",
     "crates/mch-gate",
     "crates/mch-ledger",
+    "crates/mch-compaction",
+    "crates/mch-audit",
     "crates/mch-core",
 ]
 
