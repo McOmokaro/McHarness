@@ -73,3 +73,22 @@ Cancellation is a single `asyncio.Event` + `_interruptible()` racing every await
 - **Provider zoo details** — 10+ provider adapters, pricing tables, recommended-model JSONs; Rust harness should define one trait and port adapters lazily.
 - **Teams/boards** (`teams/`, `proposals.py`) — multi-agent lead/worker decomposition with human staffing gates is a product layer; its *approval delegation* (`decide_worker_call`, `_delegated_context`) is the only piece worth mining later.
 - **Connector/inbox routing** (`connectors/`, `inbox*.py`, `mentions.py`) — messaging-platform integration specifics (Telegram-style targets) are surface glue, not harness pattern.
+
+## 9. AUDIT REDACTION (`coworker/audit.py`, OPE #397 / #525) — second mining pass
+
+Mechanism as implemented in OpenWorker:
+
+- Every tool call and tool result written to the audit event stream passes through a sanitizer (`AuditEvent` → `SanitizedEvent`) before persistence.
+- `SECRET_KEYS` are matched as substrings at EVERY nesting depth, so a bearer token buried in nested request headers is still caught. An underscore-suffix rule lets `user_content` match the `content` key rule.
+- `RESULT_BODY_KEYS` (`stdout`, `stderr`, `text`, `output`, `snippet`, …) redact tool-result bodies. The audit stream doubles as a replay source, so result bodies must stay clean even where the same keys are acceptable in triage views.
+- `MAX_DEPTH = 6`: structures deeper than the cap are replaced with a `[nested]` marker instead of recursed, so secrets cannot slip through by burying themselves.
+- Long strings are clipped to a 300-char preview. Distinct markers — `[redacted]` for a removed value, `[redacted body]` for a removed result body — keep the trail readable while proving redaction happened.
+
+## 10. FORGED IN MCHARNES
+
+Two OpenWorker jewels are now native Rust crates in the McHarness workspace. Method: study, re-implement, attribute — the MIT license terms (OpenWorker: github.com/andrewng-code/openworker, MIT, © 2024 Andrew Ng) are carried in each crate's manifest, and no source was copied.
+
+- **`mch-compaction`** (auto-compaction, OPE-27 / OPE-189): trigger = min(threshold_pct × context_window, cap_tokens) with defaults 0.8 / 250k / 128k (`should_compact`, `trigger_tokens`); boundary picking prefers the earliest user-turn start that still leaves a recent window, falls back to an assistant iteration boundary inside a giant turn, and rejects a boundary that would leave only user messages (nothing to summarize); mechanical no-LLM working-state extraction (files written via write/edit/append/save/create/patch hints, recent shell commands with exit status, artifacts, tools used) with recent-first dedup. The transcript is never modified — compaction changes only the outbound view. 7 tests.
+- **`mch-audit`** (audit redaction, OPE #397 / #525): `SECRET_KEYS` substring-matched at every depth with underscore-suffix matching; `RESULT_BODY_KEYS` for tool-result bodies; `MAX_DEPTH = 6` with a `[nested]` drop; 300-char previews; `[redacted]` / `[redacted body]` markers. 5 tests.
+
+Both crates are green in the workspace suite (30/30) and pushed at commit 76ac860. Remaining OpenWorker surface: `agent.py`, `providers/matrix.py`, `scheduler.py` internals, `clock.py`, `agents/registry.py`.
