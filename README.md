@@ -12,55 +12,54 @@ Built the Wozniak way: build the thing you want to use, from parts you understan
 
 ---
 
-McHarness is a native multi-agent terminal harness forged by reverse-engineering the strongest open-source agents alive — OpenCode, Hermes, Goose, Pi, Paperclip, Deerflow, Mercury, OpenClaw, N8N, and more — and weaving their crown jewels into **one organism**. Tools, memory, skills, and inference compiled as a single system: intent in, action out.
+McHarness is a native multi-agent terminal harness forged from first principles. We are building it entirely from scratch to automate complex workflows, reverse-engineer closed-source software, and serve as a sovereign, portable workspace. Intent in, action out.
 
 ## The Tech Stack
 
-| Layer | What it does |
-|---|---|
-| **Rust** | The core: agent loop, memory, Key Farm, orchestration |
-| **Python** | Research tooling, Fabric ingestion, bridge to the core |
-| **C++** | The speed organs: token streaming, memory search, embedding math |
-| **OpenCode** | The working agent front end during the build-out |
-| **REA** | Reverse Engineer Anything — the analysis beam that feeds the Ingestor |
+We are building this system from the ground up using three core languages, each chosen for its specific engineering strengths:
+
+**Rust (The Core Foundation)**
+- **Agent Loop:** The heartbeat of the system. It is the continuous cognitive cycle (Observe → Think → Act) that allows the agent to process inputs, evaluate its state, and execute tools without hallucination.
+- **Memory:** The persistent context engine. It handles the short-term working memory (chat history) and long-term episodic memory (vector databases) so the agent remembers what it learned yesterday.
+- **Key Farm:** The dynamic API management layer. It maintains a live pool of provider keys, monitors rate limits, and seamlessly reroutes requests before a failure occurs.
+- **Orchestration:** The multi-agent router. It manages how sub-agents spawn, communicate, and delegate tasks to one another without colliding.
+
+**Python (The Research & Bridge Layer)**
+- **Research Tooling:** The scripting environment for web scraping, data analysis, and formatting.
+- **Data Ingestion:** The pipeline that parses massive external datasets (like Fabric ingestion) and extracts structured knowledge.
+- **Bridge to Core:** The communication layer that allows Python scripts to send complex data structures directly into the Rust binary.
+
+**C++ (The Speed Organs)**
+- **Token Streaming:** Ultra-low-latency parsing of LLM responses to ensure the terminal UI prints words the millisecond they are generated.
+- **Memory Search:** High-performance vector similarity search, allowing the agent to scan millions of past memories in milliseconds.
+- **Embedding Math:** Fast matrix multiplication required for converting text into mathematical vectors.
 
 ## Roadmap
 
 ### 🟢 DONE
-
-- Portable Rust / Python / C++ workspace layout (`core/`, `crates/`, `cpp/`, `python/`)
-- Skeleton crate set: **mch-core, mch-gate, mch-ledger, mch-scope, mch-audit, mch-compaction, mch-clock, mch-scheduler**
-- **OpenCode** integrated as the live coding agent
-- **REA MCP server** wired into the stack — full 207-tool inventory verified live
-- **Omarchy** dual-boot environment
-- **HackaTime** tracking active
-- Forge Ledger public: 16 lineages mapped in [docs/forge-ledger.md](docs/forge-ledger.md) + per-agent ingestor notes in [docs/ingestor/](docs/ingestor/)
-- Repository hygiene pass: single README, strict `.gitignore`, clean index
+- [x] **Portable Workspace Layout:** Initialized the strict folder architecture (`core/`, `crates/`, `cpp/`, `python/`) designed for sovereign, offline-capable development.
+- [x] **Foundation Setup:** Configured isolated local environments and strict dependency management.
+- [x] **Core Crate Architecture:** Scaffolded the primary Rust modules (mch-core, mch-gate, mch-ledger, mch-scope, mch-audit).
+- [x] **Repository Hygiene:** Enforced strict `.gitignore` rules, unified the README, and cleaned the Git index.
+- [x] **License Protection:** Applied a Custom Proprietary Evaluation License to protect the intellectual property.
 
 ### 🟠 IN PROGRESS
-
-- Core Rust organs — agent loop, memory, Key Farm, model layer (`core/src/`)
-- C++ speed organs — token streaming, memory search, embeddings (`cpp/src/`)
-- Python bridge to the core (`python/bridge.py`)
+- [x] **Core Rust Organs:** Building the agent loop, memory modules, and the Key Farm setup.
+- [ ] **C++ Speed Organs:** Writing the token streaming and high-speed memory search logic.
+- [ ] **Python Bridge:** Writing `python/bridge.py` to connect the research tooling to the Rust core.
 
 ### 🔴 PLANNED
-
-- **Key Farm** as one key pool: every provider, live rate telemetry, reroute-before-failure
-- Domain **leaderboards** wired to live model rankings, fallback routing
-- **Fusion**: skill corpus v1 (Fabric ingestion — lifeos, personas, decision frameworks)
-- **Fission**: plugin corpus v1, one-command updates
-- **Ingestor** repo-mining phase: clone → analyze → propose native re-implementations
-- **TUI**: Key Farm telemetry, model-routing viz, memory/skill activity feed
-- Automated bug-bounty recon with scope safety asserted in code
-- Autonomous web builder
-- **McOmokaro synthesis**: reverting research to native Rust, one organ at a time
-- Web front door on free hosting — iPhone, Android, any browser
-- One-line curl installer
-
-## Forge Ledger
-
-Who got mined and what was taken: [docs/forge-ledger.md](docs/forge-ledger.md).
-Full architecture map: [docs/architecture.md](docs/architecture.md).
+- [ ] **Key Farm (Full Implementation):** Unifying API keys into a single pool with live rate telemetry and reroute-before-failure logic.
+- [ ] **Domain Leaderboards:** Wired to live model rankings to automatically route tasks to the best-performing AI for a specific job.
+- [ ] **Fusion (Skill Corpus v1):** Ingesting decision frameworks, personas, and logic trees to give the agent expert-level reasoning.
+- [ ] **Fission (Plugin Corpus v1):** Building a modular plugin system with one-command updates.
+- [ ] **Ingestor (Repo-Mining):** An automated phase that clones, analyzes, and proposes native re-implementations of external open-source tools.
+- [ ] **TUI (Terminal UI):** A rich terminal interface showing Key Farm telemetry, model-routing visualizations, and memory activity feeds.
+- [ ] **Automated Bug-Bounty Recon:** Autonomous agents that scan targets for vulnerabilities, with legal scope safety asserted strictly in code.
+- [ ] **Autonomous Web Builder:** Agentic generation of high-end, anti-slop web interfaces directly from terminal prompts.
+- [ ] **McOmokaro Synthesis:** The grand unification — reverting external research into native Rust, one organ at a time.
+- [ ] **Web Front Door:** A free-hosted web interface accessible from any browser.
+- [ ] **One-line curl installer:** `curl -fsSL mcharness.sh | bash` for instant deployment on any Linux machine.
 
 ## ⭐ Star History
 
@@ -68,4 +67,4 @@ Full architecture map: [docs/architecture.md](docs/architecture.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+This project is under a **Custom Proprietary Evaluation License**. See the `LICENSE` file for details.
