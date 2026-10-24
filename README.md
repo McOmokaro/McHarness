@@ -63,10 +63,7 @@ We are building this system from the ground up using three core languages, each 
 
 ## ⭐ Star History
 
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=McOmokaro/McHarness&type=Timeline&theme=dark)](https://star-history.com/#McOmokaro/McHarness&Timeline)
-
+[![Star History Chart](https://api.star-history.com/svg?repos=McOmokaro/McHarness&type=Timeline&theme=light)](https://star-history.com/#McOmokaro/McHarness&Timeline)
 
 ## License
 

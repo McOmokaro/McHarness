@@ -1,20 +1,32 @@
-README-local.md
-.wakatime-project
-.env
-config/.env
-*.key
-*secret*
-node_modules/
-dist/
-out/
-.staging-*
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
 
-README-local.md
-.wakatime-project
+# Python Portable Environment
+env/
+__pycache__/
+*.pyc
+
+# Local Binaries & Models
+bin/
+models/
+
+# Local Hermes & OpenCode Data
+config/hermes/
+config/opencode/
+config/.env.age
+config/age.key
+
+# Secrets & Local Notes
 .env
 config/.env
 *.key
 *secret*
+README-local.md
+.wakatime-project
+
+# Build Artifacts
 node_modules/
 dist/
 out/
