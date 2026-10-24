@@ -9,3 +9,13 @@ dist/
 out/
 .staging-*
 
+README-local.md
+.wakatime-project
+.env
+config/.env
+*.key
+*secret*
+node_modules/
+dist/
+out/
+.staging-*
