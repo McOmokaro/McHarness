@@ -61,7 +61,6 @@ We are building this system from the ground up using three core languages, each 
 - [ ] **Web Front Door:** A free-hosted web interface accessible from any browser.
 - [ ] **One-line curl installer:** `curl -fsSL mcharness.sh | bash` for instant deployment on any Linux machine.
 
-## ⭐ Star History
 
 ## ⭐ Star History
 
