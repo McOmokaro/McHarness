@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # REA Integration
 
 > "The best way to predict the future is to implement it." - Steve Wozniak
@@ -33,9 +37,9 @@ The integration provides tools for:
 
 ### Configuration
 
-The REA integration is configured in `docusaurus.config.js` and initializes with the following settings:
+The REA integration is configured and initializes with the following settings:
 
-```javascript
+```typescript
 // REA MCP server integration
 reaIntegration: {
   serverUrl: 'http://localhost:8080',
@@ -99,7 +103,7 @@ The integration incorporates Honcho dialectic user modeling to:
 
 ### Basic Usage
 
-```javascript
+```typescript
 // Disassemble a binary
 const result = await execute_rea_tool({
   name: 'disassemble',
@@ -125,7 +129,7 @@ const result = await execute_rea_tool({
 ### Common Patterns
 
 1. **Exploratory Analysis**: Start with high-level tools and drill down
-   ```javascript
+   ```typescript
    // First get an overview
    const overview = await execute_rea_tool({name: 'overview', binary: '/path/to/binary'});
    // Then drill into specific functions
@@ -133,7 +137,7 @@ const result = await execute_rea_tool({
    ```
 
 2. **Parallel Analysis**: Run multiple tools simultaneously
-   ```javascript
+   ```typescript
    const [disasm, symbols, strings] = await Promise.all([
      execute_rea_tool({name: 'disassemble', binary: '/path/to/binary'}),
      execute_rea_tool({name: 'extract-symbols', binary: '/path/to/binary'}),
@@ -142,7 +146,7 @@ const result = await execute_rea_tool({
    ```
 
 3. **Incremental Refinement**: Use results from one tool to focus another
-   ```javascript
+   ```typescript
    // Use disassembly to focus string extraction
    const funcs = (await execute_rea_tool({name: 'disassemble', binary: '/path/to/binary'})).functions;
    const strings = await execute_rea_tool({
@@ -166,7 +170,7 @@ REA tools can be called from Bot Mode, allowing specialist bots to perform analy
 
 Users can create reusable skills from REA analysis patterns:
 
-```javascript
+```typescript
 // Create a skill from a repeated analysis pattern
 create_skill({
   name: 'find-vulnerabilities',
@@ -183,3 +187,4 @@ Analysis results are automatically persisted to memory, enabling:
 - Summary generation of complex analyses
 - Pattern recognition across multiple binaries
 - Skill recommendations based on analysis history
+---

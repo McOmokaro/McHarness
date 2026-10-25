@@ -1,18 +1,16 @@
 {
   "name": "website",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "@docusaurus/core": "^3.10.2",
-    "@docusaurus/preset-classic": "^3.10.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "create-docusaurus": "^3.10.2"
   }
 }

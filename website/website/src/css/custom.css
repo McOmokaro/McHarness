@@ -104,12 +104,11 @@ p {
   padding-bottom: 0;
 }
 
-/* Space between section elements */
- > * + * {
+> * + * {
   margin-top: 2rem;
- }
+}
 
-/* Navbar styling - Apple-style pitch black with subtle accent */
+/* Navbar styling - Apple transparent with blur */
 .navbar {
   background: #000000 !important;
   backdrop-filter: blur(12px);
@@ -175,24 +174,24 @@ p {
 
 .sidebar__item:hover {
   background: var(--apple-primary);
-  color: var(--apple-background) !important;
+  color: var(--apple-inverse) !important;
 }
 
 .sidebar__item--active {
   background: var(--apple-primary);
-  color: var(--apple-background) !important;
+  color: var(--apple-inverse) !important;
   font-weight: 500;
 }
 
 /* Doc sidebar items */
 .docItem--active {
   background: var(--apple-primary) !important;
-  color: var(--apple-background) !important;
+  color: var(--apple-inverse) !important;
 }
 
 .docItem:hover {
   background: var(--apple-primary) !important;
-  color: var(--apple-background) !important;
+  color: var(--apple-inverse) !important;
 }
 
 /* Main content area */
@@ -218,7 +217,7 @@ p {
 /* Button styling - Apple primary */
 .button--primary {
   background: var(--apple-primary);
-  color: var(--apple-background);
+  color: var(--apple-inverse);
   border: none;
   border-radius: 8px;
   padding: 12px 24px;
@@ -252,7 +251,7 @@ p {
 
 .button--secondary:hover {
   background: var(--apple-primary);
-  color: var(--apple-background);
+  color: var(--apple-inverse);
 }
 
 /* Table styling */
@@ -322,13 +321,6 @@ a:focus-visible {
   .docItem--active {
     transition: none;
   }
-}
-
-/* Focus-visible state enhancement with Apple Blue */
-*:focus-visible {
-  outline: 2px solid var(--apple-primary);
-  outline-offset: 4px;
-  border-radius: 4px;
 }
 
 /* Code blocks */

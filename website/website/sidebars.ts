@@ -2,9 +2,21 @@
  * Sidebar configuration for McHarness documentation.
  * Structured identically to Hermes Agent documentation.
  */
-const htmlPlugin = require('@docusaurus/plugin-client-redirects');
 
-module.exports = {
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+
+/**
+ * Creating a sidebar enables you to:
+ - create an ordered group of docs
+ - render a sidebar for each doc of that group
+ - provide next/previous navigation
+
+ The sidebars can be generated from the filesystem, or explicitly defined here.
+
+ Create as many sidebars as you want.
+ */
+
+const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     {
       type: 'category',
@@ -157,3 +169,5 @@ module.exports = {
     },
   ],
 };
+
+export default sidebars;
