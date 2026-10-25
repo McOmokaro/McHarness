@@ -2,7 +2,8 @@
 
 > "We become stronger when we build together." - Steve Wozniak
 
-## 🟢 Done Features
+## 🟢 Done Features- 🟢 **Documentation website** - Docusaurus scaffolded with Apple-inspired design (completed October 25, 2026)
+
 
 - [x] Core launcher functionality with widget support
 - [x] Multi-platform deployment (Linux, macOS, WSL2, Android, Windows)
