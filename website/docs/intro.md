@@ -36,13 +36,9 @@ Following Steve Wozniak's wisdom, McHarness was built because the creator needed
 
 - **Research-ready**: Batch processing, trajectory export, RL training with Atropos.
 
-## Getting Started
+## Recent Progress
 
-To begin your McHarness journey:
-
-1. **Install**: Download the Hermes Desktop installer or run the command-line installer for your platform.
-2. **Set up OAuth**: Run `hermes setup --portal` — one OAuth covers a model plus all four Tool Gateway tools (web search, image generation, TTS, browser).
-3. **Choose your platform**: Talk to your agent from Telegram while it works on a cloud VM, a $5 VPS, or your local machine.
-4. **Explore the docs**: This website contains comprehensive guides, tutorials, and reference material.
-
-McHarness is more than just an agent launcher — it's a platform for building what you need, the Wozniak way.
+- Docusaurus website scaffolded with Apple-inspired design
+- REA Integration documentation created with 50+ native analysis tools
+- Custom CSS applied with system fonts and pitch black theme
+- Autonomous loop iteration completed on October 25, 2026 19:48

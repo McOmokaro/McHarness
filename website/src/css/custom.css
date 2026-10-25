@@ -324,6 +324,13 @@ a:focus-visible {
   }
 }
 
+/* Focus-visible state enhancement with Apple Blue */
+*:focus-visible {
+  outline: 2px solid var(--apple-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 /* Code blocks */
 .code-block {
   background: #1C1C1E;
