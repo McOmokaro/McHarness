@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",
-    "@docusaurus/faster": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
@@ -40,14 +39,10 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
-  }
-},     <--- THIS COMMA IS REQUIRED
- "overrides": {
+    "node": ">=18.0"
+  },
+  "overrides": {
     "tinypool": "2.1.2",
     "serialize-javascript": "7.0.4"
   }
 }
-
-
-
