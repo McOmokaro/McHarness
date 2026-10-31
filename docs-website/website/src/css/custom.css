@@ -1,156 +1,225 @@
 /**
- * Apple Design Tokens — McHarness Docusaurus
- * Background: #000000 | Text: #f5f5f7 | Fonts: system font stack
- * Anti-Slop: No gradients, no excessive border-radius, no center-aligned long paragraphs
+ * McHarness — Apple-inspired design system (pitch-black, high-contrast)
+ * ---------------------------------------------------------------------
+ * Base: #000000  ·  Text: #f5f5f7  ·  System font stack
+ * Anti-slop: no gradients · no excessive border-radius · no centered long prose
+ *
+ * Palette is declared on :root, [data-theme='light'] and [data-theme='dark']
+ * so the site is pitch-black in BOTH Docusaurus color modes — dark is enforced
+ * even if the html element carries data-theme="light".
  */
 
-/* ============ Root (Light Mode) ============ */
-:root {
-  --ifm-color-primary: #0071e3;
-  --ifm-color-primary-dark: #0062cc;
-  --ifm-color-primary-darker: #0055b5;
-  --ifm-color-primary-darkest: #00479e;
-  --ifm-color-primary-light: #0085ee;
-  --ifm-color-primary-lighter: #3399ff;
-  --ifm-color-primary-lightest: #66b2ff;
+/* ============================================================
+   1. Design tokens — enforce a single dark palette everywhere
+   ============================================================ */
+:root,
+html[data-theme='light'],
+html[data-theme='dark'] {
+  color-scheme: dark;
 
-  --ifm-color-secondary: #0071e3;
-  --ifm-color-secondary-dark: #0062cc;
-  --ifm-color-secondary-darker: #0055b5;
-  --ifm-color-secondary-darkest: #00479e;
-  --ifm-color-secondary-light: #0085ee;
-  --ifm-color-secondary-lighter: #3399ff;
-  --ifm-color-secondary-lightest: #66b2ff;
+  /* Apple system blue */
+  --ifm-color-primary: #2997ff;
+  --ifm-color-primary-dark: #0a84ff;
+  --ifm-color-primary-darker: #0071e3;
+  --ifm-color-primary-darkest: #0060c0;
+  --ifm-color-primary-light: #4aa8ff;
+  --ifm-color-primary-lighter: #66b8ff;
+  --ifm-color-primary-lightest: #99d0ff;
 
-  --ifm-color-success: #34c38f;
-  --ifm-color-success-dark: #2ca380;
-  --ifm-color-success-darker: #269470;
-  --ifm-color-success-darkest: #218062;
-  --ifm-color-success-light: #4ade80;
-  --ifm-color-success-lighter: #68d391;
-  --ifm-color-success-lightest: #9cf5bd;
+  --ifm-color-secondary: #86868b;
+  --ifm-color-secondary-dark: #6e6e73;
+  --ifm-color-secondary-darker: #5c5c60;
+  --ifm-color-secondary-light: #a1a1a6;
+  --ifm-color-secondary-lighter: #b8b8bd;
 
-  --ifm-color-warning: #eclc57;
-  --ifm-color-warning-dark: #d4c248;
-  --ifm-color-warning-darker: #bcaa3d;
-  --ifm-color-warning-darkest: #a69932;
-  --ifm-color-warning-light: #faf089;
-  --ifm-color-warning-lighter: #fcd36a;
-  --ifm-color-warning-lightest: #fef5a2;
+  --ifm-color-success: #30d158;
+  --ifm-color-info: #2997ff;
+  --ifm-color-warning: #ffd60a;
+  --ifm-color-danger: #ff453a;
 
-  --ifm-color-danger: #f56565;
-  --ifm-color-danger-dark: #e45555;
-  --ifm-color-danger-darker: #ce4843;
-  --ifm-color-danger-darkest: #b83e3e;
-  --ifm-color-danger-light: #fc8181;
-  --ifm-color-danger-lighter: #fca5a5;
-  --ifm-color-danger-lightest: #fecaca;
-
-  --ifm-code-font-size: 85%;
-
+  /* Surfaces — pitch black with near-black raised surfaces */
   --ifm-background-color: #000000;
-  --ifm-background-color-shade: #111111;
-  --ifm-text-color: #f5f5f7;
+  --ifm-background-surface-color: #0a0a0a;
+  --ifm-color-content: #f5f5f7;
+  --ifm-color-content-secondary: #a1a1a6;
+  --ifm-color-content-inverse: #000000;
+
+  /* Emphasis scale (high-contrast dark) */
+  --ifm-color-emphasis-0: #000000;
+  --ifm-color-emphasis-100: #0d0d0f;
+  --ifm-color-emphasis-200: #1d1d1f;
+  --ifm-color-emphasis-300: #2c2c2e;
+  --ifm-color-emphasis-400: #3a3a3c;
+  --ifm-color-emphasis-500: #48484a;
+  --ifm-color-emphasis-600: #636366;
+  --ifm-color-emphasis-700: #8e8e93;
+  --ifm-color-emphasis-800: #a1a1a6;
+  --ifm-color-emphasis-900: #d1d1d6;
+  --ifm-color-emphasis-1000: #f5f5f7;
+
+  /* Typography */
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --ifm-font-family-monospace: "SF Mono", ui-monospace, "JetBrains Mono",
+    "Cascadia Code", Menlo, Consolas, monospace;
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.6;
   --ifm-heading-font-weight: 800;
-  --ifm-heading-line-height: 1.1;
-  --ifm-global-background-color: #000000;
+  --ifm-heading-line-height: 1.08;
+
+  /* Links */
+  --ifm-link-color: #2997ff;
+  --ifm-link-hover-color: #66b8ff;
+  --ifm-link-decoration: none;
+
+  /* Radius — Apple-flat, no pills */
+  --ifm-global-radius: 0;
+  --ifm-global-shadow-lw: none;
+  --ifm-global-shadow-md: none;
+  --ifm-global-shadow-tl: none;
+  --ifm-button-border-radius: 0;
+  --ifm-card-border-radius: 0;
+  --ifm-code-border-radius: 0;
+  --ifm-alert-border-radius: 0;
+  --ifm-global-border-width: 1px;
+
+  /* Borders */
+  --ifm-color-emphasis-border: #1d1d1f;
+  --ifm-hr-border-color: #1d1d1f;
+  --ifm-hr-border-width: 1px;
+  --ifm-table-border-color: #1d1d1f;
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-head-background: transparent;
+  --ifm-table-head-color: #f5f5f7;
+  --ifm-toc-border-color: #1d1d1f;
+
+  /* Code */
+  --ifm-code-font-size: 90%;
+  --ifm-code-background: #141416;
+  --ifm-code-color: #f5f5f7;
+  --ifm-pre-background: #0d0d0f;
+  --ifm-pre-color: #f5f5f7;
+
+  /* Blockquote */
+  --ifm-blockquote-color: #a1a1a6;
+  --ifm-blockquote-border-color: #2997ff;
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(0, 0, 0, 0.72);
+  --ifm-navbar-height: 48px;
+  --ifm-navbar-link-color: #f5f5f7;
+  --ifm-navbar-link-hover-color: #2997ff;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-padding-horizontal: 1.5rem;
+
+  /* Footer */
+  --ifm-footer-background-color: #000000;
+  --ifm-footer-color: #a1a1a6;
+  --ifm-footer-link-color: #a1a1a6;
+  --ifm-footer-link-hover-color: #f5f5f7;
+  --ifm-footer-title-color: #f5f5f7;
+  --ifm-footer-padding-horizontal: 1.5rem;
+
+  /* Layout rhythm */
+  --ifm-spacing-horizontal: 1rem;
+  --ifm-container-width: 1200px;
+  --ifm-container-width-xl: 1400px;
+  --ifm-leading-desktop: 1.5;
+
+  /* Scrollbar tint */
+  --ifm-scrollbar-thumb-background-color: #2c2c2e;
+  --ifm-scrollbar-track-background-color: #000000;
 }
 
-/* Dark mode — enforce high-contrast overrides */
-[data-theme='dark'] {
-  --ifm-color-primary: #0071e3;
-  --ifm-color-primary-dark: #0062cc;
-  --ifm-color-primary-darker: #0055b5;
-  --ifm-color-primary-darkest: #00479e;
-  --ifm-color-primary-light: #0085ee;
-  --ifm-color-primary-lighter: #3399ff;
-  --ifm-color-primary-lightest: #66b2ff;
-
-  --ifm-color-secondary: #0071e3;
-  --ifm-color-secondary-dark: #0062cc;
-  --ifm-color-secondary-darker: #0055b5;
-  --ifm-color-secondary-darkest: #00479e;
-  --ifm-color-secondary-light: #0085ee;
-  --ifm-color-secondary-lighter: #3399ff;
-  --ifm-color-secondary-lightest: #66b2ff;
-
-  --ifm-color-success: #34c38f;
-  --ifm-color-success-dark: #2ca380;
-  --ifm-color-success-darker: #269470;
-  --ifm-color-success-darkest: #218062;
-  --ifm-color-success-light: #4ade80;
-  --ifm-color-success-lighter: #68d391;
-  --ifm-color-success-lightest: #9cf5bd;
-
-  --ifm-color-warning: #eclc57;
-  --ifm-color-warning-dark: #d4c248;
-  --ifm-color-warning-darker: #bcaa3d;
-  --ifm-color-warning-darkest: #a69932;
-  --ifm-color-warning-light: #faf089;
-  --ifm-color-warning-lighter: #fcd36a;
-  --ifm-color-warning-lightest: #fef5a2;
-
-  --ifm-color-danger: #f56565;
-  --ifm-color-danger-dark: #e45555;
-  --ifm-color-danger-darker: #ce4843;
-  --ifm-color-danger-darkest: #b83e3e;
-  --ifm-color-danger-light: #fc8181;
-  --ifm-color-danger-lighter: #fca5a5;
-  --ifm-color-danger-lightest: #fecaca;
-
-  --ifm-code-font-size: 85%;
-  --ifm-background-color: #000000;
-  --ifm-background-color-shade: #111111;
-  --ifm-text-color: #f5f5f7;
-  --ifm-heading-font-weight: 800;
-  --ifm-heading-line-height: 1.1;
-  --ifm-global-background-color: #000000;
-}
-
-/* ============ Global Font & Body ============ */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #f5f5f7;
+/* ============================================================
+   2. Base
+   ============================================================ */
+html {
   background-color: #000000;
-  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* ============ Headers: massive, bold, tightly tracked ============ */
+body {
+  background-color: #000000;
+  color: #f5f5f7;
+  font-family: var(--ifm-font-family-base);
+  letter-spacing: -0.01em;
+}
+
+/* Readable measure — left aligned, never centered long prose */
+.markdown > p,
+.markdown > ul,
+.markdown > ol,
+.markdown > blockquote,
+.theme-doc-markdown > p {
+  max-width: 68ch;
+}
+
+/* ============================================================
+   3. Headings — massive, bold, tightly tracked
+   ============================================================ */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
   color: #f5f5f7;
-  margin-top: 0.8em;
-  margin-bottom: 0.4em;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5em;
 }
 
-/* Reduce heading margins for tighter rhythm */
-h1 { margin-top: 1.2em; margin-bottom: 0.6em; }
-h2 { margin-top: 1.1em; margin-bottom: 0.5em; }
-h3 { margin-top: 1em; margin-bottom: 0.4em; }
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  letter-spacing: -0.045em;
+  margin-top: 0;
+}
 
-/* ============ Links ============ */
+h2 {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  letter-spacing: -0.035em;
+  margin-top: 2.4rem;
+}
+
+h3 {
+  font-size: clamp(1.4rem, 3vw, 1.7rem);
+  letter-spacing: -0.025em;
+  margin-top: 2rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   4. Links
+   ============================================================ */
 a {
-  color: #0071e3;
+  color: var(--ifm-link-color);
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  transition: border-color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 a:hover {
-  border-color: transparent;
+  color: var(--ifm-link-hover-color);
+  text-decoration: none;
 }
 
-/* ============ Anti-Slop Directives ============ */
-/* Forbid generic gradients */
-* {
-  background: none !important;
+/* ============================================================
+   5. Anti-slop directives (surgical — not a blanket nuke)
+   ============================================================ */
+/* Kill every gradient */
+[class*='gradient'],
+.hero,
+.navbar,
+.footer,
+.button,
+.card {
   background-image: none !important;
 }
 
@@ -161,66 +230,143 @@ a:hover {
   border-radius: 0 !important;
 }
 
-/* No center-aligned long paragraphs */
+/* Long paragraphs never center-aligned */
+.markdown p,
+article p,
 p {
   text-align: left !important;
-  text-align-last: left !important;
 }
 
-/* ============ Code Blocks ============ */
-pre[class*='language-'],
+/* ============================================================
+   6. Code
+   ============================================================ */
 code {
-  font-family: "SF Mono", "Consolas", "Menlo", monospace;
+  background-color: var(--ifm-code-background);
+  border: 1px solid #1d1d1f;
   color: #f5f5f7;
-  background-color: #1a1a1a;
-  border-radius: 0;
-  padding: 0.5em 0.75em;
-  border: 1px solid #3a3a3c;
+  font-family: var(--ifm-font-family-monospace);
+  padding: 0.15em 0.4em;
 }
 
-/* ============ Tables ============ */
+pre[class*='language-'],
+pre code {
+  background-color: var(--ifm-pre-background) !important;
+  border: 1px solid #1d1d1f;
+  color: #f5f5f7;
+}
+
+pre {
+  box-shadow: none;
+}
+
+/* ============================================================
+   7. Tables
+   ============================================================ */
 table {
-  width: 100%;
   border-collapse: collapse;
-  margin: 1.5em 0;
+  border: 1px solid #1d1d1f;
+}
+
+table thead tr {
+  border-bottom: 1px solid #2c2c2e;
 }
 
 th,
 td {
-  padding: 0.5em 0.75em;
-  border: 1px solid #3a3a3c;
-  color: #f5f5f7;
-  background-color: #000000;
+  border: none;
+  border-bottom: 1px solid #1d1d1f;
+  padding: 0.6em 0.9em;
+  text-align: left;
 }
 
-/* ============ Blockquotes ============ */
+/* ============================================================
+   8. Blockquote
+   ============================================================ */
 blockquote {
-  margin: 1.5em 0;
-  padding: 0.5em 1em;
-  color: #a0a0a0;
-  border-left: 4px solid #0071e3;
-  background-color: #1a1a1a;
+  border-left: 3px solid var(--ifm-blockquote-border-color);
+  background-color: #0a0a0a;
+  color: var(--ifm-blockquote-color);
+  padding: 0.75em 1.25em;
+  margin: 1.75rem 0;
+}
+
+/* ============================================================
+   9. Admonitions
+   ============================================================ */
+.theme-admonition {
+  border: 1px solid #1d1d1f;
+  border-left-width: 3px;
+  background-color: #0a0a0a;
+  box-shadow: none;
+}
+
+/* ============================================================
+   10. Navbar surface (component markup lives in src/theme)
+   ============================================================ */
+.navbar {
+  background-color: var(--ifm-navbar-background-color);
+  border-bottom: 1px solid #1d1d1f;
+  box-shadow: none;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ============================================================
+   11. Footer surface
+   ============================================================ */
+.footer {
+  background-color: #000000;
+  border-top: 1px solid #1d1d1f;
+  padding: 2.5rem 0;
+}
+
+.footer__copyright {
+  color: #6e6e73;
+  font-size: 0.8125rem;
+}
+
+/* ============================================================
+   12. Sidebar (docs nav) — quiet, high-contrast
+   ============================================================ */
+.menu__link {
+  color: #a1a1a6;
   border-radius: 0;
 }
 
-/* ============ Buttons (minimalist) ============ */
-button,
-.button {
-  background: #000000;
+.menu__link--active,
+.menu__link:hover {
   color: #f5f5f7;
-  border: 1px solid #f5f5f7;
-  border-radius: 0;
-  padding: 0.5em 1em;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  background: transparent;
 }
 
-button:hover,
-.button:hover {
-  background: #f5f5f7;
+.menu__link--active {
+  font-weight: 600;
+}
+
+/* ============================================================
+   13. Buttons
+   ============================================================ */
+.button {
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.button--primary {
+  background-color: #2997ff;
+  border-color: #2997ff;
   color: #000000;
 }
 
-/* ============ Navbar & Footer will be swizzled separately ============ */
+.button--primary:hover {
+  background-color: #66b8ff;
+  border-color: #66b8ff;
+  color: #000000;
+}
+
+/* ============================================================
+   14. Selection
+   ============================================================ */
+::selection {
+  background: #2997ff;
+  color: #000000;
+}
