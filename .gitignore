@@ -31,3 +31,4 @@ node_modules/
 dist/
 out/
 .staging-*
+apple-design.json
