@@ -1,19 +1,20 @@
 /**
- * McHarness — Apple-inspired design system (pitch-black, high-contrast)
+ * McHarness — Apple-inspired design system (pitch-black default, light mode supported)
  * ---------------------------------------------------------------------
- * Base: #000000  ·  Text: #f5f5f7  ·  System font stack
+ * Dark (default):  #000000 / #f5f5f7
+ * Light:           #ffffff / #1d1d1f
+ * System font stack
  * Anti-slop: no gradients · no excessive border-radius · no centered long prose
  *
- * Palette is declared on :root, [data-theme='light'] and [data-theme='dark']
- * so the site is pitch-black in BOTH Docusaurus color modes — dark is enforced
- * even if the html element carries data-theme="light".
+ * Dark mode tokens on :root and [data-theme='dark']
+ * Light mode tokens on [data-theme='light']
+ * Respects system preference via color-scheme and theme toggle
  */
 
 /* ============================================================
-   1. Design tokens — enforce a single dark palette everywhere
+   1. Dark mode tokens (default)
    ============================================================ */
 :root,
-html[data-theme='light'],
 html[data-theme='dark'] {
   color-scheme: dark;
 
@@ -132,18 +133,145 @@ html[data-theme='dark'] {
 }
 
 /* ============================================================
-   2. Base
+   2. Light mode tokens (Apple-inspired light)
+   ============================================================ */
+html[data-theme='light'] {
+  color-scheme: light;
+
+  /* Apple system blue */
+  --ifm-color-primary: #0071e3;
+  --ifm-color-primary-dark: #0060c0;
+  --ifm-color-primary-darker: #0050a8;
+  --ifm-color-primary-darkest: #004090;
+  --ifm-color-primary-light: #2997ff;
+  --ifm-color-primary-lighter: #4aa8ff;
+  --ifm-color-primary-lightest: #66b8ff;
+
+  --ifm-color-secondary: #86868b;
+  --ifm-color-secondary-dark: #6e6e73;
+  --ifm-color-secondary-darker: #5c5c60;
+  --ifm-color-secondary-light: #a1a1a6;
+  --ifm-color-secondary-lighter: #b8b8bd;
+
+  --ifm-color-success: #30d158;
+  --ifm-color-info: #0071e3;
+  --ifm-color-warning: #ff9f0a;
+  --ifm-color-danger: #ff453a;
+
+  /* Surfaces — clean white with subtle gray raised surfaces */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f5f5f7;
+  --ifm-color-content: #1d1d1f;
+  --ifm-color-content-secondary: #6e6e73;
+  --ifm-color-content-inverse: #ffffff;
+
+  /* Emphasis scale (high-contrast light) */
+  --ifm-color-emphasis-0: #ffffff;
+  --ifm-color-emphasis-100: #f5f5f7;
+  --ifm-color-emphasis-200: #e8e8ed;
+  --ifm-color-emphasis-300: #d1d1d6;
+  --ifm-color-emphasis-400: #a1a1a6;
+  --ifm-color-emphasis-500: #8e8e93;
+  --ifm-color-emphasis-600: #6e6e73;
+  --ifm-color-emphasis-700: #5c5c60;
+  --ifm-color-emphasis-800: #48484a;
+  --ifm-color-emphasis-900: #2c2c2e;
+  --ifm-color-emphasis-1000: #1d1d1f;
+
+  /* Typography */
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --ifm-font-family-monospace: "SF Mono", ui-monospace, "JetBrains Mono",
+    "Cascadia Code", Menlo, Consolas, monospace;
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.6;
+  --ifm-heading-font-weight: 800;
+  --ifm-heading-line-height: 1.08;
+
+  /* Links */
+  --ifm-link-color: #0071e3;
+  --ifm-link-hover-color: #0050a8;
+  --ifm-link-decoration: none;
+
+  /* Radius — Apple-flat, no pills */
+  --ifm-global-radius: 0;
+  --ifm-global-shadow-lw: none;
+  --ifm-global-shadow-md: none;
+  --ifm-global-shadow-tl: none;
+  --ifm-button-border-radius: 0;
+  --ifm-card-border-radius: 0;
+  --ifm-code-border-radius: 0;
+  --ifm-alert-border-radius: 0;
+  --ifm-global-border-width: 1px;
+
+  /* Borders */
+  --ifm-color-emphasis-border: #d1d1d6;
+  --ifm-hr-border-color: #d1d1d6;
+  --ifm-hr-border-width: 1px;
+  --ifm-table-border-color: #d1d1d6;
+  --ifm-table-stripe-background: #f5f5f7;
+  --ifm-table-head-background: #f5f5f7;
+  --ifm-table-head-color: #1d1d1f;
+  --ifm-toc-border-color: #d1d1d6;
+
+  /* Code */
+  --ifm-code-font-size: 90%;
+  --ifm-code-background: #f5f5f7;
+  --ifm-code-color: #1d1d1f;
+  --ifm-pre-background: #eeeeef;
+  --ifm-pre-color: #1d1d1f;
+
+  /* Blockquote */
+  --ifm-blockquote-color: #6e6e73;
+  --ifm-blockquote-border-color: #0071e3;
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.88);
+  --ifm-navbar-height: 48px;
+  --ifm-navbar-link-color: #1d1d1f;
+  --ifm-navbar-link-hover-color: #0071e3;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-padding-horizontal: 1.5rem;
+
+  /* Footer */
+  --ifm-footer-background-color: #ffffff;
+  --ifm-footer-color: #6e6e73;
+  --ifm-footer-link-color: #6e6e73;
+  --ifm-footer-link-hover-color: #1d1d1f;
+  --ifm-footer-title-color: #1d1d1f;
+  --ifm-footer-padding-horizontal: 1.5rem;
+
+  /* Layout rhythm */
+  --ifm-spacing-horizontal: 1rem;
+  --ifm-container-width: 1200px;
+  --ifm-container-width-xl: 1400px;
+  --ifm-leading-desktop: 1.5;
+
+  /* Scrollbar tint */
+  --ifm-scrollbar-thumb-background-color: #d1d1d6;
+  --ifm-scrollbar-track-background-color: #ffffff;
+}
+
+/* ============================================================
+   3. Base
    ============================================================ */
 html {
-  background-color: #000000;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-body {
+/* Background follows theme */
+html[data-theme='dark'] {
   background-color: #000000;
-  color: #f5f5f7;
+}
+html[data-theme='light'] {
+  background-color: #ffffff;
+}
+
+body {
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-color-content);
   font-family: var(--ifm-font-family-base);
   letter-spacing: -0.01em;
 }
@@ -158,7 +286,7 @@ body {
 }
 
 /* ============================================================
-   3. Headings — massive, bold, tightly tracked
+   4. Headings — massive, bold, tightly tracked
    ============================================================ */
 h1,
 h2,
@@ -166,7 +294,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #f5f5f7;
+  color: var(--ifm-color-content);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.03em;
@@ -197,7 +325,7 @@ h4 {
 }
 
 /* ============================================================
-   4. Links
+   5. Links
    ============================================================ */
 a {
   color: var(--ifm-link-color);
@@ -211,7 +339,7 @@ a:hover {
 }
 
 /* ============================================================
-   5. Anti-slop directives (surgical — not a blanket nuke)
+   6. Anti-slop directives (surgical — not a blanket nuke)
    ============================================================ */
 /* Kill every gradient */
 [class*='gradient'],
@@ -238,12 +366,12 @@ p {
 }
 
 /* ============================================================
-   6. Code
+   7. Code
    ============================================================ */
 code {
   background-color: var(--ifm-code-background);
-  border: 1px solid #1d1d1f;
-  color: #f5f5f7;
+  border: 1px solid var(--ifm-color-emphasis-border);
+  color: var(--ifm-code-color);
   font-family: var(--ifm-font-family-monospace);
   padding: 0.15em 0.4em;
 }
@@ -251,8 +379,8 @@ code {
 pre[class*='language-'],
 pre code {
   background-color: var(--ifm-pre-background) !important;
-  border: 1px solid #1d1d1f;
-  color: #f5f5f7;
+  border: 1px solid var(--ifm-color-emphasis-border);
+  color: var(--ifm-pre-color);
 }
 
 pre {
@@ -260,82 +388,82 @@ pre {
 }
 
 /* ============================================================
-   7. Tables
+   8. Tables
    ============================================================ */
 table {
   border-collapse: collapse;
-  border: 1px solid #1d1d1f;
+  border: 1px solid var(--ifm-table-border-color);
 }
 
 table thead tr {
-  border-bottom: 1px solid #2c2c2e;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
 }
 
 th,
 td {
   border: none;
-  border-bottom: 1px solid #1d1d1f;
+  border-bottom: 1px solid var(--ifm-table-border-color);
   padding: 0.6em 0.9em;
   text-align: left;
 }
 
 /* ============================================================
-   8. Blockquote
+   9. Blockquote
    ============================================================ */
 blockquote {
   border-left: 3px solid var(--ifm-blockquote-border-color);
-  background-color: #0a0a0a;
+  background-color: var(--ifm-background-surface-color);
   color: var(--ifm-blockquote-color);
   padding: 0.75em 1.25em;
   margin: 1.75rem 0;
 }
 
 /* ============================================================
-   9. Admonitions
+   10. Admonitions
    ============================================================ */
 .theme-admonition {
-  border: 1px solid #1d1d1f;
+  border: 1px solid var(--ifm-color-emphasis-border);
   border-left-width: 3px;
-  background-color: #0a0a0a;
+  background-color: var(--ifm-background-surface-color);
   box-shadow: none;
 }
 
 /* ============================================================
-   10. Navbar surface (component markup lives in src/theme)
+   11. Navbar surface (component markup lives in src/theme)
    ============================================================ */
 .navbar {
   background-color: var(--ifm-navbar-background-color);
-  border-bottom: 1px solid #1d1d1f;
+  border-bottom: 1px solid var(--ifm-color-emphasis-border);
   box-shadow: none;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
 /* ============================================================
-   11. Footer surface
+   12. Footer surface
    ============================================================ */
 .footer {
-  background-color: #000000;
-  border-top: 1px solid #1d1d1f;
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--ifm-color-emphasis-border);
   padding: 2.5rem 0;
 }
 
 .footer__copyright {
-  color: #6e6e73;
+  color: var(--ifm-footer-color);
   font-size: 0.8125rem;
 }
 
 /* ============================================================
-   12. Sidebar (docs nav) — quiet, high-contrast
+   13. Sidebar (docs nav) — quiet, high-contrast
    ============================================================ */
 .menu__link {
-  color: #a1a1a6;
+  color: var(--ifm-color-content-secondary);
   border-radius: 0;
 }
 
 .menu__link--active,
 .menu__link:hover {
-  color: #f5f5f7;
+  color: var(--ifm-color-content);
   background: transparent;
 }
 
@@ -344,7 +472,7 @@ blockquote {
 }
 
 /* ============================================================
-   13. Buttons
+   14. Buttons
    ============================================================ */
 .button {
   box-shadow: none;
@@ -352,21 +480,21 @@ blockquote {
 }
 
 .button--primary {
-  background-color: #2997ff;
-  border-color: #2997ff;
-  color: #000000;
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-content-inverse);
 }
 
 .button--primary:hover {
-  background-color: #66b8ff;
-  border-color: #66b8ff;
-  color: #000000;
+  background-color: var(--ifm-color-primary-light);
+  border-color: var(--ifm-color-primary-light);
+  color: var(--ifm-color-content-inverse);
 }
 
 /* ============================================================
-   14. Selection
+   15. Selection
    ============================================================ */
 ::selection {
-  background: #2997ff;
-  color: #000000;
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-content-inverse);
 }
