@@ -6,7 +6,7 @@ const sidebars = {
     {type: 'doc', id: 'architecture', label: 'Architecture'},
     {type: 'doc', id: 'the-forge', label: 'The Forge'},
     {type: 'doc', id: 'roadmap', label: 'Roadmap'},
-    {type: 'doc', id: 'rea-integration', label: 'Design Pipeline'},
+    {type: 'doc', id: 'rea-integration', label: 'Design System'},
   ],
 };
 

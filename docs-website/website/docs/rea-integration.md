@@ -1,44 +1,57 @@
 ---
-sidebar_position: 3
+title: Design System
+sidebar_label: Design System
+sidebar_position: 6
 slug: /rea-integration
+description: The McHarness design language — pitch-black, Apple-inspired, anti-slop.
 ---
-# REA Integration — Apple Design Token Pipeline
 
-This document describes the integration of Apple's design token intelligence into the McHarness deployment pipeline.
+# Design System
 
-## Overview
+McHarness looks like it works: pitch-black, high-contrast, and unapologetically Apple. This page documents the design language applied to this documentation site and how it is enforced.
 
-The Apple design token intelligence has been extracted and secured at `~/McHarness/apple-design.json`. This pipeline maps those tokens to the Docusaurus website theme, enforcing a high-contrast dark mode consistent with Apple's design language.
+## The look
 
-## Design Tokens Applied
-
-| Category | Value |
+| Token | Value |
 |---|---|
 | **Background** | `#000000` |
 | **Text** | `#f5f5f7` |
-| **Primary Font** | `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` |
-| **Header Font Weight** | `800` (extra-bold) |
-| **Header Letter-spacing** | `-0.02em` (tight tracking) |
-| **Code Font Size** | `85%` |
-| **Code Background** | `#1a1a1a` |
-| **Border Accent** | `#3a3a3c` |
+| **Accent** | `#2997ff` (Apple system blue) |
+| **Font stack** | `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` |
+| **Heading weight** | `800` |
+| **Heading tracking** | `-0.03em` to `-0.045em` (tight) |
+| **Radius** | `0` |
+| **Dividers** | `#1d1d1f` |
 
-## Anti-Slop Directives
+Dark mode is **enforced**, not suggested: the palette is declared on `:root` and on both `data-theme` values, and the color mode is locked in `docusaurus.config.js`.
 
-- **No generic gradients** — all `background-image` and gradient values forbidden
-- **No excessive border-radius** — all components use `border-radius: 0`
-- **No center-aligned long paragraphs** — all text left-aligned
+## Anti-slop directives
 
-## Pipeline Steps
+Three rules keep the design honest:
 
-1. **Extract** — REA observation of `apple.com` design system
-2. **Map** — Transform REA DOM data into CSS custom properties
-3. **Override** — Enforce `--ifm-*` variables in `src/css/custom.css`
-4. **Swizzle** — Eject Navbar and Footer to `/theme/Navbar` and `/theme/Footer`
-5. **Strip** — Remove all default Docusaurus links, logos, and text
-6. **Build** — `npm run build` produces a green fortress
-7. **Deploy** — `git push origin main` triggers the deployment pipeline
+- **No gradients.** Gradients are forbidden (`background-image: none`); every surface is flat colour.
+- **No excessive radius.** Every component is squared off (`border-radius: 0`).
+- **No centered prose.** Long paragraphs are always left-aligned.
 
-## Verification
+## How it is enforced
 
-The deployment pipeline at `~/McHarness/.github/workflows/deploy.yml` builds the site and publishes to GitHub Pages. A successful build with `npm run build` confirms the integration is complete.
+Theming runs as a small, repeatable pipeline:
+
+1. **Extract** — the design intelligence is captured to `apple-design.json`.
+2. **Map** — the tokens become CSS custom properties.
+3. **Override** — every `--ifm-` variable is set in `src/css/custom.css`.
+4. **Swizzle** — the Navbar and Footer are ejected into `src/theme/`.
+5. **Strip** — the default Docusaurus logo, search box, links, and text are removed for a minimal, wordmark-led layout.
+6. **Build and deploy** — `npm run build`, then the push to `main` publishes to GitHub Pages.
+
+:::note
+The design system is not decoration — it is the visual half of the **Whole** idea. The site is as quiet and seam-free as the harness it documents.
+:::
+
+## Verify
+
+```bash
+npm run build
+```
+
+A green build confirms the design system is intact. The live site is published from `main` by the deployment workflow.
