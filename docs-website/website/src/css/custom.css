@@ -39,24 +39,24 @@ html[data-theme='dark'] {
   --ifm-color-danger: #ff453a;
 
   /* Surfaces — pitch black with near-black raised surfaces */
-  --ifm-background-color: #000000;
-  --ifm-background-surface-color: #0a0a0a;
-  --ifm-color-content: #f5f5f7;
-  --ifm-color-content-secondary: #a1a1a6;
-  --ifm-color-content-inverse: #000000;
+  --ifm-background-color: #0a0a0a;
+  --ifm-background-surface-color: #121212;
+  --ifm-color-content: #e8e8e8;
+  --ifm-color-content-secondary: #9a9a9a;
+  --ifm-color-content-inverse: #0a0a0a;
 
-  /* Emphasis scale (high-contrast dark) */
-  --ifm-color-emphasis-0: #000000;
-  --ifm-color-emphasis-100: #0d0d0f;
-  --ifm-color-emphasis-200: #1d1d1f;
-  --ifm-color-emphasis-300: #2c2c2e;
-  --ifm-color-emphasis-400: #3a3a3c;
-  --ifm-color-emphasis-500: #48484a;
-  --ifm-color-emphasis-600: #636366;
-  --ifm-color-emphasis-700: #8e8e93;
-  --ifm-color-emphasis-800: #a1a1a6;
-  --ifm-color-emphasis-900: #d1d1d6;
-  --ifm-color-emphasis-1000: #f5f5f7;
+  /* Emphasis scale (softer dark) */
+  --ifm-color-emphasis-0: #0a0a0a;
+  --ifm-color-emphasis-100: #121212;
+  --ifm-color-emphasis-200: #1e1e1e;
+  --ifm-color-emphasis-300: #2a2a2a;
+  --ifm-color-emphasis-400: #363636;
+  --ifm-color-emphasis-500: #4a4a4a;
+  --ifm-color-emphasis-600: #666666;
+  --ifm-color-emphasis-700: #8a8a8a;
+  --ifm-color-emphasis-800: #a8a8a8;
+  --ifm-color-emphasis-900: #c8c8c8;
+  --ifm-color-emphasis-1000: #e8e8e8;
 
   /* Typography */
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -85,40 +85,40 @@ html[data-theme='dark'] {
   --ifm-global-border-width: 1px;
 
   /* Borders */
-  --ifm-color-emphasis-border: #1d1d1f;
-  --ifm-hr-border-color: #1d1d1f;
+  --ifm-color-emphasis-border: #1e1e1e;
+  --ifm-hr-border-color: #1e1e1e;
   --ifm-hr-border-width: 1px;
-  --ifm-table-border-color: #1d1d1f;
+  --ifm-table-border-color: #1e1e1e;
   --ifm-table-stripe-background: transparent;
   --ifm-table-head-background: transparent;
-  --ifm-table-head-color: #f5f5f7;
-  --ifm-toc-border-color: #1d1d1f;
+  --ifm-table-head-color: #e8e8e8;
+  --ifm-toc-border-color: #1e1e1e;
 
   /* Code */
   --ifm-code-font-size: 90%;
   --ifm-code-background: #141416;
-  --ifm-code-color: #f5f5f7;
+  --ifm-code-color: #e8e8e8;
   --ifm-pre-background: #0d0d0f;
-  --ifm-pre-color: #f5f5f7;
+  --ifm-pre-color: #e8e8e8;
 
   /* Blockquote */
-  --ifm-blockquote-color: #a1a1a6;
+  --ifm-blockquote-color: #9a9a9a;
   --ifm-blockquote-border-color: #2997ff;
 
   /* Navbar */
-  --ifm-navbar-background-color: rgba(0, 0, 0, 0.72);
+  --ifm-navbar-background-color: rgba(10, 10, 10, 0.72);
   --ifm-navbar-height: 48px;
-  --ifm-navbar-link-color: #f5f5f7;
+  --ifm-navbar-link-color: #e8e8e8;
   --ifm-navbar-link-hover-color: #2997ff;
   --ifm-navbar-shadow: none;
   --ifm-navbar-padding-horizontal: 1.5rem;
 
   /* Footer */
-  --ifm-footer-background-color: #000000;
-  --ifm-footer-color: #a1a1a6;
-  --ifm-footer-link-color: #a1a1a6;
-  --ifm-footer-link-hover-color: #f5f5f7;
-  --ifm-footer-title-color: #f5f5f7;
+  --ifm-footer-background-color: #0a0a0a;
+  --ifm-footer-color: #9a9a9a;
+  --ifm-footer-link-color: #9a9a9a;
+  --ifm-footer-link-hover-color: #e8e8e8;
+  --ifm-footer-title-color: #e8e8e8;
   --ifm-footer-padding-horizontal: 1.5rem;
 
   /* Layout rhythm */
@@ -159,24 +159,23 @@ html[data-theme='light'] {
   --ifm-color-danger: #ff453a;
 
   /* Surfaces — clean white with subtle gray raised surfaces */
-  --ifm-background-color: #ffffff;
-  --ifm-background-surface-color: #f5f5f7;
-  --ifm-color-content: #1d1d1f;
-  --ifm-color-content-secondary: #6e6e73;
-  --ifm-color-content-inverse: #ffffff;
+    --ifm-background-color: #fafafa;
+    --ifm-background-surface-color: #ffffff;
+    --ifm-color-content: #2a2a2a;
+    --ifm-color-content-secondary: #666666;
+    --ifm-color-content-inverse: #fafafa;
 
-  /* Emphasis scale (high-contrast light) */
-  --ifm-color-emphasis-0: #ffffff;
-  --ifm-color-emphasis-100: #f5f5f7;
-  --ifm-color-emphasis-200: #e8e8ed;
-  --ifm-color-emphasis-300: #d1d1d6;
-  --ifm-color-emphasis-400: #a1a1a6;
-  --ifm-color-emphasis-500: #8e8e93;
-  --ifm-color-emphasis-600: #6e6e73;
-  --ifm-color-emphasis-700: #5c5c60;
-  --ifm-color-emphasis-800: #48484a;
-  --ifm-color-emphasis-900: #2c2c2e;
-  --ifm-color-emphasis-1000: #1d1d1f;
+    /* Emphasis scale (softer light) */
+    --ifm-color-emphasis-0: #fafafa;
+    --ifm-color-emphasis-100: #f0f0f0;
+    --ifm-color-emphasis-200: #e0e0e0;
+    --ifm-color-emphasis-300: #cccccc;
+    --ifm-color-emphasis-400: #b0b0b0;
+    --ifm-color-emphasis-500: #999999;
+    --ifm-color-emphasis-600: #808080;
+    --ifm-color-emphasis-700: #666666;
+    --ifm-color-emphasis-900: #333333;
+    --ifm-color-emphasis-1000: #2a2a2a;
 
   /* Typography */
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -205,40 +204,40 @@ html[data-theme='light'] {
   --ifm-global-border-width: 1px;
 
   /* Borders */
-  --ifm-color-emphasis-border: #d1d1d6;
-  --ifm-hr-border-color: #d1d1d6;
+  --ifm-color-emphasis-border: #e0e0e0;
+  --ifm-hr-border-color: #e0e0e0;
   --ifm-hr-border-width: 1px;
-  --ifm-table-border-color: #d1d1d6;
-  --ifm-table-stripe-background: #f5f5f7;
-  --ifm-table-head-background: #f5f5f7;
-  --ifm-table-head-color: #1d1d1f;
-  --ifm-toc-border-color: #d1d1d6;
+  --ifm-table-border-color: #e0e0e0;
+  --ifm-table-stripe-background: #f0f0f0;
+  --ifm-table-head-background: #f0f0f0;
+  --ifm-table-head-color: #2a2a2a;
+  --ifm-toc-border-color: #e0e0e0;
 
   /* Code */
   --ifm-code-font-size: 90%;
-  --ifm-code-background: #f5f5f7;
-  --ifm-code-color: #1d1d1f;
-  --ifm-pre-background: #eeeeef;
-  --ifm-pre-color: #1d1d1f;
+  --ifm-code-background: #f0f0f0;
+  --ifm-code-color: #2a2a2a;
+  --ifm-pre-background: #e8e8e8;
+  --ifm-pre-color: #2a2a2a;
 
   /* Blockquote */
-  --ifm-blockquote-color: #6e6e73;
+  --ifm-blockquote-color: #666666;
   --ifm-blockquote-border-color: #0071e3;
 
   /* Navbar */
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.88);
+  --ifm-navbar-background-color: rgba(250, 250, 250, 0.88);
   --ifm-navbar-height: 48px;
-  --ifm-navbar-link-color: #1d1d1f;
+  --ifm-navbar-link-color: #2a2a2a;
   --ifm-navbar-link-hover-color: #0071e3;
   --ifm-navbar-shadow: none;
   --ifm-navbar-padding-horizontal: 1.5rem;
 
   /* Footer */
-  --ifm-footer-background-color: #ffffff;
-  --ifm-footer-color: #6e6e73;
-  --ifm-footer-link-color: #6e6e73;
-  --ifm-footer-link-hover-color: #1d1d1f;
-  --ifm-footer-title-color: #1d1d1f;
+  --ifm-footer-background-color: #fafafa;
+  --ifm-footer-color: #666666;
+  --ifm-footer-link-color: #666666;
+  --ifm-footer-link-hover-color: #2a2a2a;
+  --ifm-footer-title-color: #2a2a2a;
   --ifm-footer-padding-horizontal: 1.5rem;
 
   /* Layout rhythm */

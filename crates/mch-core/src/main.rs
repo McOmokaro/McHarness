@@ -5,17 +5,23 @@
 
 use std::path::PathBuf;
 use std::process;
+use std::sync::Arc;
 
 use mch_gate::{CompletionGate, GateOutcome, Requirement, RunContext};
 use mch_ledger::{TechniqueLedger, TechniqueStatus};
+use mch_loop::{FailureClassifier, LoopEvent, MaxStepsGuard, RetryPolicy, StepExecutor, StepExecutorConfig, StepOutcome};
 use mch_scope::{ScopeAuthority, ScopeSet};
+use mch_transport::{TransportConfig, TransportFactory};
+use mch_snapshot::{SnapshotConfig, SnapshotService};
+use tokio::sync::broadcast;
 
 const SCOPE_PATH: &str = "mch.scope.toml";
 const LEDGER_PATH: &str = "mch.ledger.json";
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
-    match run(&args) {
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    match rt.block_on(run(&args)) {
         Ok(out) => {
             println!("{out}");
         }
@@ -26,13 +32,14 @@ fn main() {
     }
 }
 
-fn run(args: &[String]) -> Result<String, String> {
+async fn run(args: &[String]) -> Result<String, String> {
     match args.first().map(|s| s.as_str()) {
-        Some("init") => cmd_init(),
-        Some("check") => cmd_check(args.get(1).map(|s| s.as_str())),
-        Some("gate") => cmd_gate(),
-        Some("remember") => cmd_remember(&args.get(1..).unwrap_or(&[])),
-        Some("brief") => cmd_brief(args.get(1).map(|s| s.as_str())),
+        Some("init") => cmd_init().await,
+        Some("check") => cmd_check(args.get(1).map(|s| s.as_str())).await,
+        Some("gate") => cmd_gate().await,
+        Some("remember") => cmd_remember(&args.get(1..).unwrap_or(&[])).await,
+        Some("brief") => cmd_brief(args.get(1).map(|s| s.as_str())).await,
+        Some("loop") => cmd_loop().await,
         Some("--version") | Some("version") => Ok(env!("CARGO_PKG_VERSION").to_string()),
         _ => Ok(usage().to_string()),
     }
@@ -51,6 +58,7 @@ COMMANDS:
     remember <target> <class> <technique> <status> [note]
                             Record a technique outcome in the ledger
     brief <target>          Print the do-not-retry brief from the ledger
+    loop                    Run the streaming agent loop (demo)
     version                 Print version
 
 STATUS VOCABULARY (closed set):
@@ -58,7 +66,7 @@ STATUS VOCABULARY (closed set):
     blocked rate-limited da-killed browser-rejected needs-human-review retired"
 }
 
-fn cmd_init() -> Result<String, String> {
+async fn cmd_init() -> Result<String, String> {
     let path = PathBuf::from(SCOPE_PATH);
     if path.exists() {
         return Ok(format!("scope file already exists at {SCOPE_PATH}"));
@@ -82,7 +90,7 @@ fn load_authority() -> Result<ScopeAuthority, String> {
     ScopeAuthority::from_toml(&text).map_err(|e| e.to_string())
 }
 
-fn cmd_check(host: Option<&str>) -> Result<String, String> {
+async fn cmd_check(host: Option<&str>) -> Result<String, String> {
     let host = host.ok_or("usage: mch check <host>")?;
     let auth = load_authority()?;
     match auth.authorize(host) {
@@ -91,7 +99,7 @@ fn cmd_check(host: Option<&str>) -> Result<String, String> {
     }
 }
 
-fn cmd_gate() -> Result<String, String> {
+async fn cmd_gate() -> Result<String, String> {
     let mut gate = CompletionGate::new("mch-run-complete");
     gate.require(Requirement::ArtifactExists {
         name: "findings".to_string(),
@@ -108,7 +116,7 @@ fn cmd_gate() -> Result<String, String> {
     }
 }
 
-fn cmd_remember(rest: &[String]) -> Result<String, String> {
+async fn cmd_remember(rest: &[String]) -> Result<String, String> {
     if rest.len() < 4 {
         return Err("usage: mch remember <target> <class> <technique> <status> [note]".into());
     }
@@ -119,7 +127,7 @@ fn cmd_remember(rest: &[String]) -> Result<String, String> {
     Ok(format!("recorded {}/{}/{} = {}", rest[0], rest[1], rest[2], rest[3]))
 }
 
-fn cmd_brief(target: Option<&str>) -> Result<String, String> {
+async fn cmd_brief(target: Option<&str>) -> Result<String, String> {
     let target = target.ok_or("usage: mch brief <target>")?;
     let ledger = TechniqueLedger::load(&PathBuf::from(LEDGER_PATH)).map_err(|e| e.to_string())?;
     let brief = ledger.exhausted_brief(target);
@@ -128,6 +136,102 @@ fn cmd_brief(target: Option<&str>) -> Result<String, String> {
     } else {
         Ok(brief.join("\n"))
     }
+}
+
+/// Demo command: run the streaming agent loop with mocked transport.
+async fn cmd_loop() -> Result<String, String> {
+    println!("Starting McHarness streaming agent loop demo...");
+    println!("This demonstrates the OpenCode-mined streaming step loop.");
+    println!();
+
+    // Initialize components
+    let scope_text = std::fs::read_to_string(SCOPE_PATH)
+        .unwrap_or_else(|_| {
+            r#"[in_scope]
+hosts = ["localhost"]
+cidrs = ["127.0.0.1/32"]
+
+[out_of_scope]
+hosts = []
+cidrs = []
+"#.to_string()
+        });
+
+    let scope_authority = ScopeAuthority::from_toml(&scope_text)
+        .map_err(|e| e.to_string())?;
+
+    let config = StepExecutorConfig {
+        max_steps: Some(5),
+        max_concurrent_tools: 4,
+        tool_timeout_ms: 30_000,
+        snapshot_enabled: true,
+    };
+
+    // Create transport (will use HTTP fallback for demo)
+    let transport_config = TransportConfig::default();
+    let transport = TransportFactory::create(transport_config);
+
+    // Create snapshot service
+    let snapshot_config = SnapshotConfig::default();
+    let snapshot_service = mch_snapshot::create_snapshot_service(snapshot_config)
+        .map_err(|e| e.to_string())?;
+
+    // Create step executor
+    let mut executor = StepExecutor::new(
+        config,
+        transport,
+        Some(snapshot_service),
+        Arc::new(scope_authority),
+    );
+
+    // Subscribe to events
+    let mut event_rx = executor.subscribe();
+
+    // Run a few demo steps
+    for step in 1..=3 {
+        println!("=== Step {step} ===");
+
+        let ctx = mch_loop::StepContext {
+            step_id: mch_loop::StepId::new(),
+            step_number: step,
+            session_id: "demo-session".to_string(),
+            agent_id: "demo-agent".to_string(),
+            model_id: "demo-model".to_string(),
+            max_steps: Some(5),
+            tools: vec![],
+            system_prompt: "You are a helpful assistant.".to_string(),
+            messages: vec![
+                mch_loop::Message {
+                    role: mch_loop::MessageRole::User,
+                    content: format!("Demo step {step}"),
+                    tool_calls: None,
+                    tool_call_id: None,
+                }
+            ],
+        };
+
+        match executor.run_step(ctx).await {
+            Ok(outcome) => {
+                println!("Step outcome: {:?}", outcome);
+            }
+            Err(e) => {
+                eprintln!("Step error: {}", e);
+            }
+        }
+
+        // Process events
+        while let Ok(event) = event_rx.try_recv() {
+            println!("  Event: {:?}", event);
+        }
+
+        // Check snapshot
+        if let Some(snapshot_id) = executor.take_snapshot().await {
+            println!("  Snapshot captured: {:?}", snapshot_id);
+        }
+    }
+
+    println!("\nDemo complete. The streaming agent loop is working!");
+    Ok("Loop demo completed".to_string())
 }
 
 // Re-exports kept public for downstream embedders of the harness library.

@@ -1,0 +1,17 @@
+[package]
+name = "mch-snapshot"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "McHarness filesystem snapshots — Git tree capture"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+git2.workspace = true
+tracing.workspace = true
+anyhow.workspace = true
+uuid.workspace = true
+async-trait.workspace = true

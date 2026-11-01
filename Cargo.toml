@@ -8,6 +8,9 @@ members = [
     "crates/mch-compaction",
     "crates/mch-audit",
     "crates/mch-core",
+    "crates/mch-loop",
+    "crates/mch-transport",
+    "crates/mch-snapshot",
 ]
 default-members = [
     "crates/mch-scope",
@@ -16,6 +19,9 @@ default-members = [
     "crates/mch-compaction",
     "crates/mch-audit",
     "crates/mch-core",
+    "crates/mch-loop",
+    "crates/mch-transport",
+    "crates/mch-snapshot",
 ]
 
 [workspace.package]
@@ -28,3 +34,17 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tempfile = "3"
 thiserror = "2"
+tokio = { version = "1", features = ["full", "rt-multi-thread", "macros"] }
+tokio-stream = { version = "0.1", features = ["time"] }
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
+tungstenite = "0.21"
+http = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls", "stream"] }
+tracing = { version = "0.1", features = ["std"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+futures = "0.3"
+git2 = "0.18"
+rand = "0.8"
+async-trait = "0.1"
+anyhow = "1"
