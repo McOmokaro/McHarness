@@ -45,11 +45,20 @@ const config = {
     ({
       colorMode: {
         defaultMode: 'dark',
-        disableSwitch: true,
-        respectPrefersColorScheme: false,
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
       },
       navbar: {
         title: 'McHarness',
+        items: [
+          {to: '/', label: 'Docs', position: 'left'},
+          {to: '/roadmap', label: 'Roadmap', position: 'left'},
+          {
+            href: 'https://github.com/McOmokaro/McHarness',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
       },
       footer: {
         style: 'dark',

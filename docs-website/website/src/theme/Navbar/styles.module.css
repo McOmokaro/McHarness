@@ -59,3 +59,26 @@
     font-size: 0.8125rem;
   }
 }
+
+.colorModeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #a1a1a6;
+  transition: color 0.15s ease;
+}
+
+.colorModeToggle:hover {
+  color: #f5f5f7;
+}
+
+.colorModeToggle svg {
+  width: 20px;
+  height: 20px;
+}
