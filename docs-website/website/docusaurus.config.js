@@ -70,11 +70,17 @@ const config = {
       },
       navbar: {
         title: 'McHarness',
+        logo: {
+          alt: 'McHarness Logo',
+          src: 'img/logo.svg',
+          srcDark: 'img/logo_dark.svg',
+        },
         items: [
           {to: '/', label: 'Docs', position: 'left', activeBaseRegex: '^/$|^/McHarness/$'},
           {to: '/skills', label: 'Skills', position: 'left'},
           {to: '/plugins', label: 'Plugins', position: 'left'},
           {to: '/download', label: 'Download', position: 'left'},
+          {type: 'localeDropdown', position: 'right'},
           {
             href: 'https://github.com/McOmokaro/McHarness',
             label: 'Home',

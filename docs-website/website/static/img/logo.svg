@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" role="img" aria-label="McHarness">
+  <g fill="#0a0a0a">
+    <path d="M16 9 L31 14 L25 35 Z"/>
+    <path d="M56 9 L41 14 L47 35 Z"/>
+    <path fill-rule="evenodd" d="M28 26 L44 26 L54 39 L46 52 L36 64 L26 52 L18 39 Z M26 36 L32.5 37 L30.5 41 L25 40 Z M46 36 L39.5 37 L41.5 41 L47 40 Z M33.5 51 L38.5 51 L36 55 Z"/>
+  </g>
+</svg>

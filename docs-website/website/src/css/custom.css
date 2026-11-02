@@ -1,20 +1,18 @@
 /**
- * McHarness — color palette
- * Light: milk white (#faf7f0) with soft-black text (#2b2822)
- * Dark:  milky black (#1a1815) with soft-white text (#e9e5dd)
+ * McHarness — palette + premium polish
  *
- * Layout is left to Docusaurus defaults (same as the Hermes docs site).
- * Only colors, fonts, and the flat (radius 0) design law are set here.
+ * Light: background #fafafa, text #2a2a2a, accent #d97706 (soft gold)
+ * Dark:  background #0a0a0a, text #e8e8e8, accent #fbbf24 (soft yellow)
+ *
+ * Layout stays Docusaurus-default. Customization is config + this file only.
  */
 
 :root {
-  --ifm-color-primary: #2997ff;
-  --ifm-color-primary-dark: #0a84ff;
-  --ifm-color-primary-darker: #0071e3;
-  --ifm-color-primary-darkest: #0060c0;
-  --ifm-color-primary-light: #4aa8ff;
-  --ifm-color-primary-lighter: #66b8ff;
-  --ifm-color-primary-lightest: #99d0ff;
+  /* Rounded, soft, bespoke */
+  --ifm-global-radius: 12px;
+  --ifm-global-shadow-lw: none;
+  --ifm-global-shadow-md: none;
+  --ifm-global-shadow-tl: none;
 
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
@@ -23,88 +21,169 @@
   --ifm-font-size-base: 17px;
   --ifm-heading-font-weight: 800;
   --ifm-heading-line-height: 1.1;
-
-  /* Flat design law — no rounded corners, no shadows */
-  --ifm-global-radius: 0;
-  --ifm-global-shadow-lw: none;
-  --ifm-global-shadow-md: none;
-  --ifm-global-shadow-tl: none;
 }
 
-/* ---------- Light: milk white ---------- */
+/* ---------- Light: soft, near-white ---------- */
 html[data-theme='light'] {
-  --ifm-background-color: #faf7f0;
+  --ifm-color-primary: #d97706;
+  --ifm-color-primary-dark: #c26a05;
+  --ifm-color-primary-darker: #b56205;
+  --ifm-color-primary-darkest: #a65904;
+  --ifm-color-primary-light: #de8637;
+  --ifm-color-primary-lighter: #e19149;
+  --ifm-color-primary-lightest: #e7a06a;
+
+  --ifm-background-color: #fafafa;
   --ifm-background-surface-color: #ffffff;
-  --ifm-color-content: #2b2822;
-  --ifm-color-content-secondary: #6d675c;
+  --ifm-color-content: #2a2a2a;
+  --ifm-color-content-secondary: #6b6b6b;
 
-  --ifm-color-emphasis-0: #faf7f0;
-  --ifm-color-emphasis-100: #f3efe6;
-  --ifm-color-emphasis-200: #e9e4d8;
-  --ifm-color-emphasis-300: #d9d3c3;
-  --ifm-color-emphasis-400: #b9b2a0;
-  --ifm-color-emphasis-500: #9b9384;
-  --ifm-color-emphasis-600: #7b7463;
-  --ifm-color-emphasis-700: #5d5748;
-  --ifm-color-emphasis-800: #413c30;
-  --ifm-color-emphasis-900: #2b2822;
-  --ifm-color-emphasis-1000: #1a1815;
+  --ifm-color-emphasis-0: #fafafa;
+  --ifm-color-emphasis-100: #f2f2f2;
+  --ifm-color-emphasis-200: #e6e6e6;
+  --ifm-color-emphasis-300: #d4d4d4;
+  --ifm-color-emphasis-400: #b0b0b0;
+  --ifm-color-emphasis-500: #8a8a8a;
+  --ifm-color-emphasis-600: #6b6b6b;
+  --ifm-color-emphasis-700: #525252;
+  --ifm-color-emphasis-800: #3d3d3d;
+  --ifm-color-emphasis-900: #2a2a2a;
+  --ifm-color-emphasis-1000: #1a1a1a;
 
-  --ifm-link-color: #0071e3;
-  --ifm-link-hover-color: #0050a8;
+  --ifm-link-color: #d97706;
+  --ifm-link-hover-color: #a65904;
 
-  --ifm-navbar-background-color: #faf7f0;
-  --ifm-navbar-link-color: #2b2822;
-  --ifm-navbar-link-hover-color: #0071e3;
+  --ifm-navbar-background-color: #fafafa;
+  --ifm-navbar-link-color: #2a2a2a;
+  --ifm-navbar-link-hover-color: #d97706;
 
-  --ifm-footer-background-color: #f3efe6;
-  --ifm-footer-color: #6d675c;
-  --ifm-footer-link-color: #6d675c;
-  --ifm-footer-link-hover-color: #2b2822;
-  --ifm-footer-title-color: #2b2822;
+  --ifm-footer-background-color: #f2f2f2;
+  --ifm-footer-color: #6b6b6b;
+  --ifm-footer-link-color: #6b6b6b;
+  --ifm-footer-link-hover-color: #2a2a2a;
+  --ifm-footer-title-color: #2a2a2a;
 
-  --ifm-code-background: #f0ebdf;
-  --ifm-pre-background: #f3efe6;
-  --ifm-toc-border-color: #e9e4d8;
-  --ifm-table-border-color: #e9e4d8;
-  --ifm-hr-border-color: #e9e4d8;
+  --ifm-code-background: #f0f0f0;
+  --ifm-pre-background: #f2f2f2;
+  --ifm-toc-border-color: #e6e6e6;
+  --ifm-table-border-color: #e6e6e6;
+  --ifm-hr-border-color: #e6e6e6;
 }
 
-/* ---------- Dark: milky black ---------- */
+/* ---------- Dark: soft black ---------- */
 html[data-theme='dark'] {
-  --ifm-background-color: #1a1815;
-  --ifm-background-surface-color: #23201b;
-  --ifm-color-content: #e9e5dd;
-  --ifm-color-content-secondary: #9d968a;
+  --ifm-color-primary: #fbbf24;
+  --ifm-color-primary-dark: #f0af12;
+  --ifm-color-primary-darker: #e3a30a;
+  --ifm-color-primary-darkest: #c98f07;
+  --ifm-color-primary-light: #fbc64f;
+  --ifm-color-primary-lighter: #fccc5f;
+  --ifm-color-primary-lightest: #fddf9b;
 
-  --ifm-color-emphasis-0: #1a1815;
-  --ifm-color-emphasis-100: #23201b;
-  --ifm-color-emphasis-200: #2c2823;
-  --ifm-color-emphasis-300: #3a352e;
-  --ifm-color-emphasis-400: #4d473d;
-  --ifm-color-emphasis-500: #625b4f;
-  --ifm-color-emphasis-600: #7b7364;
-  --ifm-color-emphasis-700: #978d7e;
-  --ifm-color-emphasis-800: #b4aa9a;
-  --ifm-color-emphasis-900: #d1c8b8;
-  --ifm-color-emphasis-1000: #e9e5dd;
+  --ifm-background-color: #0a0a0a;
+  --ifm-background-surface-color: #141414;
+  --ifm-color-content: #e8e8e8;
+  --ifm-color-content-secondary: #9a9a9a;
 
-  --ifm-link-color: #2997ff;
-  --ifm-link-hover-color: #66b8ff;
+  --ifm-color-emphasis-0: #0a0a0a;
+  --ifm-color-emphasis-100: #141414;
+  --ifm-color-emphasis-200: #1f1f1f;
+  --ifm-color-emphasis-300: #2e2e2e;
+  --ifm-color-emphasis-400: #454545;
+  --ifm-color-emphasis-500: #5c5c5c;
+  --ifm-color-emphasis-600: #757575;
+  --ifm-color-emphasis-700: #909090;
+  --ifm-color-emphasis-800: #ababab;
+  --ifm-color-emphasis-900: #c8c8c8;
+  --ifm-color-emphasis-1000: #e8e8e8;
 
-  --ifm-navbar-background-color: #1a1815;
-  --ifm-navbar-link-color: #e9e5dd;
-  --ifm-navbar-link-hover-color: #2997ff;
+  --ifm-link-color: #fbbf24;
+  --ifm-link-hover-color: #fccc5f;
 
-  --ifm-footer-background-color: #15130f;
-  --ifm-footer-color: #9d968a;
-  --ifm-footer-link-color: #9d968a;
-  --ifm-footer-link-hover-color: #e9e5dd;
-  --ifm-footer-title-color: #e9e5dd;
+  --ifm-navbar-background-color: #0a0a0a;
+  --ifm-navbar-link-color: #e8e8e8;
+  --ifm-navbar-link-hover-color: #fbbf24;
 
-  --ifm-code-background: #262219;
-  --ifm-pre-background: #141210;
-  --ifm-toc-border-color: #2c2823;
-  --ifm-table-border-color: #2c2823;
-  --ifm-hr-border-color: #2c2823;
+  --ifm-footer-background-color: #0f0f0f;
+  --ifm-footer-color: #9a9a9a;
+  --ifm-footer-link-color: #9a9a9a;
+  --ifm-footer-link-hover-color: #e8e8e8;
+  --ifm-footer-title-color: #e8e8e8;
+
+  --ifm-code-background: #1c1c1c;
+  --ifm-pre-background: #101010;
+  --ifm-toc-border-color: #1f1f1f;
+  --ifm-table-border-color: #1f1f1f;
+  --ifm-hr-border-color: #1f1f1f;
+}
+
+/* ---------- Mute all icons slightly ---------- */
+svg {
+  opacity: 0.85;
+}
+
+/* ---------- Quiet navbar title with dotted underline ---------- */
+.navbar__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-bottom: 2px dotted var(--ifm-color-emphasis-300);
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+
+.navbar__brand:hover .navbar__title {
+  border-color: var(--ifm-color-primary);
+}
+
+/* ---------- Standalone home icon (collapse the breadcrumb trail) ---------- */
+.breadcrumbs {
+  margin-bottom: 2rem;
+}
+
+.breadcrumbs__item:not(:first-child) {
+  display: none; /* Hides the text trail */
+}
+
+.breadcrumbs__link {
+  padding: 0;
+  background: transparent !important;
+}
+
+.breadcrumbs__link svg {
+  width: 24px;
+  height: 24px;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* ---------- "On this page" (TOC) polish ---------- */
+.table-of-contents {
+  border-left: none !important;
+  background: var(--ifm-color-emphasis-100);
+  padding: 1rem;
+  border-radius: var(--ifm-global-radius);
+}
+
+/* ---------- Softened scrollbars ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ifm-color-emphasis-300) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-emphasis-400);
 }
