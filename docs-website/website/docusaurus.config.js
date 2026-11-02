@@ -40,6 +40,20 @@ const config = {
     ],
   ],
 
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      /** @type {import('@easyops-cn/docusaurus-search-local').PluginOptions} */
+      ({
+        hashed: true,
+        language: ['en'],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        docsRouteBasePath: '/',
+      }),
+    ],
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -51,7 +65,7 @@ const config = {
       navbar: {
         title: 'McHarness',
         items: [
-          {to: '/', label: 'Docs', position: 'left'},
+          {to: '/', label: 'Docs', position: 'left', activeBaseRegex: '^/$|^/McHarness/$'},
           {to: '/roadmap', label: 'Roadmap', position: 'left'},
           {
             href: 'https://github.com/McOmokaro/McHarness',

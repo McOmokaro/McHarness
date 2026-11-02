@@ -1,14 +1,23 @@
 ---
 title: McHarness
-sidebar_label: Overview
+sidebar_label: McHarness
 sidebar_position: 1
 slug: /
 description: McHarness — the Father of Harnesses. One whole, light-speed, featherweight multi-agent terminal harness, forged by reverse-engineering the best open-source agents.
 ---
 
+import Link from '@docusaurus/Link';
+
 # McHarness
 
-**The Father of Harnesses** — one whole, light-speed, featherweight multi-agent terminal harness.
+**The Father of Harnesses** — one whole, light-speed, featherweight multi-agent terminal harness. Built by reverse-engineering the best open-source agents and re-forging their crown jewels natively, with the lineage recorded in public.
+
+<div className="margin-bottom--lg" style={{display: 'flex', gap: '0.75rem', flexWrap: 'wrap'}}>
+  <Link className="button button--primary button--lg" to="/quickstart">Get Started →</Link>
+  <Link className="button button--secondary button--lg" to="/architecture">Explore Architecture</Link>
+  <Link className="button button--secondary button--lg" to="/the-forge">The Forge</Link>
+  <Link className="button button--secondary button--lg" href="https://github.com/McOmokaro/McHarness">View on GitHub</Link>
+</div>
 
 McHarness is not a framework you bolt together from a dozen packages, and it is not a chatbot with a plugin folder. It is a **single native agent** that runs in your terminal, installs with one command, and carries its tools, memory, and skills compiled deep inside it. Every capability it has was studied from the best open-source agents in the ecosystem and re-forged natively — with the lineage recorded, in public, in the Forge Ledger.
 

@@ -1,12 +1,31 @@
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   docs: [
-    {type: 'doc', id: 'index', label: 'Overview'},
-    {type: 'doc', id: 'quickstart', label: 'Quickstart'},
-    {type: 'doc', id: 'architecture', label: 'Architecture'},
-    {type: 'doc', id: 'the-forge', label: 'The Forge'},
-    {type: 'doc', id: 'roadmap', label: 'Roadmap'},
-    {type: 'doc', id: 'rea-integration', label: 'Design System'},
+    {type: 'doc', id: 'index', label: 'McHarness'},
+    {
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: ['quickstart'],
+    },
+    {
+      type: 'category',
+      label: 'Architecture',
+      collapsed: false,
+      items: ['architecture', 'rea-integration'],
+    },
+    {
+      type: 'category',
+      label: 'The Forge',
+      collapsed: false,
+      items: ['the-forge'],
+    },
+    {
+      type: 'category',
+      label: 'Project',
+      collapsed: false,
+      items: ['roadmap'],
+    },
   ],
 };
 
