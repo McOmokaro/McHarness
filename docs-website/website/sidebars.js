@@ -2,6 +2,9 @@
 const sidebars = {
   docs: [
     {type: 'doc', id: 'index', label: 'McHarness'},
+    {type: 'doc', id: 'skills', label: 'Skills'},
+    {type: 'doc', id: 'plugins', label: 'Plugins'},
+    {type: 'doc', id: 'download', label: 'Download'},
     {
       type: 'category',
       label: 'Getting Started',

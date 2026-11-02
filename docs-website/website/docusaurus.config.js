@@ -62,11 +62,19 @@ const config = {
         disableSwitch: false,
         respectPrefersColorScheme: true,
       },
+      docs: {
+        sidebar: {
+          // Accordion behavior: opening one category auto-closes the others.
+          autoCollapseCategories: true,
+        },
+      },
       navbar: {
         title: 'McHarness',
         items: [
           {to: '/', label: 'Docs', position: 'left', activeBaseRegex: '^/$|^/McHarness/$'},
-          {to: '/roadmap', label: 'Roadmap', position: 'left'},
+          {to: '/skills', label: 'Skills', position: 'left'},
+          {to: '/plugins', label: 'Plugins', position: 'left'},
+          {to: '/download', label: 'Download', position: 'left'},
           {
             href: 'https://github.com/McOmokaro/McHarness',
             label: 'GitHub',

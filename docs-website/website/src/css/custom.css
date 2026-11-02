@@ -1,11 +1,13 @@
 /**
- * McHarness — Minimal color palette + layout overrides
- * Dark (default): #0a0a0a / #e8e8e8
- * Light: #fafafa / #2a2a2a
+ * McHarness — color palette
+ * Light: milk white (#faf8f3) with soft-black text (#2a2a2a)
+ * Dark:  soft black (#141414) with soft-white text (#e8e8e8)
+ *
+ * Layout is left to Docusaurus defaults (same as the Hermes docs site).
+ * Only colors, fonts, and the flat (radius 0) design law are set here.
  */
 
-:root,
-html[data-theme='dark'] {
+:root {
   --ifm-color-primary: #2997ff;
   --ifm-color-primary-dark: #0a84ff;
   --ifm-color-primary-darker: #0071e3;
@@ -14,257 +16,95 @@ html[data-theme='dark'] {
   --ifm-color-primary-lighter: #66b8ff;
   --ifm-color-primary-lightest: #99d0ff;
 
-  --ifm-background-color: #0a0a0a;
-  --ifm-background-surface-color: #121212;
-  --ifm-color-content: #e8e8e8;
-  --ifm-color-content-secondary: #9a9a9a;
-
-  --ifm-color-emphasis-0: #0a0a0a;
-  --ifm-color-emphasis-100: #121212;
-  --ifm-color-emphasis-200: #1e1e1e;
-  --ifm-color-emphasis-300: #2a2a2a;
-  --ifm-color-emphasis-400: #363636;
-  --ifm-color-emphasis-500: #4a4a4a;
-  --ifm-color-emphasis-600: #666666;
-  --ifm-color-emphasis-700: #8a8a8a;
-  --ifm-color-emphasis-800: #a8a8a8;
-  --ifm-color-emphasis-900: #c8c8c8;
-  --ifm-color-emphasis-1000: #e8e8e8;
-
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
   --ifm-font-family-monospace: "SF Mono", ui-monospace, "JetBrains Mono",
     "Cascadia Code", Menlo, Consolas, monospace;
   --ifm-font-size-base: 17px;
   --ifm-heading-font-weight: 800;
-  --ifm-heading-line-height: 1.08;
+  --ifm-heading-line-height: 1.1;
 
-  --ifm-link-color: #2997ff;
-  --ifm-link-hover-color: #66b8ff;
-
+  /* Flat design law — no rounded corners, no shadows */
   --ifm-global-radius: 0;
   --ifm-global-shadow-lw: none;
   --ifm-global-shadow-md: none;
   --ifm-global-shadow-tl: none;
+}
 
-  --ifm-color-emphasis-border: #1e1e1e;
-  --ifm-hr-border-color: #1e1e1e;
-  --ifm-table-border-color: #1e1e1e;
-  --ifm-table-head-color: #e8e8e8;
+/* ---------- Light: milk white ---------- */
+html[data-theme='light'] {
+  --ifm-background-color: #faf8f3;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-color-content: #2a2a2a;
+  --ifm-color-content-secondary: #6b6b6b;
 
-  --ifm-code-background: #141416;
-  --ifm-code-color: #e8e8e8;
-  --ifm-pre-background: #0d0d0f;
-  --ifm-pre-color: #e8e8e8;
+  --ifm-color-emphasis-0: #faf8f3;
+  --ifm-color-emphasis-100: #f3f1ea;
+  --ifm-color-emphasis-200: #e8e5dc;
+  --ifm-color-emphasis-300: #d8d4c8;
+  --ifm-color-emphasis-400: #b8b3a5;
+  --ifm-color-emphasis-500: #9a958a;
+  --ifm-color-emphasis-600: #7a756b;
+  --ifm-color-emphasis-700: #5c5850;
+  --ifm-color-emphasis-800: #403d37;
+  --ifm-color-emphasis-900: #2a2a2a;
+  --ifm-color-emphasis-1000: #1a1a1a;
 
-  /* Navbar — sticky, translucent, backdrop-blur, 48px height, 1px border */
-  --ifm-navbar-background-color: rgba(10, 10, 10, 0.72);
-  --ifm-navbar-height: 48px;
+  --ifm-link-color: #0071e3;
+  --ifm-link-hover-color: #0050a8;
+
+  --ifm-navbar-background-color: #faf8f3;
+  --ifm-navbar-link-color: #2a2a2a;
+  --ifm-navbar-link-hover-color: #0071e3;
+
+  --ifm-footer-background-color: #f3f1ea;
+  --ifm-footer-color: #6b6b6b;
+  --ifm-footer-link-color: #6b6b6b;
+  --ifm-footer-link-hover-color: #2a2a2a;
+  --ifm-footer-title-color: #2a2a2a;
+
+  --ifm-code-background: #f0ede4;
+  --ifm-pre-background: #f3f1ea;
+  --ifm-toc-border-color: #e8e5dc;
+  --ifm-table-border-color: #e8e5dc;
+  --ifm-hr-border-color: #e8e5dc;
+}
+
+/* ---------- Dark: soft black ---------- */
+html[data-theme='dark'] {
+  --ifm-background-color: #141414;
+  --ifm-background-surface-color: #1c1c1c;
+  --ifm-color-content: #e8e8e8;
+  --ifm-color-content-secondary: #9a9a9a;
+
+  --ifm-color-emphasis-0: #141414;
+  --ifm-color-emphasis-100: #1c1c1c;
+  --ifm-color-emphasis-200: #262626;
+  --ifm-color-emphasis-300: #333333;
+  --ifm-color-emphasis-400: #444444;
+  --ifm-color-emphasis-500: #5a5a5a;
+  --ifm-color-emphasis-600: #737373;
+  --ifm-color-emphasis-700: #8f8f8f;
+  --ifm-color-emphasis-800: #ababab;
+  --ifm-color-emphasis-900: #c8c8c8;
+  --ifm-color-emphasis-1000: #e8e8e8;
+
+  --ifm-link-color: #2997ff;
+  --ifm-link-hover-color: #66b8ff;
+
+  --ifm-navbar-background-color: #141414;
   --ifm-navbar-link-color: #e8e8e8;
   --ifm-navbar-link-hover-color: #2997ff;
-  --ifm-navbar-shadow: none;
-  --ifm-navbar-padding-horizontal: 1.5rem;
-  --ifm-navbar-padding-vertical: 0;
-  --ifm-navbar-shadow: none;
 
-  /* Footer */
-  --ifm-footer-background-color: #0a0a0a;
+  --ifm-footer-background-color: #101010;
   --ifm-footer-color: #9a9a9a;
   --ifm-footer-link-color: #9a9a9a;
   --ifm-footer-link-hover-color: #e8e8e8;
   --ifm-footer-title-color: #e8e8e8;
-  --ifm-footer-padding-horizontal: 1.5rem;
 
-  /* Layout rhythm */
-  --ifm-spacing-horizontal: 1rem;
-  --ifm-container-width: 1200px;
-  --ifm-container-width-xl: 1400px;
-  --ifm-leading-desktop: 1.5;
-
-  /* Scrollbar tint */
-  --ifm-scrollbar-thumb-background-color: #2c2c2e;
-  --ifm-scrollbar-track-background-color: #000000;
-}
-
-html[data-theme='light'] {
-  --ifm-color-primary: #0071e3;
-  --ifm-color-primary-dark: #0060c0;
-  --ifm-color-primary-darker: #0050a8;
-  --ifm-color-primary-darkest: #004090;
-  --ifm-color-primary-light: #2997ff;
-  --ifm-color-primary-lighter: #4aa8ff;
-  --ifm-color-primary-lightest: #66b8ff;
-
-  --ifm-background-color: #fafafa;
-  --ifm-background-surface-color: #ffffff;
-  --ifm-color-content: #2a2a2a;
-  --ifm-color-content-secondary: #666666;
-
-  --ifm-color-emphasis-0: #fafafa;
-  --ifm-color-emphasis-100: #f0f0f0;
-  --ifm-color-emphasis-200: #e0e0e0;
-  --ifm-color-emphasis-300: #cccccc;
-  --ifm-color-emphasis-400: #b0b0b0;
-  --ifm-color-emphasis-500: #999999;
-  --ifm-color-emphasis-600: #808080;
-  --ifm-color-emphasis-700: #666666;
-  --ifm-color-emphasis-800: #4a4a4a;
-  --ifm-color-emphasis-900: #333333.
-  --ifm-color-emphasis-1000: #2a2a2a.
-
-  --ifm-background-color: #fafafa.
-  --ifm-background-surface-color: #ffffff.
-  --ifm-color-content: #2a2a2a.
-  --ifm-color-content-secondary: #666666.
-
-  --ifm-color-emphasis-0: #fafafa.
-  --ifm-color-emphasis-100: #f0f0f0.
-  --ifm-color-emphasis-200: #e0e0e0.
-  --ifm-color-emphasis-300: #cccccc.
-  --ifm-color-emphasis-400: #b0b0b0.
-  --ifm-color-emphasis-500: #999999.
-  --ifm-color-emphasis-600: #808080.
-  --ifm-color-emphasis-700: #666666.
-  --ifm-color-emphasis-800: #4a4a4a.
-  --ifm-color-emphasis-900: #333333.
-  --ifm-color-emphasis-1000: #2a2a2a.
-
-  --ifm-code-background: #f0f0f0.
-  --ifm-code-color: #2a2a2a.
-  --ifm-pre-background: #e8e8e8.
-  --ifm-pre-color: #2a2a2a.
-
-  --ifm-navbar-background-color: rgba(250, 250, 250, 0.88).
-  --ifm-navbar-link-color: #2a2a2a.
-  --ifm-navbar-link-hover-color: #0071e3.
-
-  --ifm-footer-background-color: #fafafa.
-  --ifm-footer-color: #666666.
-  --ifm-footer-link-color: #666666.
-  --ifm-footer-link-hover-color: #2a2a2a.
-  --ifm-footer-title-color: #2a2a2a.
-}
-
-/* ============================================================
-   Layout overrides — Navbar, Sidebar, Footer
-   ============================================================ */
-
-/* Navbar — sticky, translucent, backdrop-blur, 48px, 1px border */
-.navbar {
-  height: 48px !important;
-  min-height: 48px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  background-color: var(--ifm-navbar-background-color) !important;
-  border-bottom: 1px solid var(--ifm-color-emphasis-border) !important;
-  box-shadow: none !important;
-  backdrop-filter: saturate(180%) blur(20px) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-}
-
-.navbar__inner {
-  height: 48px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-.navbar__brand {
-  height: 48px !important;
-  line-height: 48px !important;
-}
-
-.navbar__items {
-  height: 48px !important;
-  align-items: center !important;
-}
-
-.navbar__link {
-  line-height: 48px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-.navbar__toggle {
-  height: 48px !important;
-  line-height: 48px !important;
-}
-
-.navbar__logo {
-  height: 2rem !important;
-}
-
-/* Search input height */
-.navbar__search-input {
-  height: 2rem !important;
-}
-
-/* Sidebar — no right border, transparent background */
-.menu {
-  border-right: none !important;
-  background: transparent !important;
-}
-
-.menu__link {
-  border-radius: 0 !important;
-}
-
-.menu__link--active,
-.menu__link:hover {
-  background: transparent !important;
-}
-
-/* Footer — minimal */
-.footer {
-  background-color: var(--ifm-footer-background-color) !important;
-  border-top: 1px solid var(--ifm-color-emphasis-border) !important;
-  padding: 2.5rem 0 !important;
-}
-
-.footer__copyright {
-  color: var(--ifm-footer-color) !important;
-  font-size: 0.8125rem !important;
-}
-
-/* Navbar — sticky, translucent, backdrop-blur */
-.navbar {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 200 !important;
-  backdrop-filter: saturate(180%) blur(20px) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-}
-
-.navbar--dark {
-  background-color: var(--ifm-navbar-background-color) !important;
-}
-
-/* Ensure navbar inner height matches */
-.navbar__inner {
-  min-height: 48px !important;
-  height: 48px !important;
-}
-
-/* Remove sidebar right border globally */
-.menu {
-  border-right: none !important;
-}
-
-/* Footer */
-.footer {
-  background-color: var(--ifm-footer-background-color) !important;
-  border-top: 1px solid var(--ifm-color-emphasis-border) !important;
-}
-
-.footer__copyright {
-  color: var(--ifm-footer-color) !important;
-  font-size: 0.8125rem !important;
-}
-
-/* Ensure dark mode variables apply to navbar/footer */
-html[data-theme='dark'] .navbar {
-  background-color: var(--ifm-navbar-background-color) !important;
-}
-
-html[data-theme='light'] .navbar {
-  background-color: var(--ifm-navbar-background-color) !important;
+  --ifm-code-background: #1e1e1e;
+  --ifm-pre-background: #0f0f0f;
+  --ifm-toc-border-color: #262626;
+  --ifm-table-border-color: #262626;
+  --ifm-hr-border-color: #262626;
 }
