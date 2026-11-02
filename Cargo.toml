@@ -12,6 +12,7 @@ members = [
     "crates/mch-transport",
     "crates/mch-snapshot",
     "crates/mch-memory",
+    "crates/mch-mcp",
 ]
 default-members = [
     "crates/mch-scope",
@@ -24,6 +25,7 @@ default-members = [
     "crates/mch-transport",
     "crates/mch-snapshot",
     "crates/mch-memory",
+    "crates/mch-mcp",
 ]
 
 [workspace.package]

@@ -899,6 +899,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "mch-mcp"
+version = "0.0.1"
+dependencies = [
+ "async-trait",
+ "futures",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "mch-memory"
 version = "0.0.1"
 dependencies = [
