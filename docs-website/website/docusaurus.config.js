@@ -77,6 +77,11 @@ const config = {
           {to: '/download', label: 'Download', position: 'left'},
           {
             href: 'https://github.com/McOmokaro/McHarness',
+            label: 'Home',
+            position: 'right',
+          },
+          {
+            href: 'https://github.com/McOmokaro/McHarness',
             label: 'GitHub',
             position: 'right',
           },

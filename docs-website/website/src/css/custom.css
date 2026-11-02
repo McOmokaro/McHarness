@@ -1,7 +1,7 @@
 /**
  * McHarness — color palette
- * Light: milk white (#faf8f3) with soft-black text (#2a2a2a)
- * Dark:  soft black (#141414) with soft-white text (#e8e8e8)
+ * Light: milk white (#faf7f0) with soft-black text (#2b2822)
+ * Dark:  milky black (#1a1815) with soft-white text (#e9e5dd)
  *
  * Layout is left to Docusaurus defaults (same as the Hermes docs site).
  * Only colors, fonts, and the flat (radius 0) design law are set here.
@@ -33,78 +33,78 @@
 
 /* ---------- Light: milk white ---------- */
 html[data-theme='light'] {
-  --ifm-background-color: #faf8f3;
+  --ifm-background-color: #faf7f0;
   --ifm-background-surface-color: #ffffff;
-  --ifm-color-content: #2a2a2a;
-  --ifm-color-content-secondary: #6b6b6b;
+  --ifm-color-content: #2b2822;
+  --ifm-color-content-secondary: #6d675c;
 
-  --ifm-color-emphasis-0: #faf8f3;
-  --ifm-color-emphasis-100: #f3f1ea;
-  --ifm-color-emphasis-200: #e8e5dc;
-  --ifm-color-emphasis-300: #d8d4c8;
-  --ifm-color-emphasis-400: #b8b3a5;
-  --ifm-color-emphasis-500: #9a958a;
-  --ifm-color-emphasis-600: #7a756b;
-  --ifm-color-emphasis-700: #5c5850;
-  --ifm-color-emphasis-800: #403d37;
-  --ifm-color-emphasis-900: #2a2a2a;
-  --ifm-color-emphasis-1000: #1a1a1a;
+  --ifm-color-emphasis-0: #faf7f0;
+  --ifm-color-emphasis-100: #f3efe6;
+  --ifm-color-emphasis-200: #e9e4d8;
+  --ifm-color-emphasis-300: #d9d3c3;
+  --ifm-color-emphasis-400: #b9b2a0;
+  --ifm-color-emphasis-500: #9b9384;
+  --ifm-color-emphasis-600: #7b7463;
+  --ifm-color-emphasis-700: #5d5748;
+  --ifm-color-emphasis-800: #413c30;
+  --ifm-color-emphasis-900: #2b2822;
+  --ifm-color-emphasis-1000: #1a1815;
 
   --ifm-link-color: #0071e3;
   --ifm-link-hover-color: #0050a8;
 
-  --ifm-navbar-background-color: #faf8f3;
-  --ifm-navbar-link-color: #2a2a2a;
+  --ifm-navbar-background-color: #faf7f0;
+  --ifm-navbar-link-color: #2b2822;
   --ifm-navbar-link-hover-color: #0071e3;
 
-  --ifm-footer-background-color: #f3f1ea;
-  --ifm-footer-color: #6b6b6b;
-  --ifm-footer-link-color: #6b6b6b;
-  --ifm-footer-link-hover-color: #2a2a2a;
-  --ifm-footer-title-color: #2a2a2a;
+  --ifm-footer-background-color: #f3efe6;
+  --ifm-footer-color: #6d675c;
+  --ifm-footer-link-color: #6d675c;
+  --ifm-footer-link-hover-color: #2b2822;
+  --ifm-footer-title-color: #2b2822;
 
-  --ifm-code-background: #f0ede4;
-  --ifm-pre-background: #f3f1ea;
-  --ifm-toc-border-color: #e8e5dc;
-  --ifm-table-border-color: #e8e5dc;
-  --ifm-hr-border-color: #e8e5dc;
+  --ifm-code-background: #f0ebdf;
+  --ifm-pre-background: #f3efe6;
+  --ifm-toc-border-color: #e9e4d8;
+  --ifm-table-border-color: #e9e4d8;
+  --ifm-hr-border-color: #e9e4d8;
 }
 
-/* ---------- Dark: soft black ---------- */
+/* ---------- Dark: milky black ---------- */
 html[data-theme='dark'] {
-  --ifm-background-color: #141414;
-  --ifm-background-surface-color: #1c1c1c;
-  --ifm-color-content: #e8e8e8;
-  --ifm-color-content-secondary: #9a9a9a;
+  --ifm-background-color: #1a1815;
+  --ifm-background-surface-color: #23201b;
+  --ifm-color-content: #e9e5dd;
+  --ifm-color-content-secondary: #9d968a;
 
-  --ifm-color-emphasis-0: #141414;
-  --ifm-color-emphasis-100: #1c1c1c;
-  --ifm-color-emphasis-200: #262626;
-  --ifm-color-emphasis-300: #333333;
-  --ifm-color-emphasis-400: #444444;
-  --ifm-color-emphasis-500: #5a5a5a;
-  --ifm-color-emphasis-600: #737373;
-  --ifm-color-emphasis-700: #8f8f8f;
-  --ifm-color-emphasis-800: #ababab;
-  --ifm-color-emphasis-900: #c8c8c8;
-  --ifm-color-emphasis-1000: #e8e8e8;
+  --ifm-color-emphasis-0: #1a1815;
+  --ifm-color-emphasis-100: #23201b;
+  --ifm-color-emphasis-200: #2c2823;
+  --ifm-color-emphasis-300: #3a352e;
+  --ifm-color-emphasis-400: #4d473d;
+  --ifm-color-emphasis-500: #625b4f;
+  --ifm-color-emphasis-600: #7b7364;
+  --ifm-color-emphasis-700: #978d7e;
+  --ifm-color-emphasis-800: #b4aa9a;
+  --ifm-color-emphasis-900: #d1c8b8;
+  --ifm-color-emphasis-1000: #e9e5dd;
 
   --ifm-link-color: #2997ff;
   --ifm-link-hover-color: #66b8ff;
 
-  --ifm-navbar-background-color: #141414;
-  --ifm-navbar-link-color: #e8e8e8;
+  --ifm-navbar-background-color: #1a1815;
+  --ifm-navbar-link-color: #e9e5dd;
   --ifm-navbar-link-hover-color: #2997ff;
 
-  --ifm-footer-background-color: #101010;
-  --ifm-footer-color: #9a9a9a;
-  --ifm-footer-link-color: #9a9a9a;
-  --ifm-footer-link-hover-color: #e8e8e8;
-  --ifm-footer-title-color: #e8e8e8;
+  --ifm-footer-background-color: #15130f;
+  --ifm-footer-color: #9d968a;
+  --ifm-footer-link-color: #9d968a;
+  --ifm-footer-link-hover-color: #e9e5dd;
+  --ifm-footer-title-color: #e9e5dd;
 
-  --ifm-code-background: #1e1e1e;
-  --ifm-pre-background: #0f0f0f;
-  --ifm-toc-border-color: #262626;
-  --ifm-table-border-color: #262626;
-  --ifm-hr-border-color: #262626;
+  --ifm-code-background: #262219;
+  --ifm-pre-background: #141210;
+  --ifm-toc-border-color: #2c2823;
+  --ifm-table-border-color: #2c2823;
+  --ifm-hr-border-color: #2c2823;
 }
