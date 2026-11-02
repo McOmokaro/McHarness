@@ -103,5 +103,5 @@ Python is where McHarness is *built*, not where it *runs* in the hot path. It ow
 
 ## Where to go next
 
-- **[The Forge](/the-forge)** — how each capability was reverse-engineered and recorded
+- **[The Forge](/the-forge)** — where each capability was reverse-engineered and recorded
 - **[Quickstart](/quickstart)** — install and initialize the Key Farm
