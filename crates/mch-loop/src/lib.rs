@@ -17,9 +17,12 @@ use mch_transport::{
     ModelEvent, ModelRequest, ModelStream, ToolCall, ToolCallId, ToolChoice, ToolDefinition,
     ToolResult, Transport, TransportConfig, TransportError, TransportFactory,
     FinishReason, Usage, ModelError, ErrorClassification, RecoveryStrategy,
-    ChatMessage as Message, MessageRole,
 };
 use mch_snapshot::{SnapshotConfig, SnapshotId, SnapshotService};
+
+// Re-export the shared message types so downstream crates (mch-core) can build
+// step contexts without reaching into mch-transport directly.
+pub use mch_transport::{ChatMessage as Message, MessageRole};
 
 use serde::{Deserialize, Serialize};
 use thiserror::Error;

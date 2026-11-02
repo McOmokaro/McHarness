@@ -9,11 +9,10 @@ use std::sync::Arc;
 
 use mch_gate::{CompletionGate, GateOutcome, Requirement, RunContext};
 use mch_ledger::{TechniqueLedger, TechniqueStatus};
-use mch_loop::{FailureClassifier, LoopEvent, MaxStepsGuard, RetryPolicy, StepExecutor, StepExecutorConfig, StepOutcome};
+use mch_loop::{StepExecutor, StepExecutorConfig};
 use mch_scope::{ScopeAuthority, ScopeSet};
 use mch_transport::{TransportConfig, TransportFactory};
-use mch_snapshot::{SnapshotConfig, SnapshotService};
-use tokio::sync::broadcast;
+use mch_snapshot::SnapshotConfig;
 
 const SCOPE_PATH: &str = "mch.scope.toml";
 const LEDGER_PATH: &str = "mch.ledger.json";
@@ -40,6 +39,7 @@ async fn run(args: &[String]) -> Result<String, String> {
         Some("remember") => cmd_remember(&args.get(1..).unwrap_or(&[])).await,
         Some("brief") => cmd_brief(args.get(1).map(|s| s.as_str())).await,
         Some("loop") => cmd_loop().await,
+        Some("memory") => cmd_memory().await,
         Some("--version") | Some("version") => Ok(env!("CARGO_PKG_VERSION").to_string()),
         _ => Ok(usage().to_string()),
     }
@@ -59,6 +59,7 @@ COMMANDS:
                             Record a technique outcome in the ledger
     brief <target>          Print the do-not-retry brief from the ledger
     loop                    Run the streaming agent loop (demo)
+    memory                  Show the three-strata memory + skill-sealing demo
     version                 Print version
 
 STATUS VOCABULARY (closed set):
@@ -232,6 +233,103 @@ cidrs = []
 
     println!("\nDemo complete. The streaming agent loop is working!");
     Ok("Loop demo completed".to_string())
+}
+
+/// Demo command: exercise the Hermes-mined memory, skill-sealing and curator paths.
+async fn cmd_memory() -> Result<String, String> {
+    use mch_memory::{
+        Curator, LearningGraph, MemoryCard, MemoryOp, MemoryStore, MemoryTarget, SkillNode,
+        SkillState, SkillStore,
+    };
+
+    let dir = std::env::temp_dir().join("mch-memory-demo");
+    let _ = std::fs::remove_dir_all(&dir);
+
+    println!("=== McHarness three-strata memory demo ===");
+    println!("(mined from Hermes Agent — no network, no model)\n");
+
+    // Stratum A — persistent, declarative memory (frozen snapshot).
+    let mut store = MemoryStore::new(dir.join("memories"));
+    store.load_from_disk().map_err(|e| e.to_string())?;
+    store
+        .add(MemoryTarget::Memory, "user runs McHarness on a rack, prefers terseness")
+        .map_err(|e| e.to_string())?;
+    println!(
+        "after add, LIVE entries = {:?}",
+        store.entries(MemoryTarget::Memory)
+    );
+    println!(
+        "frozen prompt snapshot (captured at load) = {:?}  <- unchanged by the write\n",
+        store.frozen_snapshot().get(MemoryTarget::Memory)
+    );
+
+    // Atomic batch: prune to make room, add the new fact in one call.
+    store
+        .apply_batch(
+            MemoryTarget::Memory,
+            &[
+                MemoryOp::Remove {
+                    old_text: "prefers terseness".into(),
+                },
+                MemoryOp::Add {
+                    content: "user prefers terse replies with exact commands".into(),
+                },
+            ],
+        )
+        .map_err(|e| e.to_string())?;
+    println!(
+        "after batch, LIVE entries = {:?}\n",
+        store.entries(MemoryTarget::Memory)
+    );
+
+    // Stratum B — skill-sealing.
+    let skills = SkillStore::new(dir.join("skills"));
+    let body = "---\nname: arxiv-search\ndescription: Search arXiv papers by keyword, author, or ID.\n---\n\n# arXiv search\n\nQuery the arXiv API through the terminal tool.\n";
+    skills
+        .create("arxiv-search", body, Some("research"))
+        .map_err(|e| e.to_string())?;
+    println!("sealed skill 'arxiv-search' at {:?}", skills.find("arxiv-search"));
+
+    // Stratum C — the learning loop (curator) + the visible learning graph.
+    let now = 1_000_000_000i64;
+    let mut records = vec![
+        mch_memory::SkillRecord {
+            created_by: Some("agent".into()),
+            last_activity_at: now - 2 * 86_400,
+            use_count: 3,
+            ..mch_memory::SkillRecord::new("arxiv-search")
+        },
+        mch_memory::SkillRecord {
+            use_count: 4,
+            last_activity_at: now - 40 * 86_400,
+            created_at: now - 60 * 86_400,
+            ..mch_memory::SkillRecord::new("stale-session-artifact")
+        },
+    ];
+    let report = Curator::default().apply_transitions(&mut records, now);
+    println!("\ncurator transitions: {}", serde_json::to_string(&report).map_err(|e| e.to_string())?);
+    for r in &records {
+        println!("  {} -> {:?}", r.name, r.state);
+    }
+
+    let graph = LearningGraph::build(
+        vec![SkillNode {
+            name: "arxiv-search".into(),
+            category: "research".into(),
+            created_by: Some("agent".into()),
+            use_count: 3,
+            related: vec![],
+        }],
+        vec![MemoryCard::new("memory", "arxiv search finds papers fast")],
+    );
+    println!(
+        "\nlearning graph: {} learned skill(s), {} edge(s)",
+        graph.learned_skill_count(),
+        graph.edges.len()
+    );
+    assert_eq!(records[1].state, SkillState::Archived);
+
+    Ok("\nmemory demo complete".to_string())
 }
 
 // Re-exports kept public for downstream embedders of the harness library.

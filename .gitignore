@@ -35,3 +35,6 @@ apple-design.json
 forge/
 forge/
 apple-design.json
+
+# Rust build artifacts
+/target
