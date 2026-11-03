@@ -5,16 +5,16 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 ## Phase 1: Core Harnesses (The Body)
 - [ ] **OpenCode** — Extract streaming tool-fork loop and terminal UX.
 - [ ] **Hermes Agent** — Extract skill-sealing and the self-improvement memory loop.
-- [ ] **Goose** — Extract MCP tooling integration.
+- [x] **Goose** — `forged` (mch-mcp): Extract MCP tooling integration.
 - [ ] **Paperclip** — Extract multi-agent orchestration, budgets, and approvals.
 - [ ] **Stageshow (benjitaylor)** — Faux UI stills, animations, and bento grids for Anti-Slop frontend generation.
 
-## Phase 2: The Cybersecurity Department (The Weapons)
-- [ ] **REA (morluto/rea)** — Reverse-engineer the behavioral analysis and executable inspection loop.
-- [ ] **Cloudflare security-audit-skill** — Extract the multi-stage audit pipeline and machine-readable vulnerability schema.
-- [ ] **Hexstrike** — Forge the offensive tooling orchestration (scoped).
-- [ ] **Bug-Bounty Agents** — Integrate fail-closed scope authority and target discovery.
-- [ ] **OpenWorker** — Forge the self-waking task execution and standing approvals.
+## Phase 2: The Cybersecurity Department (The Weapons) — `in progress`
+- [ ] **REA (morluto/rea)** — `in progress`: Reverse-engineer the behavioral analysis and executable inspection loop.
+- [ ] **Cloudflare security-audit-skill** — `in progress`: Extract the multi-stage audit pipeline and machine-readable vulnerability schema.
+- [ ] **Hexstrike** — `in progress`: Forge the offensive tooling orchestration (scoped).
+- [ ] **Bug-Bounty Agents** — `in progress`: Integrate fail-closed scope authority and target discovery.
+- [ ] **OpenWorker** — `in progress`: Forge the self-waking task execution and standing approvals.
 
 ## Phase 3: The Data & UI Layer (The Senses)
 - [ ] **Graphify** — Extract local source-code-to-knowledge-map conversion.
@@ -56,7 +56,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [ ] **Kali Linux AI** — Extract local offensive security OS integrations for seamless binary compatibility.
 
 ## Phase 8: DeepSeek Harness (DSH) — The Cordis Kernel
-- [ ] **DeepSeek Harness (DSH)** — Extract the Cordis kernel "everything is a plugin" architecture:
+- [x] **DeepSeek Harness (DSH)** — `forged` (mch-dsh-cordis): Extract the Cordis kernel "everything is a plugin" architecture:
   - **Cordis Kernel**: Everything-is-a-plugin architecture; core is minimal, all capabilities (LLM, tools, memory, skills) are plugins.
   - **BYOK Provider Abstraction**: Bring Your Own Key — unified provider interface where users plug in their own API keys; no vendor lock-in.
   - **Super-Agent Routing**: Intelligent model routing based on task type, cost, latency, and capability tags.
