@@ -141,8 +141,9 @@ svg {
   margin-bottom: 2rem;
 }
 
-.breadcrumbs__item:not(:first-child) {
-  display: none; /* Hides the text trail */
+/* Optional: style the active breadcrumb item */
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: var(--ifm-color-emphasis-100);
 }
 
 .breadcrumbs__link {
