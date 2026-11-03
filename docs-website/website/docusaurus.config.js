@@ -4,7 +4,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'McHarness',
   tagline: 'Father of Harnesses — one whole, light-speed, featherweight multi-agent harness',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.svg',
 
   // Your final URL: https://McOmokaro.github.io/McHarness/
   url: 'https://McOmokaro.github.io',

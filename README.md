@@ -1,5 +1,7 @@
 <div align="center">
 
+<p align="center"><img src="logo.svg" alt="McHarness Logo" width="120"/></p>
+
 # McHarness
 
 **The father of harnesses.**
