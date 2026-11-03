@@ -66,6 +66,8 @@ const config = {
         sidebar: {
           // Accordion behavior: opening one category auto-closes the others.
           autoCollapseCategories: true,
+          // Enable sidebar collapse/expand toggle (native Docusaurus feature)
+          hideable: true,
         },
       },
       navbar: {
