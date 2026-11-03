@@ -1,38 +1,67 @@
-//! Safe FFI boundary to the C++ speed organs.
+//! The speed organs.
 //!
-//! All unsafe lives here and only here. The rest of the core
-//! consumes these as safe functions.
+//! Historically these three hot paths were intended to live in C++ behind a
+//! `#[link(name = "mcharness_speed")]` FFI boundary. Until that native library
+//! is built and shipped, this is a pure-Rust fallback with the exact same safe
+//! signatures, so the rest of the core consumes them unchanged.
 
-use std::ffi::{c_char, c_double, c_int, CStr, CString};
-use std::os::raw::c_float;
-
-#[link(name = "mcharness_speed")]
-extern "C" {
-    fn mh_stream_push(token: *const c_char, out: *mut c_char, out_cap: u64) -> u64;
-    fn mh_memsearch_score(query: *const c_char, entries: *const *const c_char, count: u64) -> i64;
-    fn mh_embed_cosine(a: *const c_float, b: *const c_float, dim: u64) -> c_double;
-}
-
-/// Push a token through the streaming organ.
+/// Push a token into `out`, returning the number of bytes written.
 pub fn stream_push(token: &str, out: &mut [u8]) -> usize {
-    let token_c = CString::new(token).expect("no interior nul");
-    let mut probe = out.as_mut_ptr() as *mut c_char;
-    let cap = out.len() as u64;
-    probe = probe; // pointer stays stable; call the organ
-    unsafe { mh_stream_push(token_c.as_ptr(), out.as_mut_ptr() as *mut c_char, cap) as usize }
+    let bytes = token.as_bytes();
+    let n = bytes.len().min(out.len());
+    out[..n].copy_from_slice(&bytes[..n]);
+    n
 }
 
-/// Fast memory search: best-matching index for a query, if any.
+/// Fast memory search: the index of the first entry containing `query`.
 pub fn memsearch(query: &str, entries: &[&str]) -> Option<usize> {
-    let query_c = CString::new(query).expect("no interior nul");
-    let entry_cs: Vec<CString> = entries.iter().map(|e| CString::new(*e).expect("no interior nul")).collect();
-    let ptrs: Vec<*const c_char> = entry_cs.iter().map(|e| e.as_ptr()).collect();
-    let idx = unsafe { mh_memsearch_score(query_c.as_ptr(), ptrs.as_ptr(), ptrs.len() as u64) };
-    if idx < 0 { None } else { Some(idx as usize) }
+    if query.is_empty() {
+        return None;
+    }
+    entries.iter().position(|e| e.contains(query))
 }
 
-/// Cosine similarity via the embedding organ.
+/// Cosine similarity between two equal-length embeddings.
 pub fn cosine(a: &[f32], b: &[f32]) -> f64 {
     assert_eq!(a.len(), b.len(), "embedding dims must match");
-    unsafe { mh_embed_cosine(a.as_ptr(), b.as_ptr(), a.len() as u64) }
+    let mut dot = 0.0f64;
+    let mut na = 0.0f64;
+    let mut nb = 0.0f64;
+    for (x, y) in a.iter().zip(b.iter()) {
+        let (x, y) = (*x as f64, *y as f64);
+        dot += x * y;
+        na += x * x;
+        nb += y * y;
+    }
+    if na == 0.0 || nb == 0.0 {
+        return 0.0;
+    }
+    dot / (na.sqrt() * nb.sqrt())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn push_copies_and_caps() {
+        let mut buf = [0u8; 4];
+        assert_eq!(stream_push("ab", &mut buf), 2);
+        assert_eq!(&buf[..2], b"ab");
+        assert_eq!(stream_push("abcdef", &mut buf), 4);
+    }
+
+    #[test]
+    fn memsearch_finds_containing_entry() {
+        assert_eq!(memsearch("llama", &["qwen2.5", "llama3.1"]), Some(1));
+        assert_eq!(memsearch("nope", &["a", "b"]), None);
+        assert_eq!(memsearch("", &["a"]), None);
+    }
+
+    #[test]
+    fn cosine_identical_is_one() {
+        let v = [1.0f32, 2.0, 3.0];
+        assert!((cosine(&v, &v) - 1.0).abs() < 1e-9);
+        assert_eq!(cosine(&[0.0, 0.0], &[1.0, 1.0]), 0.0);
+    }
 }

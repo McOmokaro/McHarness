@@ -11,6 +11,7 @@ mch-gate = { path = "../mch-gate" }
 mch-ledger = { path = "../mch-ledger" }
 mch-transport = { path = "../mch-transport" }
 mch-snapshot = { path = "../mch-snapshot" }
+mch-mcp = { path = "../mch-mcp" }
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

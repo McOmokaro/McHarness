@@ -13,6 +13,11 @@ members = [
     "crates/mch-snapshot",
     "crates/mch-memory",
     "crates/mch-mcp",
+    "crates/mch-dsh-cordis",
+    "crates/mch-dsh-llm",
+    "crates/mch-dsh-agent",
+    "crates/mch-dsh-dynamic",
+    "crates/mch-dsh",
 ]
 default-members = [
     "crates/mch-scope",
@@ -26,6 +31,11 @@ default-members = [
     "crates/mch-snapshot",
     "crates/mch-memory",
     "crates/mch-mcp",
+    "crates/mch-dsh-cordis",
+    "crates/mch-dsh-llm",
+    "crates/mch-dsh-agent",
+    "crates/mch-dsh-dynamic",
+    "crates/mch-dsh",
 ]
 
 [workspace.package]
@@ -40,6 +50,7 @@ tempfile = "3"
 thiserror = "2"
 tokio = { version = "1", features = ["full", "rt-multi-thread", "macros"] }
 tokio-stream = { version = "0.1", features = ["time"] }
+tokio-util = { version = "0.7", features = ["sync"] }
 tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
 tungstenite = "0.21"
 http = "1"
@@ -52,3 +63,4 @@ git2 = "0.18"
 rand = "0.8"
 async-trait = "0.1"
 anyhow = "1"
+schemars = "0.8"

@@ -205,6 +205,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "dyn-clone"
+version = "1.0.20"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0881ea181b1df73ff77ffaaf9c7544ecc11e82fba9b5f27b262a3c73a332555"
+
+[[package]]
 name = "encoding_rs"
 version = "0.8.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -850,6 +856,7 @@ dependencies = [
  "mch-gate",
  "mch-ledger",
  "mch-loop",
+ "mch-mcp",
  "mch-memory",
  "mch-scope",
  "mch-snapshot",
@@ -857,6 +864,77 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "mch-dsh"
+version = "0.0.1"
+dependencies = [
+ "mch-dsh-agent",
+ "mch-dsh-cordis",
+ "mch-dsh-dynamic",
+ "mch-dsh-llm",
+]
+
+[[package]]
+name = "mch-dsh-agent"
+version = "0.0.1"
+dependencies = [
+ "async-trait",
+ "futures",
+ "mch-dsh-cordis",
+ "mch-dsh-llm",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "mch-dsh-cordis"
+version = "0.0.1"
+dependencies = [
+ "async-trait",
+ "futures",
+ "schemars",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "mch-dsh-dynamic"
+version = "0.0.1"
+dependencies = [
+ "async-trait",
+ "futures",
+ "mch-dsh-cordis",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "mch-dsh-llm"
+version = "0.0.1"
+dependencies = [
+ "async-trait",
+ "futures",
+ "mch-dsh-cordis",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "uuid",
 ]
 
 [[package]]
@@ -885,6 +963,7 @@ dependencies = [
  "futures",
  "mch-gate",
  "mch-ledger",
+ "mch-mcp",
  "mch-scope",
  "mch-snapshot",
  "mch-transport",
@@ -904,6 +983,7 @@ version = "0.0.1"
 dependencies = [
  "async-trait",
  "futures",
+ "mch-transport",
  "reqwest",
  "serde",
  "serde_json",
@@ -939,6 +1019,7 @@ dependencies = [
  "git2",
  "serde",
  "serde_json",
+ "tempfile",
  "thiserror 2.0.21",
  "tokio",
  "tracing",
@@ -1434,6 +1515,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "schemars"
+version = "0.8.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3fbf2ae1b8bc8e02df939598064d22402220cd5bbcca1c76f7d6a310974d5615"
+dependencies = [
+ "dyn-clone",
+ "schemars_derive",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "schemars_derive"
+version = "0.8.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "32e265784ad618884abaea0600a9adf15393368d840e0222d101a072f3f7534d"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde_derive_internals",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1490,6 +1595,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
+]
+
+[[package]]
+name = "serde_derive_internals"
+version = "0.29.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18d26a20a969b9e3fdf2fc2d9f21eda6c40e2de84c9408bb5d3b05d499aae711"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
 ]
 
 [[package]]

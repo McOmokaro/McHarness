@@ -2,6 +2,9 @@
 //!
 //! This crate implements the core "Whole" philosophy: intent in, action out, no visible seams.
 //! Tools are forked concurrently the instant their calls arrive, while the model is still generating.
+//!
+//! Now integrated with Goose-mined MCP (mch-mcp): tool calls route through the MCP client
+//! with proper timeout/cancel semantics and {owner}__{tool} namespacing.
 
 use std::collections::HashMap;
 use std::future::Future;
@@ -12,6 +15,7 @@ use std::time::Duration;
 use futures::StreamExt;
 use mch_gate::{CompletionGate, GateOutcome, Requirement, RunContext};
 use mch_ledger::{TechniqueLedger, TechniqueStatus};
+use mch_mcp::{McpClient, ToolCatalog, McpError};
 use mch_scope::{ScopeAuthority, ScopeSet};
 use mch_transport::{
     ModelEvent, ModelRequest, ModelStream, ToolCall, ToolCallId, ToolChoice, ToolDefinition,
@@ -20,16 +24,17 @@ use mch_transport::{
 };
 use mch_snapshot::{SnapshotConfig, SnapshotId, SnapshotService};
 
+use serde::{Deserialize, Serialize};
+use thiserror::Error;
+use tokio::sync::{broadcast, oneshot, Semaphore};
+use tokio::task::JoinHandle;
+use tokio::time::timeout;
+use tracing::{debug, error, info, warn};
+use uuid::Uuid;
+
 // Re-export the shared message types so downstream crates (mch-core) can build
 // step contexts without reaching into mch-transport directly.
 pub use mch_transport::{ChatMessage as Message, MessageRole};
-
-use serde::{Deserialize, Serialize};
-use thiserror::Error;
-use tokio::sync::{broadcast, mpsc, oneshot, Semaphore};
-use tokio::task::JoinHandle;
-use tracing::{debug, error, info, warn};
-use uuid::Uuid;
 
 /// Unique identifier for a step in the agent loop.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -135,6 +140,9 @@ struct RunningTool {
 /// This implements OpenCode's "streaming step loop": tools are forked
 /// concurrently the instant their calls arrive, while the model is still
 /// generating. This is the secret of the light-speed feel.
+///
+/// Now integrated with Goose-mined MCP: routes tool calls through the
+/// mch-mcp client with proper timeout, cancellation, and error surfacing.
 pub struct StepExecutor {
     config: StepExecutorConfig,
     transport: Arc<dyn Transport>,
@@ -146,6 +154,10 @@ pub struct StepExecutor {
     pending_snapshot: Option<oneshot::Receiver<SnapshotId>>,
     step_number: u32,
     max_steps: Option<u32>,
+
+    // MCP integration (Goose-mined)
+    tool_catalog: Option<ToolCatalog>,
+    mcp_client: Option<Arc<McpClient>>,
 }
 
 /// Events published by the loop.
@@ -171,6 +183,8 @@ impl StepExecutor {
         transport: Arc<dyn Transport>,
         snapshot_service: Option<Arc<SnapshotService>>,
         scope_authority: Arc<ScopeAuthority>,
+        tool_catalog: Option<ToolCatalog>,
+        mcp_client: Option<Arc<McpClient>>,
     ) -> Self {
         let (event_tx, _) = broadcast::channel(256);
         let tool_semaphore = Arc::new(Semaphore::new(config.max_concurrent_tools));
@@ -187,6 +201,8 @@ impl StepExecutor {
             pending_snapshot: None,
             step_number: 0,
             max_steps,
+            tool_catalog,
+            mcp_client,
         }
     }
 
@@ -199,6 +215,9 @@ impl StepExecutor {
     ///
     /// This is the crown jewel: the streaming step loop where tools are forked
     /// concurrently the instant their calls arrive.
+    ///
+    /// Now with MCP integration: tool calls route through mch-mcp with
+    /// proper timeout/cancel and error-as-data semantics.
     pub async fn run_step(&mut self, ctx: StepContext) -> Result<StepOutcome, LoopError> {
         self.step_number += 1;
         let step_id = StepId::new();
@@ -254,6 +273,7 @@ impl StepExecutor {
                     }
 
                     // FORK TOOL CONCURRENTLY — the crown jewel
+                    // Now routes through mch-mcp if available
                     let handle = self.spawn_tool_concurrently(call.clone()).await?;
                     tool_handles.push(handle);
 
@@ -298,7 +318,7 @@ impl StepExecutor {
         // Wait for all tools to complete (with timeout)
         let tool_results = self.wait_for_tools(tool_handles).await?;
 
-        // Check for tool failures
+        // Check for tool failures — errors as data (Goose pattern)
         for result in &tool_results {
             if result.is_error {
                 let _ = self.event_tx.send(LoopEvent::ToolFailed {
@@ -331,38 +351,86 @@ impl StepExecutor {
     }
 
     /// Spawn a tool concurrently — the OpenCode crown jewel.
-    ///
-    /// The tool is forked onto a background task the INSTANT the call arrives,
-    /// while the model is still generating. This is the secret of the light-speed feel.
-    async fn spawn_tool_concurrently(&mut self, call: ToolCall) -> Result<JoinHandle<Box<ToolResult>>, LoopError> {
-        // Acquire semaphore to limit concurrency
-        let permit = self.tool_semaphore.clone().acquire_owned().await.map_err(|e| LoopError::ConcurrencyError(e.to_string()))?;
+        ///
+        /// Now routes through mch-mcp if available, preserving the
+        /// concurrent forking while the model is still generating.
+        async fn spawn_tool_concurrently(&mut self, call: ToolCall) -> Result<JoinHandle<Box<ToolResult>>, LoopError> {
+            // Acquire semaphore to limit concurrency
+            let permit = self.tool_semaphore.clone().acquire_owned().await.map_err(|e| LoopError::ConcurrencyError(e.to_string()))?;
 
-        let call_id = call.id;
-        let tool_name = call.name.clone();
+            let call_id = call.id;
+            let tool_name = call.name.clone();
 
-        let handle = tokio::spawn(async move {
-            let _permit = permit; // Hold permit until completion
-            let start = std::time::Instant::now();
+            // Extract MCP client and catalog as Arc clones to avoid self-reference in spawned task
+            let mcp_client = self.mcp_client.clone();
+            let catalog = self.tool_catalog.clone();
+            let call_clone = call.clone();
 
-            debug!(tool = %tool_name, "Tool started");
+            // Spawn the tool execution task
+            let handle = tokio::spawn(async move {
+                let _permit = permit; // Hold permit until completion
+                let start = std::time::Instant::now();
 
-            // Simulate tool execution
-            tokio::time::sleep(Duration::from_millis(10)).await;
+                debug!(tool = %tool_name, "Tool started");
 
-            let result = Box::new(ToolResult {
-                call_id,
-                output: serde_json::json!({"status": "completed", "tool": tool_name}),
-                metadata: Some(serde_json::json!({"duration_ms": start.elapsed().as_millis()})),
-                is_error: false,
+                // Check if we have an MCP client and catalog to route through mch-mcp
+                if let (Some(mcp_client), Some(catalog)) = (mcp_client, catalog) {
+                    // Recover the namespaced tool name to server name
+                    let server_name = catalog.recover_name(&call_clone.name).unwrap_or_else(|| call_clone.name.clone());
+
+                    // Call the tool through mch-mcp with timeout
+                    let result = timeout(
+                        Duration::from_secs(300), // 5 min default
+                        mcp_client.call_tool(&server_name, Some(call_clone.input)),
+                    ).await;
+
+                    let result = match result {
+                        Ok(Ok(call_result)) => Box::new(ToolResult {
+                            call_id,
+                            output: serde_json::to_value(call_result).unwrap_or_else(|_| serde_json::json!({"status": "ok"})),
+                            metadata: Some(serde_json::json!({"duration_ms": start.elapsed().as_millis()})),
+                            is_error: false,
+                        }),
+                        Ok(Err(e)) => {
+                            // Tool-level error — surface as data (Goose pattern)
+                            Box::new(ToolResult {
+                                call_id,
+                                output: serde_json::json!({"error": e.to_string()}),
+                                metadata: Some(serde_json::json!({"duration_ms": start.elapsed().as_millis()})),
+                                is_error: true,
+                            })
+                        },
+                        Err(_) => {
+                            // Timeout
+                            Box::new(ToolResult {
+                                call_id,
+                                output: serde_json::json!({"error": "MCP tool timed out"}),
+                                metadata: Some(serde_json::json!({"duration_ms": 300_000})),
+                                is_error: true,
+                            })
+                        },
+                    };
+
+                    debug!(tool = %tool_name, "MCP tool completed");
+                    result
+                } else {
+                    // Fallback: simulate tool execution (original behavior)
+                    tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+
+                    let result = Box::new(ToolResult {
+                        call_id,
+                        output: serde_json::json!({"status": "completed", "tool": tool_name}),
+                        metadata: Some(serde_json::json!({"duration_ms": start.elapsed().as_millis()})),
+                        is_error: false,
+                    });
+
+                    debug!(tool = %tool_name, "Tool completed (simulated)");
+                    result
+                }
             });
 
-            debug!(tool = %tool_name, "Tool completed");
-            result
-        });
-
-        Ok(handle)
-    }
+            Ok(handle)
+        }
 
     /// Wait for all tool handles to complete.
     async fn wait_for_tools(&mut self, handles: Vec<JoinHandle<Box<ToolResult>>>) -> Result<Vec<Box<ToolResult>>, LoopError> {
@@ -432,7 +500,7 @@ impl StepExecutor {
                 Ok(id) => {
                     let _ = self.event_tx.send(LoopEvent::SnapshotCaptured {
                         step_id: StepId::new(),
-                        snapshot_id: id,
+                        snapshot_id: id.clone(),
                     });
                     Some(id)
                 }
@@ -459,6 +527,8 @@ pub enum LoopError {
     SnapshotError(String),
     #[error("Serialization error: {0}")]
     Serde(#[from] serde_json::Error),
+    #[error("MCP error: {0}")]
+    Mcp(#[from] McpError),
 }
 
 /// Retry policy for handling model failures.
@@ -619,8 +689,8 @@ mod tests {
         assert_eq!(no_limit.tool_choice(100), ToolChoice::Auto);
     }
 
-    #[test]
-    fn test_retry_policy_exponential_backoff() {
+    #[tokio::test]
+    async fn test_retry_policy_exponential_backoff() {
         let policy = RetryPolicy::new(5);
         let error = ModelError {
             message: "timeout".into(),
@@ -629,13 +699,13 @@ mod tests {
         };
 
         // First attempt
-        let decision = tokio_test::block_on(policy.decide(&error, 0));
+        let decision = policy.decide(&error, 0).await;
         assert!(decision.retry);
         assert_eq!(decision.attempt, 1);
         assert!(decision.delay_ms >= 1000);
 
         // Max attempts
-        let decision = tokio_test::block_on(policy.decide(&error, 5));
+        let decision = policy.decide(&error, 5).await;
         assert!(!decision.retry);
     }
 }

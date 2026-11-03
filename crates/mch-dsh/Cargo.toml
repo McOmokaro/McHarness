@@ -1,0 +1,12 @@
+[package]
+name = "mch-dsh"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "McHarness DSH integration — Cordis kernel, BYOK LLM, Super-Agent routing (forged from DeepSeek Harness)"
+
+[dependencies]
+mch-dsh-cordis = { path = "../mch-dsh-cordis" }
+mch-dsh-llm = { path = "../mch-dsh-llm" }
+mch-dsh-agent = { path = "../mch-dsh-agent" }
+mch-dsh-dynamic = { path = "../mch-dsh-dynamic" }

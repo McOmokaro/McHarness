@@ -5,6 +5,7 @@
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::str::FromStr;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
@@ -35,19 +36,22 @@ pub enum SnapshotError {
     Anyhow(#[from] anyhow::Error),
 }
 
-/// Snapshot ID (content-addressed).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub struct SnapshotId(pub Uuid);
+/// Snapshot ID (a content-addressed git tree OID, hex-encoded).
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct SnapshotId(pub String);
 
 impl SnapshotId {
     pub fn new() -> Self {
-        Self(Uuid::new_v4())
+        Self(Uuid::new_v4().to_string())
     }
 
     pub fn from_git_oid(oid: Oid) -> Self {
-        // Convert git OID to UUID for our internal use
-        let bytes: [u8; 16] = oid.as_bytes().try_into().unwrap_or([0; 16]);
-        Self(Uuid::from_bytes(bytes))
+        Self(oid.to_string())
+    }
+
+    /// Recover the git tree OID this snapshot names, if it is one.
+    pub fn to_git_oid(&self) -> Option<Oid> {
+        Oid::from_str(&self.0).ok()
     }
 }
 
@@ -218,20 +222,59 @@ impl SnapshotService {
         }
     }
 
-    /// Capture current filesystem state.
+    /// Capture current filesystem state as a content-addressed git tree.
+    ///
+    /// Stages the working tree into the index and writes it, so the returned
+    /// id names a real tree object in the project repository — the same trick
+    /// OpenCode uses (a `git stash`-style tree with no commit).
     pub async fn capture(&self) -> Result<SnapshotId, SnapshotError> {
         if !self.config.enabled {
             return Err(SnapshotError::Disabled);
         }
 
-        // For now, return a dummy snapshot ID
-        // Real implementation would capture git tree
-        Ok(SnapshotId::new())
+        let repo = Repository::open(&self.config.project_root).map_err(SnapshotError::Git)?;
+        let mut index = repo.index().map_err(SnapshotError::Git)?;
+        index
+            .add_all(["*"].iter(), git2::IndexAddOption::DEFAULT, None)
+            .map_err(SnapshotError::Git)?;
+        index.write().map_err(SnapshotError::Git)?;
+        let tree_id = index.write_tree().map_err(SnapshotError::Git)?;
+        Ok(SnapshotId::from_git_oid(tree_id))
     }
 
     /// List files changed between two snapshots.
     pub async fn files(&self, input: CompareInput) -> Result<Vec<String>, SnapshotError> {
-        Ok(vec![])
+        let repo = Repository::open(&self.config.project_root).map_err(SnapshotError::Git)?;
+        let from = input
+            .from
+            .to_git_oid()
+            .ok_or_else(|| SnapshotError::NotFound(input.from.0.clone()))?;
+        let to = input
+            .to
+            .to_git_oid()
+            .ok_or_else(|| SnapshotError::NotFound(input.to.0.clone()))?;
+
+        let from_tree = repo.find_tree(from).map_err(SnapshotError::Git)?;
+        let to_tree = repo.find_tree(to).map_err(SnapshotError::Git)?;
+
+        let diff = repo
+            .diff_tree_to_tree(Some(&from_tree), Some(&to_tree), None)
+            .map_err(SnapshotError::Git)?;
+
+        let mut names = Vec::new();
+        diff.foreach(
+            &mut |delta, _progress| {
+                if let Some(path) = delta.new_file().path().or_else(|| delta.old_file().path()) {
+                    names.push(path.to_string_lossy().to_string());
+                }
+                true
+            },
+            None,
+            None,
+            None,
+        )
+        .map_err(SnapshotError::Git)?;
+        Ok(names)
     }
 
     /// Generate diffs between two snapshots.

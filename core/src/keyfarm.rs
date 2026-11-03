@@ -48,8 +48,8 @@ impl KeyFarm {
     pub fn resolve(&mut self, preference: &str, domain: Option<&str>) -> Result<(String, String)> {
         if preference == "auto" {
             let domain = domain.unwrap_or("general");
-            if let Some(ranked) = self.leaderboards.get(domain) {
-                for model in ranked {
+            if let Some(ranked) = self.leaderboards.get(domain).cloned() {
+                for model in &ranked {
                     if let Some(key) = self.find_key_for(model)? {
                         return Ok((model.clone(), key));
                     }
@@ -63,8 +63,8 @@ impl KeyFarm {
 
         // Fallback: next best proven model for the domain.
         if let Some(domain) = domain {
-            if let Some(ranked) = self.leaderboards.get(domain) {
-                for model in ranked {
+            if let Some(ranked) = self.leaderboards.get(domain).cloned() {
+                for model in &ranked {
                     if let Some(key) = self.find_key_for(model)? {
                         return Ok((model.clone(), key));
                     }

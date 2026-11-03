@@ -92,6 +92,7 @@ pub fn tool_owner(tool: &Tool) -> Option<String> {
         .map(str::to_string)
 }
 
+#[derive(Clone)]
 pub struct CatalogEntry {
     pub tool: Tool,
     /// The tool name as the owning server knows it (no `{owner}__` prefix).
@@ -99,6 +100,7 @@ pub struct CatalogEntry {
     pub owner: String,
 }
 
+#[derive(Clone)]
 pub struct ToolCatalog {
     entries: Vec<CatalogEntry>,
     by_name: HashMap<String, usize>,
@@ -161,6 +163,15 @@ impl ToolCatalog {
 
     pub fn tools(&self) -> Vec<Tool> {
         self.entries.iter().map(|e| e.tool.clone()).collect()
+    }
+
+    /// Convert to mch-transport ToolDefinition for the agent loop.
+    pub fn to_tool_definitions(&self) -> Vec<mch_transport::ToolDefinition> {
+        self.entries.iter().map(|e| mch_transport::ToolDefinition {
+            name: e.tool.name.clone(),
+            description: e.tool.description.clone().unwrap_or_default(),
+            input_schema: e.tool.input_schema.clone(),
+        }).collect()
     }
 
     pub fn tools_for(&self, owner: &str) -> Vec<Tool> {

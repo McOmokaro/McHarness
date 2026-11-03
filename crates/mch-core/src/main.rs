@@ -10,9 +10,13 @@ use std::sync::Arc;
 use mch_gate::{CompletionGate, GateOutcome, Requirement, RunContext};
 use mch_ledger::{TechniqueLedger, TechniqueStatus};
 use mch_loop::{StepExecutor, StepExecutorConfig};
+use mch_mcp::{McpClient, ToolCatalog, DEFAULT_TIMEOUT_SECS, duplex_pair};
 use mch_scope::{ScopeAuthority, ScopeSet};
 use mch_transport::{TransportConfig, TransportFactory};
 use mch_snapshot::SnapshotConfig;
+use std::collections::HashMap;
+use std::time::Duration;
+use tokio::time::timeout;
 
 const SCOPE_PATH: &str = "mch.scope.toml";
 const LEDGER_PATH: &str = "mch.ledger.json";
@@ -142,7 +146,7 @@ async fn cmd_brief(target: Option<&str>) -> Result<String, String> {
 /// Demo command: run the streaming agent loop with mocked transport.
 async fn cmd_loop() -> Result<String, String> {
     println!("Starting McHarness streaming agent loop demo...");
-    println!("This demonstrates the OpenCode-mined streaming step loop.");
+    println!("This demonstrates the OpenCode-mined streaming step loop with Goose-mined MCP integration.");
     println!();
 
     // Initialize components
@@ -155,7 +159,8 @@ cidrs = ["127.0.0.1/32"]
 [out_of_scope]
 hosts = []
 cidrs = []
-"#.to_string()
+"#
+            .to_string()
         });
 
     let scope_authority = ScopeAuthority::from_toml(&scope_text)
@@ -168,21 +173,81 @@ cidrs = []
         snapshot_enabled: true,
     };
 
-    // Create transport (will use HTTP fallback for demo)
-    let transport_config = TransportConfig::default();
-    let transport = TransportFactory::create(transport_config);
+    // The model transport drives inference in the step loop.
+    let transport = TransportFactory::create(TransportConfig::default());
+
+    // The MCP transport (Goose-mined in-process duplex) drives tool execution.
+    let (mcp_transport, (_server_read, _server_write)) = duplex_pair();
+
+    // Initialize MCP client and ToolCatalog (Goose-mined integration)
+    let mcp_client = McpClient::connect(
+        mcp_transport,
+        Duration::from_secs(DEFAULT_TIMEOUT_SECS),
+    )
+    .await
+    .map_err(|e| format!("MCP client connect failed: {}", e))?;
+
+    // Build an example ToolCatalog with namespaced tools
+    let sources = vec![
+        (
+            "developer".to_string(),
+            vec![mch_mcp::namespace_tool(
+                "developer",
+                mch_mcp::message::Tool {
+                    name: "shell".to_string(),
+                    description: Some("Execute shell commands".to_string()),
+                    input_schema: serde_json::json!({
+                        "type": "object",
+                        "properties": {
+                            "command": { "type": "string" }
+                        },
+                        "required": ["command"]
+                    }),
+                    meta: None,
+                },
+                false,
+            )],
+        ),
+        (
+            "filesystem".to_string(),
+            vec![mch_mcp::namespace_tool(
+                "filesystem",
+                mch_mcp::message::Tool {
+                    name: "read_file".to_string(),
+                    description: Some("Read a file".to_string()),
+                    input_schema: serde_json::json!({
+                        "type": "object",
+                        "properties": {
+                            "path": { "type": "string" }
+                        },
+                        "required": ["path"]
+                    }),
+                    meta: None,
+                },
+                false,
+            )],
+        ),
+    ];
+
+    let tool_catalog = ToolCatalog::build(sources);
+    println!("MCP ToolCatalog built with {} tools:", tool_catalog.entries().len());
+    for entry in tool_catalog.entries() {
+        println!("  - {} (owner: {})", entry.tool.name, entry.owner);
+    }
 
     // Create snapshot service
     let snapshot_config = SnapshotConfig::default();
     let snapshot_service = mch_snapshot::create_snapshot_service(snapshot_config)
         .map_err(|e| e.to_string())?;
 
-    // Create step executor
+    // Create step executor with MCP integration
     let mut executor = StepExecutor::new(
         config,
         transport,
         Some(snapshot_service),
         Arc::new(scope_authority),
+        Some(tool_catalog.clone()),
+        Some(Arc::new(mcp_client)),
     );
 
     // Subscribe to events
@@ -190,7 +255,7 @@ cidrs = []
 
     // Run a few demo steps
     for step in 1..=3 {
-        println!("=== Step {step} ===");
+        println!("\n=== Step {} ===", step);
 
         let ctx = mch_loop::StepContext {
             step_id: mch_loop::StepId::new(),
@@ -199,12 +264,12 @@ cidrs = []
             agent_id: "demo-agent".to_string(),
             model_id: "demo-model".to_string(),
             max_steps: Some(5),
-            tools: vec![],
-            system_prompt: "You are a helpful assistant.".to_string(),
+            tools: tool_catalog.to_tool_definitions(),
+            system_prompt: "You are a helpful assistant with MCP tools.".to_string(),
             messages: vec![
                 mch_loop::Message {
                     role: mch_loop::MessageRole::User,
-                    content: format!("Demo step {step}"),
+                    content: format!("Demo step {} - use a tool if needed", step),
                     tool_calls: None,
                     tool_call_id: None,
                 }
@@ -231,7 +296,7 @@ cidrs = []
         }
     }
 
-    println!("\nDemo complete. The streaming agent loop is working!");
+    println!("\nDemo complete. The streaming agent loop with MCP integration is working!");
     Ok("Loop demo completed".to_string())
 }
 

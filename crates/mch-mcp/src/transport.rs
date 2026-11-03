@@ -148,11 +148,9 @@ impl StdioTransport {
 impl Transport for StdioTransport {
     async fn request(&self, method: &str, params: Option<Value>) -> McpResult<Value> {
         match self.inner.request(method, params).await {
-            Err(McpError::TransportClosed) => Err(ProcessExit::new(
-                self.stderr().await,
-                format!("request `{method}` failed"),
-            )
-            .into()),
+            Err(McpError::TransportClosed) => Err(McpError::ProcessExit(
+                ProcessExit::new(self.stderr().await, format!("request `{method}` failed")).into()
+            )),
             other => other,
         }
     }
@@ -164,17 +162,20 @@ impl Transport for StdioTransport {
 
 /// Spawn an MCP server as a child process and connect over its stdio.
 ///
-/// The `env` block is filtered through [`env::sanitize_env`] first: a config
+/// The `env` block is filtered through [`crate::env::sanitize_env`] first: a config
 /// cannot set `LD_PRELOAD` or `NODE_OPTIONS`.
 pub async fn spawn_stdio(
     cmd: &str,
     args: &[String],
     envs: HashMap<String, String>,
 ) -> McpResult<StdioTransport> {
+    use std::process::Stdio;
+    use tokio::process::Command;
+
     let mut command = Command::new(cmd);
     command
         .args(args)
-        .envs(env::sanitize_env(envs))
+        .envs(crate::env::sanitize_env(envs))
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
@@ -232,7 +233,7 @@ pub struct HttpTransport {
     client: reqwest::Client,
     uri: String,
     headers: HashMap<String, String>,
-    next_id: AtomicU64,
+    next_id: std::sync::atomic::AtomicU64,
 }
 
 impl HttpTransport {
@@ -244,7 +245,7 @@ impl HttpTransport {
             client,
             uri: uri.into(),
             headers,
-            next_id: AtomicU64::new(0),
+            next_id: std::sync::atomic::AtomicU64::new(0),
         })
     }
 
@@ -286,9 +287,9 @@ impl HttpTransport {
 #[async_trait]
 impl Transport for HttpTransport {
     async fn request(&self, method: &str, params: Option<Value>) -> McpResult<Value> {
-        let id = self.next_id.fetch_add(1, Ordering::Relaxed) + 1;
-        let req = JsonRpcRequest {
-            jsonrpc: JSONRPC_VERSION.to_string(),
+        let id = self.next_id.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1;
+        let req = crate::message::JsonRpcRequest {
+            jsonrpc: crate::message::JSONRPC_VERSION.to_string(),
             id,
             method: method.to_string(),
             params,
@@ -303,11 +304,11 @@ impl Transport for HttpTransport {
         let payload = if looks_like_sse {
             parse_sse_events(&text)
                 .into_iter()
-                .filter_map(|d| serde_json::from_str::<JsonRpcResponse>(&d).ok())
+                .filter_map(|d| serde_json::from_str::<crate::message::JsonRpcResponse>(&d).ok())
                 .find(|r| r.id == Some(id))
                 .ok_or(McpError::UnexpectedResponse)?
         } else {
-            serde_json::from_str::<JsonRpcResponse>(&text)?
+            serde_json::from_str::<crate::message::JsonRpcResponse>(&text)?
         };
 
         if let Some(err) = payload.error {
@@ -320,8 +321,8 @@ impl Transport for HttpTransport {
     }
 
     async fn notify(&self, method: &str, params: Option<Value>) -> McpResult<()> {
-        let note = JsonRpcNotification {
-            jsonrpc: JSONRPC_VERSION.to_string(),
+        let note = crate::message::JsonRpcNotification {
+            jsonrpc: crate::message::JSONRPC_VERSION.to_string(),
             method: method.to_string(),
             params,
         };
@@ -362,7 +363,7 @@ mod tests {
 
     /// An in-memory "server": answers every request with a fixed result.
     async fn echo_server(mut server_rx: DuplexStream, mut server_tx: DuplexStream, result: Value) {
-        let mut reader = BufReader::new(&mut server_rx);
+        let mut reader = tokio::io::BufReader::new(&mut server_rx);
         let mut line = String::new();
         loop {
             line.clear();
@@ -370,7 +371,7 @@ mod tests {
             if n == 0 {
                 break;
             }
-            let req: JsonRpcRequest = match serde_json::from_str(line.trim()) {
+            let req: crate::message::JsonRpcRequest = match serde_json::from_str(line.trim()) {
                 Ok(r) => r,
                 Err(_) => continue,
             };
@@ -397,10 +398,10 @@ mod tests {
         tokio::spawn(async move {
             let mut server_rx = server_read;
             let mut server_tx = server_write;
-            let mut reader = BufReader::new(&mut server_rx);
+            let mut reader = tokio::io::BufReader::new(&mut server_rx);
             let mut line = String::new();
             reader.read_line(&mut line).await.unwrap();
-            let req: JsonRpcRequest = serde_json::from_str(line.trim()).unwrap();
+            let req: crate::message::JsonRpcRequest = serde_json::from_str(line.trim()).unwrap();
             // Emit a notification first (no id), then the real response.
             let _ = server_tx
                 .write_all(b"{\"jsonrpc\":\"2.0\",\"method\":\"notifications/progress\"}\n")
@@ -423,10 +424,10 @@ mod tests {
         tokio::spawn(async move {
             let mut server_rx = server_read;
             let mut server_tx = server_write;
-            let mut reader = BufReader::new(&mut server_rx);
+            let mut reader = tokio::io::BufReader::new(&mut server_rx);
             let mut line = String::new();
             reader.read_line(&mut line).await.unwrap();
-            let req: JsonRpcRequest = serde_json::from_str(line.trim()).unwrap();
+            let req: crate::message::JsonRpcRequest = serde_json::from_str(line.trim()).unwrap();
             let resp = json!({ "jsonrpc": "2.0", "id": req.id, "error": { "code": -32601, "message": "no such method" } });
             let _ = server_tx.write_all(format!("{resp}\n").as_bytes()).await;
             let _ = server_tx.flush().await;
