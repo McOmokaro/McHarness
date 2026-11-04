@@ -18,6 +18,7 @@ members = [
     "crates/mch-dsh-agent",
     "crates/mch-dsh-dynamic",
     "crates/mch-dsh",
+    "crates/mch-rea",
 ]
 default-members = [
     "crates/mch-scope",
@@ -36,6 +37,7 @@ default-members = [
     "crates/mch-dsh-agent",
     "crates/mch-dsh-dynamic",
     "crates/mch-dsh",
+    "crates/mch-rea",
 ]
 
 [workspace.package]

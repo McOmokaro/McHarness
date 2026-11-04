@@ -10,7 +10,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [ ] **Stageshow (benjitaylor)** — Faux UI stills, animations, and bento grids for Anti-Slop frontend generation.
 
 ## Phase 2: The Cybersecurity Department (The Weapons) — `in progress`
-- [ ] **REA (morluto/rea)** — `in progress`: Reverse-engineer the behavioral analysis and executable inspection loop.
+- [ ] **REA (morluto/rea)** — `forged` (mch-rea): Reverse-engineer the behavioral analysis and executable inspection loop.
 - [ ] **Cloudflare security-audit-skill** — `in progress`: Extract the multi-stage audit pipeline and machine-readable vulnerability schema.
 - [ ] **Hexstrike** — `in progress`: Forge the offensive tooling orchestration (scoped).
 - [ ] **Bug-Bounty Agents** — `in progress`: Integrate fail-closed scope authority and target discovery.
