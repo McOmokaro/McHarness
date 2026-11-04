@@ -9,12 +9,23 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [ ] **Paperclip** — Extract multi-agent orchestration, budgets, and approvals.
 - [ ] **Stageshow (benjitaylor)** — Faux UI stills, animations, and bento grids for Anti-Slop frontend generation.
 
+## Phase 1.5: The Brain & Human Simulation (The Mind & Hands)
+- [ ] **Severian / LycheeMem** — `queued` (mch-brain): SQLite + LanceDB hybrid memory graph; semantic/episodic/procedural nodes; typed edges (derived_from, evidence_of, supersedes); Curator daemon for fact extraction and deduplication.
+- [ ] **OpenGCUA / OmniPilot** — `queued` (mch-browser): Native CDP client via chromiumoxide; Accessibility Tree as primary "eyes"; Vision LLM fallback for canvas/webgl; code-execution-as-action pattern; human-in-the-loop permission system.
+- [ ] **OpAgent / EvoCUA** — `queued` (mch-browser hardening): Browser navigation loops; OSWorld task completion logic; cross-platform GUI automation.
+
 ## Phase 2: The Cybersecurity Department (The Weapons) — `in progress`
-- [ ] **REA (morluto/rea)** — `forged` (mch-rea): Reverse-engineer the behavioral analysis and executable inspection loop.
+- [x] **REA (morluto/rea)** — `forged` (mch-rea): Reverse-engineer the behavioral analysis and executable inspection loop. Native Rust MCP client with 22 typed tool wrappers (open_binary, decompile_function, get_call_graph, find_xrefs, search_strings, Frida, ADB, evidence bundles). Dual transport (stdio + WebSocket).
 - [ ] **Cloudflare security-audit-skill** — `in progress`: Extract the multi-stage audit pipeline and machine-readable vulnerability schema.
 - [ ] **Hexstrike** — `in progress`: Forge the offensive tooling orchestration (scoped).
 - [ ] **Bug-Bounty Agents** — `in progress`: Integrate fail-closed scope authority and target discovery.
 - [ ] **OpenWorker** — `in progress`: Forge the self-waking task execution and standing approvals.
+
+## Phase 2.5: The Overnight Agent (The Autonomous Operator)
+- [ ] **mch-comms** — `queued`: Telegram, Email, Calendar integrations; deterministic routing; local/cheap model classification.
+- [ ] **mch-trade** — `queued`: Binance API + mch-scope risk guards; economic engine for overnight trades.
+- [ ] **mch-hack** — `queued`: Autonomous hackathon execution; project triage; submission pipeline.
+- [ ] **mch-report** — `queued`: Markdown newspaper + TTS audio generation; low-fuel compilation.
 
 ## Phase 3: The Data & UI Layer (The Senses)
 - [ ] **Graphify** — Extract local source-code-to-knowledge-map conversion.
