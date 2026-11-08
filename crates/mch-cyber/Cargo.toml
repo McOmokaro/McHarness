@@ -1,0 +1,36 @@
+[package]
+name = "mch-cyber"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "McHarness Cybersecurity — Unified offensive/defensive security operations (forged from Spotlight, BugBountyFramework, CTF-agent)"
+
+[dependencies]
+# Workspace dependencies
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+async-trait.workspace = true
+anyhow.workspace = true
+schemars.workspace = true
+uuid.workspace = true
+futures.workspace = true
+rand.workspace = true
+chrono.workspace = true
+ed25519-dalek.workspace = true
+sha2.workspace = true
+# External dependencies
+tokio-stream = { version = "0.1", features = ["time"] }
+tokio-util = "0.7"
+dashmap = "6"
+parking_lot = "0.12"
+url = "2"
+reqwest = { workspace = true, features = ["json", "rustls-tls", "stream"] }
+base64 = "0.22"
+hex = "0.4"
+# For sandboxing
+tempfile = "3"
+# For CTFd integration
+regex = "1"

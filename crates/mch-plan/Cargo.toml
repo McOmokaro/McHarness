@@ -1,0 +1,31 @@
+[package]
+name = "mch-plan"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Workflow orchestration from DSH workflow-lite pattern: Canvas → compiled plan prompt → model executes. Supports branching, loops, parallelism, merge, fallback. Pipeline: Probe → pattern analysis → generation → API validation → artifact output. Safe analogue for McHarness pipelines with mch-scope fail-closed gates."
+
+[dependencies]
+mch-scope = { path = "../mch-scope" }
+mch-gate = { path = "../mch-gate" }
+mch-loop = { path = "../mch-loop" }
+mch-core = { path = "../mch-core" }
+mch-transport = { path = "../mch-transport" }
+mch-mcp = { path = "../mch-mcp" }
+mch-snapshot = { path = "../mch-snapshot" }
+mch-ledger = { path = "../mch-ledger" }
+mch-memory = { path = "../mch-memory" }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["full", "rt-multi-thread", "macros"] }
+tokio-stream = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+uuid = { workspace = true, features = ["v4", "serde"] }
+futures = { workspace = true }
+anyhow = { workspace = true }
+schemars = { workspace = true }
+zip = "0.6"
+walkdir = "2"
+async-trait = { workspace = true }

@@ -9,3 +9,4 @@ description = "Machine-checkable completion gates for McHarness (mined from pent
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
+rand = { version = "0.8", features = ["std"] }

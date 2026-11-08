@@ -4,6 +4,15 @@
 //! three-state verdicts, deny-wins matching, placeholder-scope refusal, and a
 //! pre-execution interceptor that runs on ALL tool payloads (the source only
 //! hooked Bash commands).
+//!
+//! Hardened with Spotlight (CMUL8/spotlight) safety architecture:
+//! - **ConsensusKernel**: Multi-agent consensus for scope disagreements
+//! - **WardenDetector**: Prompt injection and backdoor detection
+//! - **AttestationSigner**: Ed25519 cryptographic attestation for scope decisions
+
+pub mod attestation;
+pub mod consensus;
+pub mod warden;
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -19,9 +28,15 @@ pub enum ScopeError {
     Parse(String),
     #[error("execution denied: {0}")]
     Denied(String),
+    #[error("consensus failed: {0}")]
+    ConsensusFailed(String),
+    #[error("warden detection: {0}")]
+    WardenAlert(String),
+    #[error("attestation failed: {0}")]
+    AttestationFailed(String),
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ScopeVerdict {
     InScope,
@@ -207,7 +222,10 @@ fn parse_cidr(s: &str) -> Result<(IpAddr, u8), ScopeError> {
         .trim()
         .parse()
         .map_err(|_| ScopeError::Parse(format!("bad cidr address: {s}")))?;
-    let max = match addr { IpAddr::V4(_) => 32u8, IpAddr::V6(_) => 128u8 };
+    let max = match addr {
+        IpAddr::V4(_) => 32u8,
+        IpAddr::V6(_) => 128u8,
+    };
     let prefix: u8 = prefix
         .trim()
         .parse()
@@ -219,7 +237,9 @@ fn parse_cidr(s: &str) -> Result<(IpAddr, u8), ScopeError> {
 }
 
 fn ip_in_cidr(host: &str, net: IpAddr, prefix: u8) -> bool {
-    let Ok(ip) = host.parse::<IpAddr>() else { return false };
+    let Ok(ip) = host.parse::<IpAddr>() else {
+        return false;
+    };
     match (ip, net) {
         (IpAddr::V4(a), IpAddr::V4(b)) => {
             let shift = 32 - prefix.min(32) as u32;
@@ -260,6 +280,11 @@ fn is_hostish(s: &str) -> bool {
         None => false,
     }
 }
+
+// Re-export hardened modules
+pub use attestation::{AttestationSigner, SignedScopeDecision, ScopeAttestation};
+pub use consensus::{ConsensusKernel, ConsensusConfig, ConsensusVerdict, AgentVote};
+pub use warden::{WardenDetector, WardenConfig, ThreatClassification, DetectionResult};
 
 #[cfg(test)]
 mod tests {

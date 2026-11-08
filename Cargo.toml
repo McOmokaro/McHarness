@@ -19,6 +19,10 @@ members = [
     "crates/mch-dsh-dynamic",
     "crates/mch-dsh",
     "crates/mch-rea",
+    "crates/mch-brain",
+    "crates/mch-browser",
+    "crates/mch-cyber",
+    "crates/mch-kali",
 ]
 default-members = [
     "crates/mch-scope",
@@ -38,6 +42,10 @@ default-members = [
     "crates/mch-dsh-dynamic",
     "crates/mch-dsh",
     "crates/mch-rea",
+    "crates/mch-brain",
+    "crates/mch-browser",
+    "crates/mch-cyber",
+    "crates/mch-kali",
 ]
 
 [workspace.package]
@@ -66,3 +74,10 @@ rand = "0.8"
 async-trait = "0.1"
 anyhow = "1"
 schemars = "0.8"
+ed25519-dalek = "2"
+rand_core = "0.6"
+zeroize = "1"
+# sarif = { version = "0.3", features = ["serde"] }  # Not available on crates.io
+regex = "1"
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"

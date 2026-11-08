@@ -9,3 +9,9 @@ description = "Fail-closed scope authority for McHarness (mined from pentest-age
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
+ed25519-dalek.workspace = true
+rand_core.workspace = true
+zeroize.workspace = true
+rand = { version = "0.8", features = ["std"] }
+regex.workspace = true
+sha2.workspace = true

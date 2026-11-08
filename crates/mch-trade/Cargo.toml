@@ -1,0 +1,27 @@
+[package]
+name = "mch-trade"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Binance API integration with mch-scope risk guards (stop-loss, max trade limits). Part of Overnight Agent economic engine."
+
+[dependencies]
+# Workspace dependencies
+mch-scope = { path = "../mch-scope" }
+mch-gate = { path = "../mch-gate" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+reqwest.workspace = true
+tracing.workspace = true
+async-trait.workspace = true
+anyhow.workspace = true
+schemars.workspace = true
+uuid.workspace = true
+futures.workspace = true
+rand.workspace = true
+chrono.workspace = true
+rust_decimal = "1.35"
+hmac = "0.12"
+sha2 = { workspace = true }

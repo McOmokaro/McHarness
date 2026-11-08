@@ -10,22 +10,27 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [ ] **Stageshow (benjitaylor)** — Faux UI stills, animations, and bento grids for Anti-Slop frontend generation.
 
 ## Phase 1.5: The Brain & Human Simulation (The Mind & Hands)
-- [ ] **Severian / LycheeMem** — `queued` (mch-brain): SQLite + LanceDB hybrid memory graph; semantic/episodic/procedural nodes; typed edges (derived_from, evidence_of, supersedes); Curator daemon for fact extraction and deduplication.
-- [ ] **OpenGCUA / OmniPilot** — `queued` (mch-browser): Native CDP client via chromiumoxide; Accessibility Tree as primary "eyes"; Vision LLM fallback for canvas/webgl; code-execution-as-action pattern; human-in-the-loop permission system.
+- [x] **Severian / LycheeMem** — `forged` (mch-brain): SQLite + vector hybrid memory graph; semantic/episodic/procedural nodes; typed edges (derived_from, evidence_of, supersedes); Curator daemon for fact extraction and deduplication; 5-stage pipeline.
+- [x] **OpenGCUA / OmniPilot** — `forged` (mch-browser): Native CDP client via chromiumoxide 0.9; Accessibility Tree as primary "eyes"; Screenshot observation mode; human-in-the-loop permission system (Low/Medium/High/Critical risk).
 - [ ] **OpAgent / EvoCUA** — `queued` (mch-browser hardening): Browser navigation loops; OSWorld task completion logic; cross-platform GUI automation.
 
 ## Phase 2: The Cybersecurity Department (The Weapons) — `in progress`
 - [x] **REA (morluto/rea)** — `forged` (mch-rea): Reverse-engineer the behavioral analysis and executable inspection loop. Native Rust MCP client with 22 typed tool wrappers (open_binary, decompile_function, get_call_graph, find_xrefs, search_strings, Frida, ADB, evidence bundles). Dual transport (stdio + WebSocket).
+- [x] **Spotlight (CMUL8/spotlight)** — `forged` (mch-cyber + mch-scope + mch-gate): Consensus Kernel (independence + tiered promotion), Warden (prompt-injection / backdoor detection), Ed25519 non-repudiation signing, sandbox + evidence bundles.
+- [x] **BugBountyFramework (h4ckologic/bughunter-ai)** — `forged` (mch-cyber::hunt): 9-phase hunt state machine, credential vault, auth automation (B2C/OAuth), Burp MCP bridge, configurable severity profiles, attack-chain correlation, report generator.
+- [x] **CTF-agent (verialabs/ctf-agent)** — `forged` (mch-cyber::swarm): parallel racing architecture, multi-model coordinators, quota fallback, message bus, escalating submission cooldowns.
+- [x] **Kali Linux toolkit** — `forged` (mch-kali): Omarchy lazy-loading operator + Probabilistic Tactical Engine (nmap, ffuf, sqlmap, nuclei, subfinder, whatweb, wpscan wrappers; JSON parsers; on-demand install; WordPress→wpscan pivot; Ed25519-attested output).
 - [ ] **Cloudflare security-audit-skill** — `in progress`: Extract the multi-stage audit pipeline and machine-readable vulnerability schema.
 - [ ] **Hexstrike** — `in progress`: Forge the offensive tooling orchestration (scoped).
-- [ ] **Bug-Bounty Agents** — `in progress`: Integrate fail-closed scope authority and target discovery.
 - [ ] **OpenWorker** — `in progress`: Forge the self-waking task execution and standing approvals.
 
 ## Phase 2.5: The Overnight Agent (The Autonomous Operator)
-- [ ] **mch-comms** — `queued`: Telegram, Email, Calendar integrations; deterministic routing; local/cheap model classification.
-- [ ] **mch-trade** — `queued`: Binance API + mch-scope risk guards; economic engine for overnight trades.
-- [ ] **mch-hack** — `queued`: Autonomous hackathon execution; project triage; submission pipeline.
-- [ ] **mch-report** — `queued`: Markdown newspaper + TTS audio generation; low-fuel compilation.
+- [x] **mch-comms** — `forged`: Telegram, Email, Calendar integrations; deterministic routing; local/cheap model classification.
+- [x] **mch-trade** — `forged`: Binance API + mch-scope risk guards (StopLoss, PositionSizer, MaxTradeLimits); economic engine for overnight trades.
+- [x] **mch-hack** — `forged`: Autonomous hackathon execution; project triage; submission pipeline.
+- [x] **mch-report** — `forged`: Markdown newspaper + TTS generation; low-fuel compilation.
+- [x] **mch-plan** — `forged`: DSH workflow-lite orchestration (canvas → plan → execute).
+- [x] **mch-anatomy** — `forged`: human archetypes, cognitive workflows, behavioral heuristics.
 
 ## Phase 3: The Data & UI Layer (The Senses)
 - [ ] **Graphify** — Extract local source-code-to-knowledge-map conversion.
@@ -64,7 +69,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 ## Phase 7: The Wildcards (To Be Analyzed)
 - [ ] **IBM Bob** — Analyze capabilities.
 - [ ] **Blackbox AI** — Analyze capabilities.
-- [ ] **Kali Linux AI** — Extract local offensive security OS integrations for seamless binary compatibility.
+- [x] **Kali Linux AI** — `forged` (mch-kali): local offensive-security OS integrations; on-demand tool materialization for seamless binary compatibility.
 
 ## Phase 8: DeepSeek Harness (DSH) — The Cordis Kernel
 - [x] **DeepSeek Harness (DSH)** — `forged` (mch-dsh-cordis): Extract the Cordis kernel "everything is a plugin" architecture:
