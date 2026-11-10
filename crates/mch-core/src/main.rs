@@ -18,6 +18,8 @@ use std::collections::HashMap;
 use std::time::Duration;
 use tokio::time::timeout;
 
+mod overnight;
+
 const SCOPE_PATH: &str = "mch.scope.toml";
 const LEDGER_PATH: &str = "mch.ledger.json";
 
@@ -44,6 +46,7 @@ async fn run(args: &[String]) -> Result<String, String> {
         Some("brief") => cmd_brief(args.get(1).map(|s| s.as_str())).await,
         Some("loop") => cmd_loop().await,
         Some("memory") => cmd_memory().await,
+        Some("overnight") => cmd_overnight(args.get(1).map(|s| s.as_str())).await,
         Some("--version") | Some("version") => Ok(env!("CARGO_PKG_VERSION").to_string()),
         _ => Ok(usage().to_string()),
     }
@@ -64,6 +67,7 @@ COMMANDS:
     brief <target>          Print the do-not-retry brief from the ledger
     loop                    Run the streaming agent loop (demo)
     memory                  Show the three-strata memory + skill-sealing demo
+    overnight [target]      Run the Overnight Agent (bounty+trades+hackathons+report)
     version                 Print version
 
 STATUS VOCABULARY (closed set):
@@ -395,6 +399,19 @@ async fn cmd_memory() -> Result<String, String> {
     assert_eq!(records[1].state, SkillState::Archived);
 
     Ok("\nmemory demo complete".to_string())
+}
+
+/// Command: run the Overnight Agent cycle (bug bounty → trades → hackathons →
+/// memory replay → low-fuel routing → Telegram report).
+async fn cmd_overnight(target: Option<&str>) -> Result<String, String> {
+    let cfg = overnight::OvernightConfig {
+        target: target.unwrap_or("http://example.com").to_string(),
+        ..Default::default()
+    };
+    let report = overnight::overnight_run(&cfg)
+        .await
+        .map_err(|e| format!("overnight run failed: {e}"))?;
+    Ok(report.markdown)
 }
 
 // Re-exports kept public for downstream embedders of the harness library.

@@ -23,6 +23,9 @@ members = [
     "crates/mch-browser",
     "crates/mch-cyber",
     "crates/mch-kali",
+    "crates/mch-comms",
+    "crates/mch-trade",
+    "crates/mch-hack",
 ]
 default-members = [
     "crates/mch-scope",

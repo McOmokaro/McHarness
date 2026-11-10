@@ -1,17 +1,20 @@
-//! mch-comms — Telegram, Email (IMAP/SMTP), Calendar (CalDAV) integrations
-//! with deterministic routing and local/cheap model classification.
+//! mch-comms — Telegram, Email, Calendar for the Overnight Agent, plus the
+//! deterministic "Low Fuel" router that decides which tasks need a model.
 
-pub mod telegram;
-pub mod email;
 pub mod calendar;
+pub mod email;
 pub mod router;
+pub mod telegram;
 
+pub use calendar::{CalendarClient, CalendarConfig, CalendarEvent};
+pub use email::{EmailClient, EmailConfig, EmailMessage};
+pub use router::{
+    ClassificationResult, DeterministicRouter, MessageCategory, ModelClassifier, RouteDecision,
+    RouteType,
+};
 pub use telegram::{TelegramClient, TelegramConfig};
-pub use email::{EmailClient, EmailConfig};
-pub use calendar::{CalendarClient, CalendarConfig};
-pub use router::{DeterministicRouter, ModelClassifier, RouteDecision};
 
-/// Communication error types
+/// Communication error types.
 #[derive(Debug, thiserror::Error)]
 pub enum CommsError {
     #[error("Telegram error: {0}")]

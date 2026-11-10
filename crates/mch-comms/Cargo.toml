@@ -6,45 +6,18 @@ license.workspace = true
 description = "McHarness communications — Telegram, Email (IMAP/SMTP), Calendar (CalDAV) integrations with deterministic routing"
 
 [dependencies]
-# Workspace dependencies
 mch-brain = { path = "../mch-brain" }
 mch-scope = { path = "../mch-scope" }
-serde.workspace = true
+serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 thiserror.workspace = true
 tokio.workspace = true
-tokio-stream.workspace = true
-reqwest.workspace = true
+reqwest = { workspace = true, features = ["json", "rustls-tls"] }
 tracing.workspace = true
 async-trait.workspace = true
 anyhow.workspace = true
 schemars.workspace = true
-uuid.workspace = true
+uuid = { workspace = true, features = ["v4", "serde"] }
 futures.workspace = true
 rand.workspace = true
-
-# Telegram
-teloxide = { version = "0.17", features = ["macros", "ctrlc_handler", "webhooks"] }
-
-# Email: IMAP
-async-imap = { version = "0.12", features = ["runtime-tokio"] }
-async-std = { version = "1", features = ["attributes"] }
-
-# Email: SMTP
-lettre = { version = "0.11", features = ["tokio1", "rustls-tls", "builder", "async-std1"] }
-lettre_email = "0.9"
-
-# CalDAV
-fast-dav-rs = "0.19"
-
-# HTTP server for webhooks
-axum = { version = "0.7", features = ["macros", "json", "multipart"] }
-tower = { version = "0.4", features = ["util", "timeout"] }
-tower-http = { version = "0.5", features = ["trace", "cors"] }
-
-# Classification / routing
-tokenizers = "0.20"
-
-# Config
-config = "0.14"
-toml = "0.8"
+chrono = { workspace = true, features = ["serde"] }

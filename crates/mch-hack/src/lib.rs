@@ -8,29 +8,41 @@ pub mod generator;
 pub mod submitter;
 pub mod triage;
 
-use crawler::{HackathonCrawler, PlatformAdapter};
-use generator::{CodeGenerator, PitchDeckGenerator};
-use submitter::{SubmissionPipeline, PlatformSubmitter};
-use triage::{ProjectTriage, RubricEvaluator};
+pub use crawler::{Hackathon, HackathonCrawler, Platform, PlatformAdapter};
+pub use generator::{CodeBundle, CodeGenerator, CodeSpec, PitchDeck, PitchDeckGenerator};
+pub use submitter::{
+    Artifact, ArtifactKind, PlatformSubmitter, Submission, SubmissionPipeline, SubmissionResult,
+};
+pub use triage::{Evaluation, Project, ProjectStage, ProjectTriage, RubricEvaluator};
 
 /// High-level facade for the autonomous hackathon agent.
 pub struct HackAgent {
-    crawler: HackathonCrawler,
-    triage: ProjectTriage,
-    code_gen: CodeGenerator,
-    pitch_gen: PitchDeckGenerator,
-    pipeline: SubmissionPipeline,
+    crawler: crawler::HackathonCrawler,
+    triage: triage::ProjectTriage,
+    code_gen: generator::CodeGenerator,
+    pitch_gen: generator::PitchDeckGenerator,
+    pipeline: submitter::SubmissionPipeline,
 }
 
 impl HackAgent {
     pub fn new() -> Self {
         Self {
-            crawler: HackathonCrawler::new(),
-            triage: ProjectTriage::new(),
-            code_gen: CodeGenerator::new(),
-            pitch_gen: PitchDeckGenerator::new(),
-            pipeline: SubmissionPipeline::new(),
+            crawler: crawler::HackathonCrawler::new(),
+            triage: triage::ProjectTriage::new(),
+            code_gen: generator::CodeGenerator::new(),
+            pitch_gen: generator::PitchDeckGenerator::new(),
+            pipeline: submitter::SubmissionPipeline::new(),
         }
+    }
+
+    /// Register a platform adapter for discovery.
+    pub fn register_platform(&mut self, adapter: Box<dyn crawler::PlatformAdapter>) {
+        self.crawler.register_adapter(adapter);
+    }
+
+    /// Register a platform submitter.
+    pub fn register_submitter(&mut self, submitter: Box<dyn submitter::PlatformSubmitter>) {
+        self.pipeline.register(submitter);
     }
 
     /// Discover hackathons across all configured platforms.
@@ -70,7 +82,9 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn agent_constructs() {
-        let _agent = HackAgent::new();
+    async fn agent_constructs_and_evaluates() {
+        let agent = HackAgent::new();
+        let ev = agent.evaluate(&Project::new("Demo"));
+        assert!(ev.max_total > 0.0);
     }
 }

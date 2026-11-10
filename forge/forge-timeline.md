@@ -11,6 +11,8 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 
 ## Phase 1.5: The Brain & Human Simulation (The Mind & Hands)
 - [x] **Severian / LycheeMem** — `forged` (mch-brain): SQLite + vector hybrid memory graph; semantic/episodic/procedural nodes; typed edges (derived_from, evidence_of, supersedes); Curator daemon for fact extraction and deduplication; 5-stage pipeline.
+- [x] **Complementary Learning Systems (brain v2)** — `forged` (mch-brain::cls): Hippocampus (`episodic_memory` with salience), Neocortex (`semantic_memory` + FTS5 + `memory_edges` Hebbian graph), and a background **Replay Daemon** that consolidates the latest 10 un-consolidated episodes into one general rule every 30 min.
+- [x] **Overnight Agent** — `forged` (mch-core::overnight): `overnight_run()` wires the Bug-Bounty swarm (mch-cyber), trade portfolio (mch-trade), hackathon scan (mch-hack), episode replay (mch-brain), **Low Fuel routing** (deterministic → local 7B → heavy API), and a Telegram report (mch-comms).
 - [x] **OpenGCUA / OmniPilot** — `forged` (mch-browser): Native CDP client via chromiumoxide 0.9; Accessibility Tree as primary "eyes"; Screenshot observation mode; human-in-the-loop permission system (Low/Medium/High/Critical risk).
 - [ ] **OpAgent / EvoCUA** — `queued` (mch-browser hardening): Browser navigation loops; OSWorld task completion logic; cross-platform GUI automation.
 

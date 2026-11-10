@@ -25,3 +25,4 @@ chrono.workspace = true
 rust_decimal = "1.35"
 hmac = "0.12"
 sha2 = { workspace = true }
+hex = "0.4"

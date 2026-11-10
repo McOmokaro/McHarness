@@ -102,9 +102,9 @@ impl ModelClassifier {
     pub fn classify(&self, message: &str) -> ClassificationResult {
         let lower = message.to_lowercase();
         
-        let spam_score = self.spam_keywords.iter().filter(|k| lower.contains(k)).count() as f32;
-        let lead_score = self.lead_keywords.iter().filter(|k| lower.contains(k)).count() as f32;
-        let meeting_score = self.meeting_keywords.iter().filter(|k| lower.contains(k)).count() as f32;
+        let spam_score = self.spam_keywords.iter().filter(|k| lower.contains(k.as_str())).count() as f32;
+        let lead_score = self.lead_keywords.iter().filter(|k| lower.contains(k.as_str())).count() as f32;
+        let meeting_score = self.meeting_keywords.iter().filter(|k| lower.contains(k.as_str())).count() as f32;
         
         let total = spam_score + lead_score + meeting_score + 1.0;
         

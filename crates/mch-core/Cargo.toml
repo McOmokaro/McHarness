@@ -18,7 +18,15 @@ mch-transport = { path = "../mch-transport" }
 mch-snapshot = { path = "../mch-snapshot" }
 mch-memory = { path = "../mch-memory" }
 mch-mcp = { path = "../mch-mcp" }
+mch-comms = { path = "../mch-comms" }
+mch-trade = { path = "../mch-trade" }
+mch-hack = { path = "../mch-hack" }
+mch-cyber = { path = "../mch-cyber" }
+mch-brain = { path = "../mch-brain" }
 serde.workspace = true
 serde_json.workspace = true
 tokio.workspace = true
 anyhow.workspace = true
+rust_decimal = "1.35"
+chrono = { workspace = true, features = ["serde"] }
+tracing.workspace = true

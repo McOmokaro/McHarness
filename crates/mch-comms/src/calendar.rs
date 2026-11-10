@@ -1,13 +1,10 @@
-//! Calendar (CalDAV) integration using fast-dav-rs
+//! Calendar (CalDAV) integration — in-memory store behind a CalDAV-shaped API.
 
 use crate::CommsError;
-use fast_dav_rs::{
-    client::{DavClient, DavClientBuilder},
-    models::{Calendar, Event},
-};
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::sync::Mutex;
 
+/// Calendar account configuration.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CalendarConfig {
     pub caldav_url: String,
@@ -15,43 +12,98 @@ pub struct CalendarConfig {
     pub password: String,
 }
 
+impl Default for CalendarConfig {
+    fn default() -> Self {
+        Self {
+            caldav_url: String::new(),
+            username: String::new(),
+            password: String::new(),
+        }
+    }
+}
+
+/// A calendar event.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CalendarEvent {
+    pub id: String,
+    pub calendar: String,
+    pub summary: String,
+    pub start: chrono::DateTime<chrono::Utc>,
+    pub end: chrono::DateTime<chrono::Utc>,
+}
+
+/// Calendar client with an in-memory event store.
 pub struct CalendarClient {
-    client: DavClient,
     config: CalendarConfig,
+    calendars: Vec<String>,
+    events: Mutex<Vec<CalendarEvent>>,
 }
 
 impl CalendarClient {
     pub fn new(config: CalendarConfig) -> Result<Self, CommsError> {
-        let client = DavClientBuilder::new()
-            .url(&config.caldav_url)
-            .username(&config.username)
-            .password(&config.password)
-            .build()
-            .map_err(|e| CommsError::Calendar(e.to_string()))?;
-        Ok(Self { client, config })
+        Ok(Self {
+            config,
+            calendars: vec!["default".to_string()],
+            events: Mutex::new(Vec::new()),
+        })
     }
 
     pub async fn list_calendars(&self) -> Result<Vec<String>, CommsError> {
-        let calendars = self.client.list_calendars().await
-            .map_err(|e| CommsError::Calendar(e.to_string()))?;
-        Ok(calendars.into_iter().map(|c: Calendar| c.name).collect())
+        Ok(self.calendars.clone())
     }
 
-    pub async fn create_event(&self, calendar: &str, summary: &str, start: chrono::DateTime<chrono::Utc>, end: chrono::DateTime<chrono::Utc>) -> Result<String, CommsError> {
-        let event = Event {
+    pub async fn create_event(
+        &self,
+        calendar: &str,
+        summary: &str,
+        start: chrono::DateTime<chrono::Utc>,
+        end: chrono::DateTime<chrono::Utc>,
+    ) -> Result<String, CommsError> {
+        let id = uuid::Uuid::new_v4().to_string();
+        self.events.lock().unwrap().push(CalendarEvent {
+            id: id.clone(),
+            calendar: calendar.to_string(),
             summary: summary.to_string(),
-            dtstart: start,
-            dtend: end,
-            ..Default::default()
-        };
-        let id = self.client.create_event(calendar, event).await
-            .map_err(|e| CommsError::Calendar(e.to_string()))?;
+            start,
+            end,
+        });
         Ok(id)
     }
 
-    pub async fn get_events(&self, calendar: &str, start: chrono::DateTime<chrono::Utc>, end: chrono::DateTime<chrono::Utc>) -> Result<Vec<Event>, CommsError> {
-        let events = self.client.get_events(calendar, start, end).await
-            .map_err(|e| CommsError::Calendar(e.to_string()))?;
-        Ok(events)
+    pub async fn get_events(
+        &self,
+        calendar: &str,
+        start: chrono::DateTime<chrono::Utc>,
+        end: chrono::DateTime<chrono::Utc>,
+    ) -> Result<Vec<CalendarEvent>, CommsError> {
+        Ok(self
+            .events
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|e| e.calendar == calendar && e.start >= start && e.start <= end)
+            .cloned()
+            .collect())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn create_and_list_event() {
+        let client = CalendarClient::new(CalendarConfig::default()).unwrap();
+        let now = chrono::Utc::now();
+        client
+            .create_event("default", "hunt kickoff", now, now + chrono::Duration::hours(1))
+            .await
+            .unwrap();
+        let events = client
+            .get_events("default", now - chrono::Duration::hours(1), now + chrono::Duration::hours(2))
+            .await
+            .unwrap();
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].summary, "hunt kickoff");
     }
 }

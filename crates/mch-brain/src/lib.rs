@@ -35,6 +35,7 @@
 //! 4. **ReasoningAgent** — Final response generation
 //! 5. **ConsolidatorAgent** (background) — Compact consolidation + Skill extraction
 
+pub mod cls;
 pub mod curator;
 pub mod memory;
 pub mod pipeline;
@@ -45,6 +46,10 @@ pub mod types;
 pub mod visual;
 pub mod working;
 
+pub use cls::{
+    ClsConfig, DualProcessMemory, Episode, EpisodeKind, HeuristicRuleExtractor, MemoryEdge,
+    ReplayDaemon, RuleExtractor, SemanticFact,
+};
 pub use curator::{CuratorDaemon, CuratorConfig};
 pub use memory::{MemoryTree};
 pub use pipeline::{BrainPipeline, PipelineConfig, PipelineStage};
