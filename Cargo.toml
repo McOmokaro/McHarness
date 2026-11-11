@@ -26,6 +26,7 @@ members = [
     "crates/mch-comms",
     "crates/mch-trade",
     "crates/mch-hack",
+    "crates/mch-tui",
 ]
 default-members = [
     "crates/mch-scope",
@@ -84,3 +85,5 @@ zeroize = "1"
 regex = "1"
 chrono = { version = "0.4", features = ["serde"] }
 sha2 = "0.10"
+ratatui = "0.29"
+crossterm = "0.28"

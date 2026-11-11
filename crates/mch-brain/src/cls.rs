@@ -459,6 +459,16 @@ impl DualProcessMemory {
     pub fn pool(&self) -> &SqlitePool {
         &self.pool
     }
+
+    /// The configured replay (consolidation) cadence.
+    pub fn replay_interval(&self) -> std::time::Duration {
+        self.config.replay_interval
+    }
+
+    /// The number of episodes consumed per consolidation pass.
+    pub fn batch_size(&self) -> usize {
+        self.config.batch_size
+    }
 }
 
 fn row_to_episode(row: &sqlx::sqlite::SqliteRow) -> Episode {

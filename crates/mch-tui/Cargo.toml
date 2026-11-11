@@ -1,0 +1,22 @@
+[package]
+name = "mch-tui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "McHarness Command Center — a dark-mode Bento Grid terminal UI with live telemetry"
+
+[[bin]]
+name = "mch-tui"
+path = "src/main.rs"
+
+[dependencies]
+mch-brain = { path = "../mch-brain" }
+mch-kali = { path = "../mch-kali" }
+ratatui = { workspace = true }
+crossterm = { workspace = true }
+tokio = { workspace = true, features = ["full", "rt-multi-thread", "macros"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+anyhow.workspace = true
+chrono = { workspace = true, features = ["serde"] }
+tracing.workspace = true

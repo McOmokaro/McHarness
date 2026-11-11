@@ -35,6 +35,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [x] **mch-anatomy** — `forged`: human archetypes, cognitive workflows, behavioral heuristics.
 
 ## Phase 3: The Data & UI Layer (The Senses)
+- [x] **mch-tui** — `forged`: the McHarness Command Center. Dark Bento Grid (2×2 panes + command bar) over ratatui/crossterm at ~60 FPS: **The Brain** (episodic/semantic counts + Replay Daemon status), **The Key Farm** (models, masked keys, rate-limit health), **The Arsenal** (targets, running tool stubs, swarm status, toolbox readiness), **The Overnight Agent** (last run, last Telegram report, fuel burned). Command bar: `/hunt`, `/trade`, `/brain query`, `/overnight`.
 - [ ] **Graphify** — Extract local source-code-to-knowledge-map conversion.
 - [ ] **Hyperframes** — Forge HTML-to-video rendering for agent reporting.
 - [ ] **Fabric (Daniel Miessler)** — Fold LifeOS, personas, and decision frameworks into Fusion.
