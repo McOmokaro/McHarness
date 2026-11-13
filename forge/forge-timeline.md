@@ -22,8 +22,8 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [x] **BugBountyFramework (h4ckologic/bughunter-ai)** — `forged` (mch-cyber::hunt): 9-phase hunt state machine, credential vault, auth automation (B2C/OAuth), Burp MCP bridge, configurable severity profiles, attack-chain correlation, report generator.
 - [x] **CTF-agent (verialabs/ctf-agent)** — `forged` (mch-cyber::swarm): parallel racing architecture, multi-model coordinators, quota fallback, message bus, escalating submission cooldowns.
 - [x] **Kali Linux toolkit** — `forged` (mch-kali): Omarchy lazy-loading operator + Probabilistic Tactical Engine (nmap, ffuf, sqlmap, nuclei, subfinder, whatweb, wpscan wrappers; JSON parsers; on-demand install; WordPress→wpscan pivot; Ed25519-attested output).
-- [~] **Cloudflare security-audit-skill** — `extracting` (worker): multi-stage audit pipeline + machine-readable vulnerability schema.
-- [~] **Hexstrike (0x4m4/hexstrike-ai)** — `extracting` (worker): 150+ offensive tool orchestration via MCP.
+- [x] **Cloudflare security-audit-skill** — `forged` (dossier): 6-phase audit pipeline + `report-schema.json` (3-verdict finding schema) + deterministic `coverage_id` → mch-gate/mch-cyber. Dossier: `docs/ingestor/cloudflare-security-audit.md`.
+- [x] **Hexstrike (0x4m4/hexstrike-ai)** — `forged` (dossier): 151 MCP tool shims → Flask tool server, IntelligentDecisionEngine + tool-effectiveness matrix → mch-kali/mch-cyber/mch-mcp. Dossier: `docs/ingestor/hexstrike.md`.
 - [ ] **OpenWorker** — `blocked (no accessible repo)`: self-waking task execution + standing approvals — no public repo found.
 
 ## Phase 2.5: The Overnight Agent (The Autonomous Operator)
@@ -38,7 +38,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [x] **mch-tui** — `forged`: the McHarness Command Center. Dark Bento Grid (2×2 panes + command bar) over ratatui/crossterm at ~60 FPS: **The Brain** (episodic/semantic counts + Replay Daemon status), **The Key Farm** (models, masked keys, rate-limit health), **The Arsenal** (targets, running tool stubs, swarm status, toolbox readiness), **The Overnight Agent** (last run, last Telegram report, fuel burned). Command bar: `/hunt`, `/trade`, `/brain query`, `/overnight`.
 - [~] **Graphify** — `queued` (candidate: microsoft/graphrag): source-code-to-knowledge-map conversion.
 - [ ] **Hyperframes** — `blocked (no accessible repo)`: HTML-to-video rendering.
-- [~] **Fabric (danielmiessler/fabric)** — `extracting` (worker): pattern library + provider abstraction → Fusion core.
+- [x] **Fabric (danielmiessler/fabric)** — `forged` (dossier): pattern store (`{{input}}` sentinel), hash-verified extension registry, Vendor/OpenAI-compatible provider abstraction, Chatter/Strategy → Fusion core. Dossier: `docs/ingestor/fabric.md`.
 
 ## Phase 4: The TUI Engine — Telegram Desktop
 - [~] **Telegram Desktop (tdesktop)** — `queued` (real repo; large — deferred): Reverse-engineer the native desktop client for TUI construction:
@@ -49,7 +49,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
   - **Cross-platform**: Windows/macOS/Linux single codebase; extract the platform abstraction layer.
 
 ## Phase 5: The Download Subsystem — Aria2c
-- [~] **Aria2c** — `extracting` (worker): Integrate the multi-protocol download engine as a native capability:
+- [x] **Aria2c** — `forged` (dossier): segmented download (Piece/StreamPieceSelector), binary `.aria2` checkpoint/resume, JSON-RPC/WS surface, single-threaded reactor engine → future mch-download. Dossier: `docs/ingestor/aria2.md`.
   - **Metalink + BitTorrent + HTTP/HTTPS/FTP** unified in one binary.
   - **Segmented downloading** (16 connections by default) for GitHub releases — repos clone in seconds, not minutes.
   - **RPC/JSON-RPC + daemon mode** — embed as a background service the Key Farm and Ingestor can call.
@@ -57,7 +57,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
   - **GitHub optimization** — `--header` auth, `--max-connection-per-server`, and `--min-split-size` tuned for large repo archives.
 
 ## Phase 6: Resilient Download Semantics — yt-dlp (YTDLnis)
-- [~] **yt-dlp** — `extracting` (worker): Reverse-engineer the world's most resilient video downloader and generalize:
+- [x] **yt-dlp** — `forged` (dossier): DownloadSession (manifest→fragment→`.ytdl` checkpoint→resume), 4-budget RetryManager + pluggable backoff, 401/403 ReExtractInfo cookie/URL refresh, ExternalFD hook (aria2c) → mch-download. Dossier: `docs/ingestor/yt-dlp.md`.
   - **Fragmented resume** — HLS/DASH segments tracked individually; network failure resumes *exact* byte range, never restarts.
   - **Retries with backoff** — Exponential backoff + jitter, per-fragment, configurable via `--retries`/`--fragment-retries`.
   - **Cookie/token refresh mid-download** — Auth headers refreshed on 401/403 without losing progress.
@@ -72,7 +72,7 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 ## Phase 7: The Wildcards (To Be Analyzed)
 - [ ] **IBM Bob** — `blocked (commercial, no public repo)`: capability analysis only.
 - [ ] **Blackbox AI** — `blocked (commercial, no public repo)`: capability analysis only.
-- [~] **Sherlock (sherlock-project/sherlock)** — `extracting` (worker): username OSINT across social networks (bonus recon target).
+- [x] **Sherlock (sherlock-project/sherlock)** — `forged` (dossier): 481-target `data.json` detection manifest, discriminated-union `errorType` detector, 20-worker dispatch/resolve engine → mch-cyber recon. Dossier: `docs/ingestor/sherlock.md`.
 - [x] **Kali Linux AI** — `forged` (mch-kali): local offensive-security OS integrations; on-demand tool materialization for seamless binary compatibility.
 
 ## Phase 8: DeepSeek Harness (DSH) — The Cordis Kernel
