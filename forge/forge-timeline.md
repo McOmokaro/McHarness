@@ -75,6 +75,14 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 - [x] **Sherlock (sherlock-project/sherlock)** — `forged` (dossier): 481-target `data.json` detection manifest, discriminated-union `errorType` detector, 20-worker dispatch/resolve engine → mch-cyber recon. Dossier: `docs/ingestor/sherlock.md`.
 - [x] **Kali Linux AI** — `forged` (mch-kali): local offensive-security OS integrations; on-demand tool materialization for seamless binary compatibility.
 
+## Phase 9: VIP-Session Targets (browser engine + inference)
+- [x] **Kitesurf (cloudflare/kitesurf)** — `forged` (dossier): experimental **Rust browser engine on Cloudflare Workers** — DOM/CSS/layout/paint in Rust, **Boa** JS, **speaks CDP** (Puppeteer-compatible), per-page worker isolation. → `mch-browser` native engine backend + new `mch-render`. Dossier: `docs/ingestor/kitesurf.md`.
+- [x] **DeepInfer (deepseek-ai/DeepInfer)** — `forged` (dossier): DeepSeek's high-performance inference framework — async batch scheduler, **structured outputs** (regex/JSON/EBNF), deterministic + batch-invariant sampling, DSpark speculative decoding. → `mch-keyfarm` local-serving backend, `mch-gate` output contracts, `mch-cyber` reproducible evidence. Dossier: `docs/ingestor/deepinfer.md`.
+- [~] **modern-web-guidance (GoogleChrome)** — `cloned` (queued): modern web guidance; dossier pending.
+- [~] **67.js (codepawl)** — `cloned` (queued): dossier pending.
+- [~] **pxpipe (teamchong)** — `cloned` (queued): dossier pending.
+- [x] **social-media-scraping-apis (cporter202)** — `forged` (spec): catalog of 3,268 scrapers → lead-gen social-signal enrichment (`docs/lead-gen-system.md` §3b).
+
 ## Phase 8: DeepSeek Harness (DSH) — The Cordis Kernel
 - [x] **DeepSeek Harness (DSH)** — `forged` (mch-dsh-cordis): Extract the Cordis kernel "everything is a plugin" architecture:
   - **Cordis Kernel**: Everything-is-a-plugin architecture; core is minimal, all capabilities (LLM, tools, memory, skills) are plugins.
