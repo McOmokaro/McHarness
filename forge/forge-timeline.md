@@ -78,9 +78,9 @@ The chronological blueprint of agents reverse-engineered into the McHarness ecos
 ## Phase 9: VIP-Session Targets (browser engine + inference)
 - [x] **Kitesurf (cloudflare/kitesurf)** — `forged` (dossier): experimental **Rust browser engine on Cloudflare Workers** — DOM/CSS/layout/paint in Rust, **Boa** JS, **speaks CDP** (Puppeteer-compatible), per-page worker isolation. → `mch-browser` native engine backend + new `mch-render`. Dossier: `docs/ingestor/kitesurf.md`.
 - [x] **DeepInfer (deepseek-ai/DeepInfer)** — `forged` (dossier): DeepSeek's high-performance inference framework — async batch scheduler, **structured outputs** (regex/JSON/EBNF), deterministic + batch-invariant sampling, DSpark speculative decoding. → `mch-keyfarm` local-serving backend, `mch-gate` output contracts, `mch-cyber` reproducible evidence. Dossier: `docs/ingestor/deepinfer.md`.
-- [~] **modern-web-guidance (GoogleChrome)** — `cloned` (queued): modern web guidance; dossier pending.
-- [~] **67.js (codepawl)** — `cloned` (queued): dossier pending.
-- [~] **pxpipe (teamchong)** — `cloned` (queued): dossier pending.
+- [x] **modern-web-guidance (GoogleChrome)** — `forged` (dossier): 250+ modern web features (CSS, HTML, JS, APIs, accessibility, built-in AI), legacy-scan, provider abstraction → `mch-browser`, `mch-tui`, `mch-brain`, `mch-core`. Dossier: `docs/ingestor/modern-web-guidance.md`.
+- [x] **67.js (codepawl)** — `forged` (dossier): agent-native 3D engine with MCP server, dual renderer (rasterizer + path tracer), deterministic scene format, addon system → `mch-browser`, `mch-tui`, `mch-cyber`. Dossier: `docs/ingestor/67.js.md`.
+- [x] **pxpipe (teamchong/pxpipe)** — `forged` (dossier): local proxy compresses LLM context via dense PNG rendering (Spleen 5×8 font), zero base-URL overrides, model-aware profiles, Ed25519 attestation → `mch-core`, `mch-tui`, `mch-brain`. Dossier: `docs/ingestor/pxpipe.md`.
 - [x] **social-media-scraping-apis (cporter202)** — `forged` (spec): catalog of 3,268 scrapers → lead-gen social-signal enrichment (`docs/lead-gen-system.md` §3b).
 
 ## Phase 8: DeepSeek Harness (DSH) — The Cordis Kernel
