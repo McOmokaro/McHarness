@@ -1,9 +1,10 @@
 ---
 name: lead-gen-agent
-description: Autonomous lead generation system for web development targeting Asian SMEs. Uses Google Places API for discovery, DeepSeek for AI scoring, and Google Sheets for CRM. Implements the "Asian Empire" playbook from Iman's framework.
+description: Autonomous lead generation system for web development targeting Asian SMEs. Uses Google Places API for discovery, Tilion cloud browser for bot-protected site enrichment, DeepSeek for AI scoring, and Google Sheets for CRM. Implements the "Asian Empire" playbook from Iman's framework.
 capabilities:
   - mch-brain (semantic memory for lead profiles, episodic for outreach history)
   - mch-cyber (recon for tech stack detection, social signals)
+  - tilion (cloud stealth browser — read_page / scrape_page / collect_data / solve_challenge)
   - n8n (workflow orchestration)
   - Google Places API, DeepSeek API, Google Sheets API
 ---
@@ -48,6 +49,10 @@ Find, score, and organize qualified web development prospects:
 | `mch-brain::recall` | Lead history, conversion patterns, industry benchmarks |
 | `mch-brain::store` | Lead profiles, outreach logs, outcomes |
 | `mch-cyber::recon` | Tech stack detection, SSL cert, social footprint |
+| `tilion.read_page` | **Replaces old scrape/probe** — read a prospect's site (or social page) as clean Markdown, with Cloudflare/DataDome/CAPTCHA recovery |
+| `tilion.scrape_page` | One-off page read, no session (cheap single-URL enrichment) |
+| `tilion.collect_data` | Pull structured records (reviews, contact info, social links) from a page in plain English |
+| `tilion.solve_challenge` | Clear a CAPTCHA / bot check when a page is blocked |
 | `n8n_workflow` | Execute the Places → Score → Sheets pipeline |
 | `deepseek_score` | AI scoring call (internal) |
 | `google_sheets` | CRM read/write |
@@ -56,9 +61,25 @@ Find, score, and organize qualified web development prospects:
 
 ```
 Schedule → Places Search → Batch Split → Place Details → 
-Signal Rules → Website Probe → DeepSeek Score → Filter (score≥8) → 
+Signal Rules → Tilion read_page (site probe + block recovery) → DeepSeek Score → Filter (score≥8) → 
 Dedup → Google Sheets Append → Outreach Draft Queue
 ```
+
+## Tilion Integration (replaces legacy scraping)
+
+The old HTTP-probe / scraper node is replaced by the **Tilion cloud stealth browser** (MCP server `tilion`, wired in `~/.hermes/config.yaml`). It recovers pages that block ordinary automation (Cloudflare, DataDome, CAPTCHAs, 403 walls) and reports `content_ok` / `status` on every read.
+
+| Step | Tilion call | Notes |
+|---|---|---|
+| Probe prospect website | `read_page {url, session_id}` | Returns clean Markdown + `status` (`ok`/`blocked`/`empty`). `empty`/dead site = strong buying signal. |
+| Single-URL enrichment | `scrape_page {url}` | No session; cheapest for one-off reads. |
+| Pull reviews / contacts / socials | `collect_data {url, prompt}` | Structured records in plain English. |
+| Page is bot-blocked | `solve_challenge {session_id}` then re-`read_page` | Clears CAPTCHA / bot check. |
+| Session hygiene | `create_browser_session` … `close_browser_session` | **Always close** — billing is per-minute while open. Reuse one session per batch. |
+
+**Verified live (2026-11-21):** `create_browser_session → read_page(https://www.apple.com/mac/) → close_browser_session` returned `status: ok`, title "Mac - Apple", 3078 chars Markdown; cost ≈ 0.02 credits. Account `polymorphhq@gmail.com`, free tier, 2500 credits.
+
+> Tool-name note: Tilion has **no** `fetch_protected_page` / `extract_page`. The real equivalents are `read_page`, `scrape_page`, `collect_data` (+ `solve_challenge`).
 
 ## ICP Config (Asian Empire)
 
